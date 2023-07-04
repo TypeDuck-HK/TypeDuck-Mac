@@ -1,0 +1,24 @@
+# SQLite
+*.sqlite binary
+*.sqlite3 binary
+
+# Image
+*.png binary
+*.heic binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.apng binary
+
+# Video
+*.mp4 binary
+*.mov binary
+*.webm binary
+
+# PDF
+*.pdf binary
+
+# Swift Package Resources
+/CoreIME/Sources/CoreIME/Resources/** binary
+/Preparing/Sources/Preparing/Resources/** binary

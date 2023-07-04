@@ -1,0 +1,70 @@
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+### Xcode ###
+*.xcworkspace/
+xcuserdata/
+xcshareddata/
+
+## GCC Patch
+/*.gcno
+
+## Obj-C/Swift specific
+*.hmap
+
+## App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+
+### Swift Packages ###
+Packages/
+Package.pins
+Package.resolved
+.build/
+.swiftpm/
+
+
+### Generated Databases ###
+*.sqlite3
+*.sqlite
+
+### Products ###
+*.zip
+*.xz
+*.pkg
+*.app/
+
+### Editors ###
+.vscode/

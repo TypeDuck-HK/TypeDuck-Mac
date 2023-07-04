@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ComponentInputModeDict</key>
+	<dict>
+		<key>tsInputModeListKey</key>
+		<dict>
+			<key>hk.eduhk.inputmethod.TypeDuck.IM</key>
+			<dict>
+				<key>TISIconLabels</key>
+				<dict>
+					<key>Primary</key>
+					<string>TypeDuck</string>
+				</dict>
+				<key>TISInputSourceID</key>
+				<string>hk.eduhk.inputmethod.TypeDuck.IM</string>
+				<key>TISIntendedLanguage</key>
+				<string>yue-Hant</string>
+				<key>tsInputModeAlternateMenuIconFileKey</key>
+				<string>typeduck.png</string>
+				<key>tsInputModeDefaultStateKey</key>
+				<true/>
+				<key>tsInputModeIsVisibleKey</key>
+				<true/>
+				<key>tsInputModeKeyEquivalentModifiersKey</key>
+				<integer>4608</integer>
+				<key>tsInputModeMenuIconFileKey</key>
+				<string>typeduck.png</string>
+				<key>tsInputModePaletteIconFileKey</key>
+				<string>typeduck.png</string>
+				<key>tsInputModePrimaryInScriptKey</key>
+				<true/>
+				<key>tsInputModeScriptKey</key>
+				<string>smUnicodeScript</string>
+			</dict>
+		</dict>
+		<key>tsVisibleInputModeOrderedArrayKey</key>
+		<array>
+			<string>hk.eduhk.inputmethod.TypeDuck.IM</string>
+		</array>
+	</dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>InputMethodConnectionName</key>
+	<string>hk_eduhk_inputmethod_TypeDuck_Connection</string>
+	<key>InputMethodServerControllerClass</key>
+	<string>$(PRODUCT_MODULE_NAME).TypeDuckInputController</string>
+	<key>InputMethodServerDelegateClass</key>
+	<string>$(PRODUCT_MODULE_NAME).TypeDuckInputController</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
+	<key>TICapsLockLanguageSwitchCapable</key>
+	<true/>
+	<key>TISIntendedLanguage</key>
+	<string>yue-Hant</string>
+	<key>tsInputMethodCharacterRepertoireKey</key>
+	<array>
+		<string>Hant</string>
+		<string>Hans</string>
+	</array>
+	<key>tsInputMethodIconFileKey</key>
+	<string>typeduck.png</string>
+</dict>
+</plist>

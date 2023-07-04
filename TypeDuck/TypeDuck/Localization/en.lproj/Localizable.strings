@@ -1,0 +1,35 @@
+// MARK: - Menu
+
+"menu.title" = "TypeDuck";
+"menu.help" = "Help";
+"menu.terminate" = "Quit";
+
+
+// MARK: - Languages
+
+"Cantonese" = "Cantonese";
+"English" = "English";
+"Hindi" = "Hindi";
+"Indonesian" = "Indonesian";
+"Nepali" = "Nepali";
+"Urdu" = "Urdu";
+
+
+// MARK: - Preferences Window
+
+"Preferences.Window.Title" = "TypeDuck Help";
+"Preferences.HelpView.Title" = "TypeDuck Help";
+
+"Enter/Exit Options View" = "Enter/Exit Options View";
+"Directly toggle specific option" = "Directly toggle specific option";
+"Remove highlighted Candidate from User Lexicon" = "Remove highlighted Candidate from User Lexicon";
+"Clear current Input Buffer" = "Clear current Input Buffer";
+
+"Highlight previous Candidate" = "Highlight previous Candidate";
+"Highlight next Candidate" = "Highlight next Candidate";
+"Backward to previous Candidate page" = "Backward to previous Candidate page";
+"Forward to next Candidate page" = "Forward to next Candidate page";
+"Jump to the first Candidate page" = "Jump to the first Candidate page";
+"or" = "or";
+
+"Version" = "Version";
