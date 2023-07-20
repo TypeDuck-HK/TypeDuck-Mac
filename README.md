@@ -13,6 +13,12 @@
 
 添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話語言項 揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
 
+<img width="300" alt="1  Setup - 1" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/64430e76-9e78-47b0-8def-91e0c5e307ee">
+<img width="300" alt="1  Setup - 2" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/bd41dc04-f090-4474-8a68-66b5fde81931">
+<img width="300" alt="1  Setup - 3" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/db9a8365-2f84-45ad-8239-5c819473d272">
+<img width="200" alt="1  Setup - 4" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/ed39986d-3d5b-46b1-a69b-2fcb123997a7">
+
+
 ## 如何卸載（How to uninstall）
 首先，去 系統設定 → 鍵盤 → 輸入方式，移除 TypeDuck。
 
