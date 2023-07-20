@@ -2,16 +2,22 @@
 兼容性: macOS 12 Monterey 或者更高。
 
 ## 如何安裝（How to install）
-1. 首先去 [Releases](https://github.com/TypeDuck-HK/TypeDuck-Mac/releases) 䈎面下載個 PKG 檔案。
+1. 首先去 [Releases](https://github.com/TypeDuck-HK/TypeDuck-Mac/releases) 頁面下載個 PKG 檔案。
 2. 雙擊開啟下載到嘅 PKG 檔案，開始安裝。
-3. 按提示步驟進行。中途有可能系統設定App會彈出來，請求添加 TypeDuck 輸入法。
-4. 到最後一步，安裝程式會請求你登出電腦再登入，以使輸入法正常生效。
+3. 按提示步驟進行。中途有可能系統設定App會彈出嚟，請求添加 TypeDuck 輸入法。
+4. 到最後一步，安裝程式會請求你登出電腦再登入，要登出再登入輸入法先會正常生效。
 
-請注意，登出電腦會將所有程式結束運行。
+請注意，登出電腦嘅話會將所有程式結束運行。
 
 安裝之後，如果見唔到有 TypeDuck 輸入法，請前往 系統設定 → 鍵盤 → 輸入方式，手動添加。
 
-添加箇陣，TypeDuck 位於 「Cantonese, Traditional」/繁體粵語/繁體廣東話 語言項。亦可以搜尋「TypeDuck」來搵。
+添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話語言項 揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
+
+<img width="300" alt="1  Setup - 1" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/64430e76-9e78-47b0-8def-91e0c5e307ee">
+<img width="300" alt="1  Setup - 2" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/bd41dc04-f090-4474-8a68-66b5fde81931">
+<img width="300" alt="1  Setup - 3" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/db9a8365-2f84-45ad-8239-5c819473d272">
+<img width="200" alt="1  Setup - 4" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/ed39986d-3d5b-46b1-a69b-2fcb123997a7">
+
 
 ## 如何卸載（How to uninstall）
 首先，去 系統設定 → 鍵盤 → 輸入方式，移除 TypeDuck。
