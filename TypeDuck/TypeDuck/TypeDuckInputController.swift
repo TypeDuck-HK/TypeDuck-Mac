@@ -35,17 +35,21 @@ final class TypeDuckInputController: IMKInputController {
                 window?.setFrame(.zero, display: true)
                 window?.orderFrontRegardless()
         }
-        func prepareMasterWindow() {
+        private func prepareMasterWindow() {
                 if window == nil {
                         createMasterWindow()
-                        window?.setFrame(windowFrame, display: true)
                 } else {
-                        window?.setFrame(windowFrame, display: true)
                         let isOnActiveSpace: Bool = window?.isOnActiveSpace ?? false
                         if !isOnActiveSpace {
                                 window?.orderFrontRegardless()
                         }
                 }
+        }
+        func updateMasterWindow() {
+                if window == nil {
+                        createMasterWindow()
+                }
+                window?.setFrame(windowFrame, display: true)
         }
 
         var windowFrame: CGRect {
@@ -108,6 +112,7 @@ final class TypeDuckInputController: IMKInputController {
                 DispatchQueue.main.async { [weak self] in
                         self?.currentClient?.overrideKeyboard(withKeyboardNamed: "com.apple.keylayout.ABC")
                 }
+                prepareMasterWindow()
                 if appContext.inputForm.isOptions {
                         appContext.updateInputForm()
                 }
@@ -200,13 +205,13 @@ final class TypeDuckInputController: IMKInputController {
                                 window?.setFrame(.zero, display: true)
                         case (true, false):
                                 // Become un-empty
-                                prepareMasterWindow()
+                                updateMasterWindow()
                         case (false, true):
                                 // End up to be empty
                                 window?.setFrame(.zero, display: true)
                         case (false, false):
                                 // Ongoing
-                                window?.setFrame(windowFrame, display: true)
+                                updateMasterWindow()
                         }
                 }
                 didSet {

@@ -14,10 +14,10 @@ extension TypeDuckInputController {
                 let modifiers = event.modifierFlags
                 let shouldIgnoreCurrentEvent: Bool = modifiers.contains(.command) || modifiers.contains(.option)
                 guard !shouldIgnoreCurrentEvent else { return false }
-                guard let client: IMKTextInput = sender as? IMKTextInput else { return false }
-                currentOrigin = client.position
+                let client: IMKTextInput? = (sender as? IMKTextInput) ?? currentClient
+                currentOrigin = client?.position
                 let currentClientID = currentClient?.uniqueClientIdentifierString()
-                let clientID = client.uniqueClientIdentifierString()
+                let clientID = client?.uniqueClientIdentifierString()
                 if clientID != currentClientID {
                         currentClient = client
                 }
@@ -32,7 +32,7 @@ extension TypeDuckInputController {
                         case KeyCode.Symbol.VK_BACKQUOTE:
                                 switch currentInputForm {
                                 case .cantonese, .transparent:
-                                        prepareMasterWindow()
+                                        updateMasterWindow()
                                         appContext.updateInputForm(to: .options)
                                 case .options:
                                         handleOptions(-1)
@@ -134,7 +134,7 @@ extension TypeDuckInputController {
                                 if inputStage.isBuffering {
                                         guard let selectedItem = appContext.displayCandidates.fetch(index) else { return true }
                                         let text = selectedItem.candidate.text
-                                        client.insert(text)
+                                        client?.insert(text)
                                         aftercareSelection(selectedItem)
                                         return true
                                 } else {
@@ -147,12 +147,12 @@ extension TypeDuckInputController {
                                                         let shouldInsertCantoneseSymbol: Bool = isShifting && Options.punctuationForm.isCantoneseMode
                                                         guard shouldInsertCantoneseSymbol else { return false }
                                                         let text: String = KeyCode.shiftingSymbol(of: number)
-                                                        client.insert(text)
+                                                        client?.insert(text)
                                                         return true
                                                 case .fullWidth:
                                                         let text: String = isShifting ? KeyCode.shiftingSymbol(of: number) : "\(number)"
                                                         let fullWidthText: String = text.fullWidth()
-                                                        client.insert(fullWidthText)
+                                                        client?.insert(fullWidthText)
                                                         return true
                                                 }
                                         }
@@ -192,13 +192,13 @@ extension TypeDuckInputController {
                                 guard Options.punctuationForm.isCantoneseMode else { return false }
                                 if isShifting {
                                         if let symbol = punctuationKey.instantShiftingSymbol {
-                                                client.insert(symbol)
+                                                client?.insert(symbol)
                                         } else {
                                                 bufferText = punctuationKey.shiftingKeyText
                                         }
                                 } else {
                                         if let symbol = punctuationKey.instantSymbol {
-                                                client.insert(symbol)
+                                                client?.insert(symbol)
                                         } else {
                                                 bufferText = punctuationKey.keyText
                                         }
@@ -284,13 +284,13 @@ extension TypeDuckInputController {
                                         passBuffer()
                                         let shouldInsertFullWidthSpace: Bool = isShifting || (Options.characterForm == .fullWidth)
                                         let text: String = shouldInsertFullWidthSpace ? "　" : " "
-                                        client.insert(text)
+                                        client?.insert(text)
                                         return true
                                 } else {
                                         let index = appContext.highlightedIndex
                                         guard let selectedItem = appContext.displayCandidates.fetch(index) else { return true }
                                         let text = selectedItem.candidate.text
-                                        client.insert(text)
+                                        client?.insert(text)
                                         aftercareSelection(selectedItem)
                                         return true
                                 }
