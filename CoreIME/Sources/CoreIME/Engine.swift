@@ -156,29 +156,31 @@ public struct Engine {
                 var candidates: [CoreCandidate] = []
                 let code: Int = text.replacingOccurrences(of: "y", with: "j").hash
                 let limit: Int = limit ?? 50
-                let query = "SELECT word, romanization, pronunciationorder, sandhi, literarycolloquial, frequency, altfrequency, partofspeech, register, label, written, colloquial, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE shortcut = \(code) LIMIT \(limit);"
+                let query = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE shortcut = \(code) LIMIT \(limit);"
                 var statement: OpaquePointer? = nil
                 if sqlite3_prepare_v2(database, query, -1, &statement, nil) == SQLITE_OK {
                         while sqlite3_step(statement) == SQLITE_ROW {
                                 let word: String = String(cString: sqlite3_column_text(statement, 0))
                                 let romanization: String = String(cString: sqlite3_column_text(statement, 1))
-                                let pronunciationOrder: Int = Int(sqlite3_column_int64(statement, 2))
-                                let sandhi: Int = Int(sqlite3_column_int64(statement, 3))
-                                let literaryColloquial: Int = Int(sqlite3_column_int64(statement, 4))
-                                let frequency: Int = Int(sqlite3_column_int64(statement, 5))
-                                let altFrequency: Int = Int(sqlite3_column_int64(statement, 6))
+                                let frequency: Int = Int(sqlite3_column_int64(statement, 2))
+                                let altFrequency: Int = Int(sqlite3_column_int64(statement, 3))
+                                let pronunciationOrder: Int = Int(sqlite3_column_int64(statement, 4))
+                                let sandhi: Int = Int(sqlite3_column_int64(statement, 5))
+                                let literaryColloquial: String = String(cString: sqlite3_column_text(statement, 6))
                                 let partOfSpeech: String = String(cString: sqlite3_column_text(statement, 7))
                                 let register: String = String(cString: sqlite3_column_text(statement, 8))
                                 let label: String = String(cString: sqlite3_column_text(statement, 9))
-                                let written: String = String(cString: sqlite3_column_text(statement, 10))
-                                let colloquial: String = String(cString: sqlite3_column_text(statement, 11))
-                                let english: String = String(cString: sqlite3_column_text(statement, 12))
-                                let urdu: String = String(cString: sqlite3_column_text(statement, 13))
-                                let nepali: String = String(cString: sqlite3_column_text(statement, 14))
-                                let hindi: String = String(cString: sqlite3_column_text(statement, 15))
-                                let indonesian: String = String(cString: sqlite3_column_text(statement, 16))
+                                let normalized: String = String(cString: sqlite3_column_text(statement, 10))
+                                let written: String = String(cString: sqlite3_column_text(statement, 11))
+                                let vernacular: String = String(cString: sqlite3_column_text(statement, 12))
+                                let collocation: String = String(cString: sqlite3_column_text(statement, 13))
+                                let english: String = String(cString: sqlite3_column_text(statement, 14))
+                                let urdu: String = String(cString: sqlite3_column_text(statement, 15))
+                                let nepali: String = String(cString: sqlite3_column_text(statement, 16))
+                                let hindi: String = String(cString: sqlite3_column_text(statement, 17))
+                                let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                                 let isSandhi: Bool = sandhi == 1
-                                let notation = Notation(word: word, jyutping: romanization, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, frequency: frequency, altFrequency: altFrequency, partOfSpeech: partOfSpeech, register: register, label: label, written: written, colloquial: colloquial, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
+                                let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
                                 let candidate = CoreCandidate(text: word, romanization: romanization, input: text, notation: notation)
                                 candidates.append(candidate)
                         }
@@ -189,29 +191,31 @@ public struct Engine {
         private static func match(text: String, input: String, limit: Int? = nil) -> [CoreCandidate] {
                 var candidates: [CoreCandidate] = []
                 let limit: Int = limit ?? -1
-                let query = "SELECT word, romanization, pronunciationorder, sandhi, literarycolloquial, frequency, altfrequency, partofspeech, register, label, written, colloquial, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(text.hash) LIMIT \(limit);"
+                let query = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(text.hash) LIMIT \(limit);"
                 var statement: OpaquePointer? = nil
                 if sqlite3_prepare_v2(database, query, -1, &statement, nil) == SQLITE_OK {
                         while sqlite3_step(statement) == SQLITE_ROW {
                                 let word: String = String(cString: sqlite3_column_text(statement, 0))
                                 let romanization: String = String(cString: sqlite3_column_text(statement, 1))
-                                let pronunciationOrder: Int = Int(sqlite3_column_int64(statement, 2))
-                                let sandhi: Int = Int(sqlite3_column_int64(statement, 3))
-                                let literaryColloquial: Int = Int(sqlite3_column_int64(statement, 4))
-                                let frequency: Int = Int(sqlite3_column_int64(statement, 5))
-                                let altFrequency: Int = Int(sqlite3_column_int64(statement, 6))
+                                let frequency: Int = Int(sqlite3_column_int64(statement, 2))
+                                let altFrequency: Int = Int(sqlite3_column_int64(statement, 3))
+                                let pronunciationOrder: Int = Int(sqlite3_column_int64(statement, 4))
+                                let sandhi: Int = Int(sqlite3_column_int64(statement, 5))
+                                let literaryColloquial: String = String(cString: sqlite3_column_text(statement, 6))
                                 let partOfSpeech: String = String(cString: sqlite3_column_text(statement, 7))
                                 let register: String = String(cString: sqlite3_column_text(statement, 8))
                                 let label: String = String(cString: sqlite3_column_text(statement, 9))
-                                let written: String = String(cString: sqlite3_column_text(statement, 10))
-                                let colloquial: String = String(cString: sqlite3_column_text(statement, 11))
-                                let english: String = String(cString: sqlite3_column_text(statement, 12))
-                                let urdu: String = String(cString: sqlite3_column_text(statement, 13))
-                                let nepali: String = String(cString: sqlite3_column_text(statement, 14))
-                                let hindi: String = String(cString: sqlite3_column_text(statement, 15))
-                                let indonesian: String = String(cString: sqlite3_column_text(statement, 16))
+                                let normalized: String = String(cString: sqlite3_column_text(statement, 10))
+                                let written: String = String(cString: sqlite3_column_text(statement, 11))
+                                let vernacular: String = String(cString: sqlite3_column_text(statement, 12))
+                                let collocation: String = String(cString: sqlite3_column_text(statement, 13))
+                                let english: String = String(cString: sqlite3_column_text(statement, 14))
+                                let urdu: String = String(cString: sqlite3_column_text(statement, 15))
+                                let nepali: String = String(cString: sqlite3_column_text(statement, 16))
+                                let hindi: String = String(cString: sqlite3_column_text(statement, 17))
+                                let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                                 let isSandhi: Bool = sandhi == 1
-                                let notation = Notation(word: word, jyutping: romanization, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, frequency: frequency, altFrequency: altFrequency, partOfSpeech: partOfSpeech, register: register, label: label, written: written, colloquial: colloquial, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
+                                let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
                                 let candidate = CoreCandidate(text: word, romanization: romanization, input: input, notation: notation)
                                 candidates.append(candidate)
                         }

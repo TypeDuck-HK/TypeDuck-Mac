@@ -39,17 +39,25 @@ struct CandidateLabel: View {
 
         private var shouldDisplayInfoCircle: Bool {
                 guard let notation = candidate.candidate.notation else { return false }
-                if notation.isSandhi {
+                if notation.partOfSpeech.isValid {
                         return true
                 } else if notation.partOfSpeech.isValid {
                         return true
                 } else if notation.register.isValid {
                         return true
+                } else if notation.isSandhi {
+                        return true
+                } else if notation.literaryColloquial.isValid {
+                        return true
                 } else if notation.label.isValid {
+                        return true
+                } else if notation.normalized.isValid {
                         return true
                 } else if notation.written.isValid {
                         return true
-                } else if notation.colloquial.isValid {
+                } else if notation.vernacular.isValid {
+                        return true
+                } else if notation.collocation.isValid {
                         return true
                 } else {
                         return false

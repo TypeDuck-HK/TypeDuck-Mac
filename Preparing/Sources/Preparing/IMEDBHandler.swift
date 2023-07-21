@@ -31,7 +31,7 @@ struct IMEDBHandler {
         }
 
         static func createLexiconTable() {
-                let createTable: String = "CREATE TABLE lexicontable(word TEXT NOT NULL, romanization TEXT NOT NULL, shortcut INTEGER NOT NULL, ping INTEGER NOT NULL, pronunciationorder INTEGER NOT NULL, sandhi INTEGER NOT NULL, literarycolloquial INTEGER NOT NULL, frequency INTEGER NOT NULL, altfrequency INTEGER NOT NULL, partofspeech TEXT NOT NULL, register TEXT NOT NULL, label TEXT NOT NULL, written TEXT NOT NULL, colloquial TEXT NOT NULL, english TEXT NOT NULL, urdu TEXT NOT NULL, nepali TEXT NOT NULL, hindi TEXT NOT NULL, indonesian TEXT NOT NULL);"
+                let createTable: String = "CREATE TABLE lexicontable(word TEXT NOT NULL, romanization TEXT NOT NULL, shortcut INTEGER NOT NULL, ping INTEGER NOT NULL, frequency INTEGER NOT NULL, altfrequency INTEGER NOT NULL, pronunciationorder INTEGER NOT NULL, sandhi INTEGER NOT NULL, literarycolloquial TEXT NOT NULL, partofspeech TEXT NOT NULL, register TEXT NOT NULL, label TEXT NOT NULL, normalized TEXT NOT NULL, written TEXT NOT NULL, vernacular TEXT NOT NULL, collocation TEXT NOT NULL, english TEXT NOT NULL, urdu TEXT NOT NULL, nepali TEXT NOT NULL, hindi TEXT NOT NULL, indonesian TEXT NOT NULL);"
                 var createStatement: OpaquePointer? = nil
                 guard sqlite3_prepare_v2(database, createTable, -1, &createStatement, nil) == SQLITE_OK else { sqlite3_finalize(createStatement); return }
                 guard sqlite3_step(createStatement) == SQLITE_DONE else { sqlite3_finalize(createStatement); return }
@@ -40,13 +40,13 @@ struct IMEDBHandler {
                 let notations: [Notation] = DataHandler.generateNotations()
                 let entries: [String?] = notations.map { item -> String? in
                         let sandhiValue: Int = item.isSandhi ? 1 : 0
-                        let text: String = "('\(item.word)', '\(item.jyutping)', \(item.shortcut), \(item.ping), \(item.pronunciationOrder), \(sandhiValue), \(item.literaryColloquial), \(item.frequency), \(item.altFrequency), '\(item.partOfSpeech)', '\(item.register)', '\(item.label)', '\(item.written)', '\(item.colloquial)', '\(item.english)', '\(item.urdu)', '\(item.nepali)', '\(item.hindi)', '\(item.indonesian)')"
+                        let text: String = "('\(item.word)', '\(item.jyutping)', \(item.shortcut), \(item.ping), \(item.frequency), \(item.altFrequency), \(item.pronunciationOrder), \(sandhiValue), '\(item.literaryColloquial)', '\(item.partOfSpeech)', '\(item.register)', '\(item.label)', '\(item.normalized)', '\(item.written)', '\(item.vernacular)', '\(item.collocation)', '\(item.english)', '\(item.urdu)', '\(item.nepali)', '\(item.hindi)', '\(item.indonesian)')"
                         return text
                 }
                 let items = entries.compactMap({ $0 })
 
                 func insert(values: String) {
-                        let insert: String = "INSERT INTO lexicontable (word, romanization, shortcut, ping, pronunciationorder, sandhi, literarycolloquial, frequency, altfrequency, partofspeech, register, label, written, colloquial, english, urdu, nepali, hindi, indonesian) VALUES \(values);"
+                        let insert: String = "INSERT INTO lexicontable (word, romanization, shortcut, ping, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian) VALUES \(values);"
                         var insertStatement: OpaquePointer? = nil
                         defer { sqlite3_finalize(insertStatement) }
                         guard sqlite3_prepare_v2(database, insert, -1, &insertStatement, nil) == SQLITE_OK else { return }
