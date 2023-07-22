@@ -6,10 +6,34 @@ struct NotationView: View {
         init(notation: Notation) {
                 self.notation = notation
                 self.partOfSpeechList = Decorator.partOfSpeechList(of: notation.partOfSpeech)
+                var formList: [KeyValue] = []
+                if notation.normalized.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Standard Form", textValue: notation.normalized)
+                        formList.append(pair)
+                }
+                if notation.written.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Written Form", textValue: notation.written)
+                        formList.append(pair)
+                }
+                if notation.vernacular.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Vernacular Form", textValue: notation.vernacular)
+                        formList.append(pair)
+                }
+                if notation.collocation.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Word Form", textValue: notation.collocation)
+                        formList.append(pair)
+                }
+                self.keyValueList = formList
         }
 
         private let notation: Notation
         private let partOfSpeechList: [String]
+        private let keyValueList: [KeyValue]
+
+        private struct KeyValue {
+                let titleKey: String
+                let textValue: String
+        }
 
         var body: some View {
                 VStack(alignment: .leading, spacing: 8) {
@@ -44,17 +68,19 @@ struct NotationView: View {
                                 }
                         }
                         .fixedSize()
-                        if notation.normalized.isValid {
-                                Text(verbatim: "Standard Form: \(notation.normalized)")
-                        }
-                        if notation.written.isValid {
-                                Text(verbatim: "Written Form: \(notation.written)")
-                        }
-                        if notation.vernacular.isValid {
-                                Text(verbatim: "Vernacular Form: \(notation.vernacular)")
-                        }
-                        if notation.collocation.isValid {
-                                Text(verbatim: "Word Form: \(notation.collocation)")
+                        if #available(macOS 13.0, *) {
+                                Grid {
+                                        ForEach(0..<keyValueList.count, id: \.self) { index in
+                                                GridRow {
+                                                        Text(verbatim: "\(keyValueList[index].titleKey):").gridColumnAlignment(.trailing)
+                                                        Text(verbatim: keyValueList[index].textValue).gridColumnAlignment(.leading)
+                                                }
+                                        }
+                                }
+                        } else {
+                                ForEach(0..<keyValueList.count, id: \.self) { index in
+                                        Text(verbatim: keyValueList[index].titleKey) + Text(verbatim: ": ") +  Text(verbatim: keyValueList[index].textValue)
+                                }
                         }
                 }
         }
@@ -62,10 +88,6 @@ struct NotationView: View {
 
 private struct Decorator {
 
-        static func partOfSpeech(of text: String ) -> String? {
-                guard text.isValid else { return nil }
-                return partOfSpeechMap[text] ?? text
-        }
         static func partOfSpeechList(of text: String ) -> [String] {
                 guard text.isValid else { return [] }
                 let parts = text.split(separator: " ").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
