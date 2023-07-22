@@ -57,7 +57,7 @@ struct NotationView: View {
                                                         RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.secondary, lineWidth: 1)
                                                 }
                                 }
-                                if let reading = Decorator.literaryColloquialReading(of: notation.literaryColloquial.description) {
+                                if let reading = Decorator.literaryColloquialReading(of: notation.literaryColloquial) {
                                         Text(verbatim: reading)
                                                 .padding(3)
                                                 .foregroundStyle(Color.white)
@@ -68,18 +68,20 @@ struct NotationView: View {
                                 }
                         }
                         .fixedSize()
-                        if #available(macOS 13.0, *) {
-                                Grid {
-                                        ForEach(0..<keyValueList.count, id: \.self) { index in
-                                                GridRow {
-                                                        Text(verbatim: "\(keyValueList[index].titleKey):").gridColumnAlignment(.trailing)
-                                                        Text(verbatim: keyValueList[index].textValue).gridColumnAlignment(.leading)
+                        if !(keyValueList.isEmpty) {
+                                if #available(macOS 13.0, *) {
+                                        Grid {
+                                                ForEach(0..<keyValueList.count, id: \.self) { index in
+                                                        GridRow {
+                                                                Text(verbatim: "\(keyValueList[index].titleKey):").gridColumnAlignment(.trailing)
+                                                                Text(verbatim: keyValueList[index].textValue).gridColumnAlignment(.leading)
+                                                        }
                                                 }
                                         }
-                                }
-                        } else {
-                                ForEach(0..<keyValueList.count, id: \.self) { index in
-                                        Text(verbatim: keyValueList[index].titleKey) + Text(verbatim: ": ") +  Text(verbatim: keyValueList[index].textValue)
+                                } else {
+                                        ForEach(0..<keyValueList.count, id: \.self) { index in
+                                                Text(verbatim: keyValueList[index].titleKey) + Text(verbatim: ": ") +  Text(verbatim: keyValueList[index].textValue)
+                                        }
                                 }
                         }
                 }
