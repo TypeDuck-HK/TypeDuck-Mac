@@ -123,9 +123,10 @@ final class TypeDuckInputController: IMKInputController {
                         appContext.updateInputForm()
                 }
                 if inputStage.isBuffering {
+                        let text: String = bufferText
                         clearBufferText()
+                        (sender as? IMKTextInput)?.insert(text)
                 }
-                unmarkText()
                 if NSApp.windows.count > 5 {
                         _ = NSApp.windows.map({ $0.close() })
                 } else {
@@ -162,7 +163,7 @@ final class TypeDuckInputController: IMKInputController {
                 didSet {
                         switch bufferText.first {
                         case .none:
-                                unmarkText()
+                                clearMarkedText()
                                 candidates = []
                         case .some("r"):
                                 pinyinReverseLookup()
@@ -187,7 +188,7 @@ final class TypeDuckInputController: IMKInputController {
         private func mark(text: String) {
                 currentClient?.mark(text)
         }
-        private func unmarkText() {
+        private func clearMarkedText() {
                 currentClient?.clearMarkedText()
         }
 
