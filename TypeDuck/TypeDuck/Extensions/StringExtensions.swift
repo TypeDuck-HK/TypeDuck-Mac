@@ -3,7 +3,7 @@ import Foundation
 extension String {
 
         var shortcut: Int64 {
-                let syllables: [String] = self.components(separatedBy: " ")
+                let syllables = self.split(separator: Character.space)
                 let anchors = syllables.map({ $0.first }).compactMap({ $0 })
                 let text: String = String(anchors)
                 return Int64(text.hash)
@@ -28,6 +28,12 @@ extension String {
         /// - Returns: A subsequence that leaves off the spaces and tones.
         func removedSpacesTones() -> String {
                 return self.filter({ !$0.isSpaceOrTone })
+        }
+
+        /// Remove all spaces, separators and tones
+        /// - Returns: A subsequence that leaves off the spaces, separators and tones.
+        func removedSpacesSeparatorsTones() -> String {
+                return self.filter({ !$0.isSpaceOrSeparatorOrTone })
         }
 
         static let empty: String = ""

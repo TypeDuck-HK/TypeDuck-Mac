@@ -1,20 +1,29 @@
 extension Character {
 
-        private static let tones: Set<Character> = ["1", "2", "3", "4", "5", "6"]
+        /// U+0020
+        static let space: Character = "\u{20}"
+
+        /// U+0020.
+        var isSpace: Bool {
+                return self == Self.space
+        }
+
+        /// U+0027 ( ' ) apostrophe
+        static let separator: Character = "\u{27}"
+
+        /// U+0027 ( ' ) apostrophe
+        var isSeparator: Bool {
+                return self == Self.separator
+        }
+
+        /// a-z or A-Z
+        var isBasicLatinLetter: Bool {
+                return ("a"..."z") ~= self || ("A"..."Z") ~= self
+        }
 
         /// A Boolean value indicating whether this character represents a tone number (1-6).
         var isTone: Bool {
-                return Character.tones.contains(self)
-        }
-
-        /// A Boolean value indicating whether this character represents a space.
-        var isSpace: Bool {
-                return self == " "
-        }
-
-        /// A Boolean value indicating whether this character represents a separator ( ' ).
-        var isSeparator: Bool {
-                return self == "'"
+                return ("1"..."6") ~= self
         }
 
         /// A Boolean value indicating whether this character represents a space or a tone number.
@@ -27,8 +36,8 @@ extension Character {
                 return self.isSeparator || self.isTone
         }
 
-        /// A Boolean value indicating whether this character represents a space / a tone number / a separator.
-        var isSpaceOrToneOrSeparator: Bool {
-                return self.isSpace || self.isTone || self.isSeparator
+        /// A Boolean value indicating whether this character represents a space, or a separator, or a tone number.
+        var isSpaceOrSeparatorOrTone: Bool {
+                return self.isSpace || self.isSeparator || self.isTone
         }
 }
