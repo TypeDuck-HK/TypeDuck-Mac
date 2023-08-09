@@ -4,7 +4,7 @@ import SQLite3
 extension Engine {
         public static func fetchNotation(word: String, romanization: String) -> Notation? {
                 let ping: Int = romanization.removedSpacesTones().hash
-                let command: String = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian WHERE ping = \(ping) AND word = '\(word)' LIMIT 1;"
+                let command: String = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(ping) AND word = '\(word)' AND romanization = '\(romanization)' LIMIT 1;"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
                 guard sqlite3_prepare_v2(database, command, -1, &statement, nil) == SQLITE_OK else { return nil }
