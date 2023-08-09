@@ -45,13 +45,13 @@
 		3704E3362A4DB5B000E3F995 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E32F2A4DB5B000E3F995 /* ArrayExtensions.swift */; };
 		3704E34F2A4DB7AA00E3F995 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3704E3392A4DB7AA00E3F995 /* InfoPlist.strings */; };
 		3704E3502A4DB7AA00E3F995 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3704E33B2A4DB7AA00E3F995 /* Localizable.strings */; };
+		3706C1A02A83BDBD00125B8D /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3706C19E2A83BDBD00125B8D /* typeduck@2x.png */; };
+		3706C1A12A83BDBD00125B8D /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 3706C19F2A83BDBD00125B8D /* typeduck.png */; };
 		377713172A35D93B002E29DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 377713162A35D93B002E29DE /* Assets.xcassets */; };
 		3777131A2A35D93B002E29DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 377713192A35D93B002E29DE /* Preview Assets.xcassets */; };
 		377713252A35D93B002E29DE /* TypeDuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377713242A35D93B002E29DE /* TypeDuckTests.swift */; };
 		3777132F2A35D93B002E29DE /* TypeDuckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3777132E2A35D93B002E29DE /* TypeDuckUITests.swift */; };
 		377713312A35D93B002E29DE /* TypeDuckUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377713302A35D93B002E29DE /* TypeDuckUITestsLaunchTests.swift */; };
-		37C980032A695EB40026DAA6 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C980012A695EB40026DAA6 /* typeduck.png */; };
-		37C980042A695EB40026DAA6 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C980022A695EB40026DAA6 /* typeduck@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -129,6 +129,8 @@
 		3704E34C2A4DB7AA00E3F995 /* zh-Hant-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-TW"; path = "zh-Hant-TW.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3704E34D2A4DB7AA00E3F995 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		3704E34E2A4DB7AA00E3F995 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		3706C19E2A83BDBD00125B8D /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
+		3706C19F2A83BDBD00125B8D /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
 		3777130F2A35D93A002E29DE /* TypeDuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeDuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		377713162A35D93B002E29DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		377713192A35D93B002E29DE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -138,8 +140,6 @@
 		3777132A2A35D93B002E29DE /* TypeDuckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TypeDuckUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3777132E2A35D93B002E29DE /* TypeDuckUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDuckUITests.swift; sourceTree = "<group>"; };
 		377713302A35D93B002E29DE /* TypeDuckUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDuckUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		37C980012A695EB40026DAA6 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
-		37C980022A695EB40026DAA6 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,8 +281,8 @@
 				3704E3282A4DB5B000E3F995 /* Extensions */,
 				3704E3382A4DB7AA00E3F995 /* Localization */,
 				377713162A35D93B002E29DE /* Assets.xcassets */,
-				37C980012A695EB40026DAA6 /* typeduck.png */,
-				37C980022A695EB40026DAA6 /* typeduck@2x.png */,
+				3706C19F2A83BDBD00125B8D /* typeduck.png */,
+				3706C19E2A83BDBD00125B8D /* typeduck@2x.png */,
 				3777131B2A35D93B002E29DE /* TypeDuck.entitlements */,
 				377713182A35D93B002E29DE /* Preview Content */,
 			);
@@ -431,11 +431,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3777131A2A35D93B002E29DE /* Preview Assets.xcassets in Resources */,
-				37C980042A695EB40026DAA6 /* typeduck@2x.png in Resources */,
+				3706C1A02A83BDBD00125B8D /* typeduck@2x.png in Resources */,
+				3706C1A12A83BDBD00125B8D /* typeduck.png in Resources */,
 				3704E3502A4DB7AA00E3F995 /* Localizable.strings in Resources */,
 				3704E34F2A4DB7AA00E3F995 /* InfoPlist.strings in Resources */,
 				377713172A35D93B002E29DE /* Assets.xcassets in Resources */,
-				37C980032A695EB40026DAA6 /* typeduck.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
