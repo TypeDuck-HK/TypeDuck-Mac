@@ -11,7 +11,7 @@
 
 安裝之後，如果見唔到有 TypeDuck 輸入法，請前往 系統設定 → 鍵盤 → 輸入方式，手動添加。
 
-添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話語言項 揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
+添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話 語言項揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
 
 <img width="300" alt="1  Setup - 1" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/64430e76-9e78-47b0-8def-91e0c5e307ee">
 <img width="300" alt="1  Setup - 2" src="https://github.com/TypeDuck-HK/TypeDuck-Mac/assets/138393787/bd41dc04-f090-4474-8a68-66b5fde81931">
@@ -35,8 +35,8 @@
 
 ## 如何構建（How to build）
 前置要求（Build requirements）
-- macOS 13.0+
-- Xcode 14.3.1+
+- macOS 14.0+
+- Xcode 15.0+
 
 先構建數據庫 (Prepare database)
 ~~~bash
