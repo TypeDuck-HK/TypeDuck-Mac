@@ -15,11 +15,11 @@ struct DataHandler {
                         let shortcut: Int = shortcutCode(of: jyutping)
                         let ping: Int = pingCode(of: jyutping)
                         let frequency: Int = {
-                                let text = parts[keys.frequency].replacingOccurrences(of: ".0", with: "")
+                                let text = parts[keys.frequency].split(separator: ".").first ?? "0"
                                 return Int(text) ?? 0
                         }()
                         let altFrequency: Int = {
-                                let text = parts[keys.altFrequency].replacingOccurrences(of: ".0", with: "")
+                                let text = parts[keys.altFrequency].split(separator: ".").first ?? "0"
                                 return Int(text) ?? 0
                         }()
                         let pronunciationOrder: Int = Int(parts[keys.pronunciationOrder]) ?? 1

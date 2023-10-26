@@ -23,6 +23,9 @@ public struct Converter {
                 case .traditional:
                         return text
                 case .hongkong:
+                        return text
+                        // Original text is .hongkong variant
+                        /*
                         switch text.count {
                         case 0:
                                 return text
@@ -32,6 +35,7 @@ public struct Converter {
                                 let converted: [Character] = text.map({ hongkongCharacterVariants[$0] ?? $0 })
                                 return String(converted)
                         }
+                        */
                 case .taiwan:
                         switch text.count {
                         case 0:
