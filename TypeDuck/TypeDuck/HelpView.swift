@@ -1,6 +1,18 @@
 import SwiftUI
 
 struct HelpView: View {
+
+        private let footer: String = """
+歡迎使用 TypeDuck打得 - 設有少數族裔語言提示粵拼輸入法！有字想打？一裝即用，毋須再等，即刻打得！
+Welcome to TypeDuck: a Cantonese input keyboard with minority language prompts! Got something you want to type? Have your fingers ready, get, set, TYPE DUCK!
+
+如有任何查詢，歡迎電郵至 admin@typeduck.hk 或 lchaakming@eduhk.hk。
+Should you have any enquiries, please email admin@typeduck.hk or lchaakming@eduhk.hk.
+
+本輸入法由香港教育大學語言學及現代語言系開發。特別鳴謝「語文教育及研究常務委員會」 資助本計劃。
+This input method is developed by the Department of Linguistics and Modern Languages, the Education University of Hong Kong. Special thanks to the Standing Committee on Language Education and Research for funding this project.
+"""
+
         var body: some View {
                 ScrollView {
                         LazyVStack(spacing: 16) {
@@ -102,6 +114,11 @@ struct HelpView: View {
                                         Text.separator
                                         Text(verbatim: AppSettings.version)
                                 }
+
+                                HStack {
+                                        Text(verbatim: footer)
+                                        Spacer()
+                                }
                         }
                         .textSelection(.enabled)
                         .padding()
@@ -153,4 +170,14 @@ private extension Text {
         static let separator: Text = Text(verbatim: ": ").foregroundColor(.secondary)
         static let plus: Text = Text(verbatim: "+")
         static let or: Text = Text("or")
+}
+
+private extension View {
+        func block() -> some View {
+                return self.padding().background(Color.textBackgroundColor, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        }
+}
+
+private extension Color {
+        static let textBackgroundColor: Color = Color(nsColor: NSColor.textBackgroundColor)
 }
