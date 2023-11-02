@@ -255,7 +255,7 @@ extension TypeDuckInputController {
                                 handleOptions(-1)
                                 return true
                         }
-                case .escapeClear:
+                case .escape, .clear:
                         switch currentInputForm {
                         case .cantonese:
                                 guard inputStage.isBuffering else { return false }
