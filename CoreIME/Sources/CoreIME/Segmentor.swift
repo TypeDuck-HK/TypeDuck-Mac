@@ -36,6 +36,20 @@ private extension SegmentScheme {
         }
 }
 
+private extension Segmentation {
+        func descended() -> Segmentation {
+                return self.sorted(by: {
+                        let lhsLength = $0.length
+                        let rhsLength = $1.length
+                        if lhsLength == rhsLength {
+                                return $0.count < $1.count
+                        } else {
+                                return lhsLength > rhsLength
+                        }
+                })
+        }
+}
+
 public struct Segmentor {
 
         // MARK: - SQLite
@@ -57,23 +71,23 @@ public struct Segmentor {
         }
 
         private static func match(_ code: Int) -> SegmentToken? {
-                let query = "SELECT token, origin FROM syllabletable WHERE code = \(code);"
+                let query: String = "SELECT token, origin FROM syllabletable WHERE code = \(code);"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
                 guard sqlite3_prepare_v2(database, query, -1, &statement, nil) == SQLITE_OK else { return nil }
                 guard sqlite3_step(statement) == SQLITE_ROW else { return nil }
-                let token = String(cString: sqlite3_column_text(statement, 0))
-                let origin = String(cString: sqlite3_column_text(statement, 1))
+                let token: String = String(cString: sqlite3_column_text(statement, 0))
+                let origin: String = String(cString: sqlite3_column_text(statement, 1))
                 return SegmentToken(text: token, origin: origin)
         }
 
 
         // MARK: - Split
 
-        private static func splitLeading(_ text: String) -> [SegmentToken] {
+        private static func splitLeading<T: StringProtocol>(_ text: T)-> [SegmentToken] {
                 let maxLength: Int = min(text.count, 6)
                 guard maxLength > 0 else { return [] }
-                let tokens = (1...maxLength).map({ match(text.prefix($0).hash) })
+                let tokens = (1...maxLength).reversed().map({ match(text.prefix($0).hash) })
                 return tokens.compactMap({ $0 })
         }
 
@@ -82,25 +96,27 @@ public struct Segmentor {
                 guard !(leadingTokens.isEmpty) else { return [] }
                 let textCount = text.count
                 var segmentation: Segmentation = leadingTokens.map({ [$0] })
-                var previousSegmentation = segmentation
+                var previousSubelementCount = segmentation.subelementCount
                 var shouldContinue: Bool = true
                 while shouldContinue {
                         for scheme in segmentation {
                                 let schemeLength = scheme.length
                                 guard schemeLength < textCount else { continue }
-                                let tailText: String = String(text.dropFirst(schemeLength))
+                                let tailText = text.dropFirst(schemeLength)
                                 let tailTokens = splitLeading(tailText)
                                 guard !(tailTokens.isEmpty) else { continue }
                                 let newSegmentation: Segmentation = tailTokens.map({ scheme + [$0] })
-                                segmentation = (segmentation + newSegmentation).uniqued()
+                                segmentation += newSegmentation
                         }
-                        if segmentation.subelementCount != previousSegmentation.subelementCount {
-                                previousSegmentation = segmentation
+                        segmentation = segmentation.uniqued()
+                        let currentSubelementCount = segmentation.subelementCount
+                        if currentSubelementCount != previousSubelementCount {
+                                previousSubelementCount = currentSubelementCount
                         } else {
                                 shouldContinue = false
                         }
                 }
-                return segmentation.uniqued().filter(\.isValid).descended()
+                return segmentation.filter(\.isValid).descended()
         }
 
         public static func segment(text: String) -> Segmentation {
@@ -119,26 +135,37 @@ public struct Segmentor {
                                 return []
                         }
                 default:
-                        let rawText = text.filter({ !$0.isSeparatorOrTone })
-                        return split(text: rawText)
+                        let rawText: String = text.filter({ !$0.isSeparatorOrTone })
+                        let key: Int = rawText.hash
+                        if let cached = cachedSegmentations[key] {
+                                return cached
+                        } else {
+                                let segmented = split(text: rawText)
+                                cache(key: key, segmentation: segmented)
+                                return segmented
+                        }
                 }
         }
+
+        #if os(macOS)
+        private static let maxCachedCount: Int = 2000
+        private static var cachedSegmentations: [Int: Segmentation] = Dictionary<Int, Segmentation>.init(minimumCapacity: maxCachedCount)
+        private static func cache(key: Int, segmentation: Segmentation) {
+                defer { cachedSegmentations[key] = segmentation }
+                guard cachedSegmentations.count > maxCachedCount else { return }
+                cachedSegmentations.removeAll(keepingCapacity: true)
+        }
+        #else
+        private static let maxCachedCount: Int = 200
+        private static var cachedSegmentations: [Int: Segmentation] = [:]
+        private static func cache(key: Int, segmentation: Segmentation) {
+                defer { cachedSegmentations[key] = segmentation }
+                guard cachedSegmentations.count > maxCachedCount else { return }
+                cachedSegmentations = [:]
+        }
+        #endif
 
         private static let letterA: Segmentation = [[SegmentToken(text: "a", origin: "aa")]]
         private static let letterO: Segmentation = [[SegmentToken(text: "o", origin: "o")]]
         private static let letterM: Segmentation = [[SegmentToken(text: "m", origin: "m")]]
-}
-
-private extension Segmentation {
-        func descended() -> Segmentation {
-                return self.sorted(by: {
-                        let lhsLength = $0.length
-                        let rhsLength = $1.length
-                        if lhsLength == rhsLength {
-                                return $0.count < $1.count
-                        } else {
-                                return lhsLength > rhsLength
-                        }
-                })
-        }
 }
