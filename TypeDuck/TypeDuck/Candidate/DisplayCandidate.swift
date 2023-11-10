@@ -10,12 +10,35 @@ struct DisplayCandidate: Hashable {
         init(candidate: Candidate, candidateIndex: Int) {
                 self.candidate = candidate
                 self.candidateIndex = candidateIndex
-                switch candidate.type {
-                case .cantonese:
-                        self.comments = Self.generateComments(from: candidate.notation)
-                default:
-                        self.comments = []
-                }
+                self.comments = {
+                        switch candidate.type {
+                        case .cantonese:
+                                return Self.generateComments(from: candidate.notation)
+                        case .specialMark:
+                                return []
+                        case .emoji, .symbol:
+                                var comments: [Comment] = []
+                                let cantoneseText = candidate.lexiconText
+                                if !(cantoneseText.isEmpty) {
+                                        let cantoneseComment = Comment(language: .Cantonese, text: "〔\(cantoneseText)〕")
+                                        comments.append(cantoneseComment)
+                                }
+                                return comments
+                        case .compose:
+                                var comments: [Comment] = []
+                                let cantoneseText = candidate.lexiconText
+                                if !(cantoneseText.isEmpty) {
+                                        let cantoneseComment = Comment(language: .Cantonese, text: "〔\(cantoneseText)〕")
+                                        comments.append(cantoneseComment)
+                                }
+                                let unicodeCodePoint = candidate.romanization
+                                if !(unicodeCodePoint.isEmpty) {
+                                        let unicodeComment =  Comment(language: .Unicode, text: unicodeCodePoint)
+                                        comments.append(unicodeComment)
+                                }
+                                return comments
+                        }
+                }()
         }
 
         private static func generateComments(from notation: Notation?) -> [Comment] {
@@ -39,6 +62,8 @@ struct DisplayCandidate: Hashable {
                         case .Urdu:
                                 guard notation.urdu.isValid else { return nil }
                                 return Comment(language: language, text: notation.urdu)
+                        case .Unicode:
+                                return nil
                         }
                 }
                 return comments.compactMap({ $0 })

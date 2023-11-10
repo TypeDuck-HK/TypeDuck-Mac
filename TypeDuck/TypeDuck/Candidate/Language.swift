@@ -1,4 +1,4 @@
-enum Language: String, Hashable, Identifiable, CaseIterable {
+enum Language: Int, Hashable, Identifiable, CaseIterable {
 
         /// 粵語
         case Cantonese
@@ -17,6 +17,14 @@ enum Language: String, Hashable, Identifiable, CaseIterable {
 
         /// 烏爾都語. RTL
         case Urdu
+
+        /// Character code point
+        case Unicode
+
+        /// Identifiable
+        var id: Int {
+                return rawValue
+        }
 
         /// English & Indonesian
         var isLatin: Bool {
@@ -43,8 +51,40 @@ enum Language: String, Hashable, Identifiable, CaseIterable {
                 return self == .Urdu
         }
 
-        /// Identifiable
-        var id: String {
-                return rawValue
+        /// Cantonese & Unicode
+        var isAnnotation: Bool {
+                switch self {
+                case .Cantonese, .Unicode:
+                        return true
+                default:
+                        return false
+                }
+        }
+        
+        /// Language name in English
+        var name: String {
+                switch self {
+                case .Cantonese:
+                        return "Cantonese"
+                case .English:
+                        return "English"
+                case .Hindi:
+                        return "Hindi"
+                case .Indonesian:
+                        return "Indonesian"
+                case .Nepali:
+                        return "Nepali"
+                case .Urdu:
+                        return "Urdu"
+                case .Unicode:
+                        return "Unicode"
+                }
+        }
+        
+        /// Get language from the given name
+        /// - Parameter name: Name in english
+        /// - Returns: A language?
+        static func language(of name: String) -> Language? {
+                return Language.allCases.first(where: { $0.name == name })
         }
 }

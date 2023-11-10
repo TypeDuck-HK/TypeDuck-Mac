@@ -22,9 +22,11 @@ extension TypeDuckInputController {
                                         return #selector(toggleNepali)
                                 case .Urdu:
                                         return #selector(toggleUrdu)
+                                case .Unicode:
+                                        return nil
                                 }
                         }()
-                        let name: String = language.rawValue
+                        let name: String = language.name
                         let localizedName: String = NSLocalizedString(name, comment: "")
                         let item: NSMenuItem = NSMenuItem(title: localizedName, action: selector, keyEquivalent: "")
                         item.state = language.isEnabledCommentLanguage ? .on : .off
@@ -165,7 +167,7 @@ struct AppSettings {
                 guard let savedValue = UserDefaults.standard.string(forKey: SettingsKey.EnabledCommentLanguages) else { return defaultEnabledCommentLanguages }
                 let languageValues: [String] = savedValue.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
                 guard !(languageValues.isEmpty) else { return [] }
-                let languages: [Language] = languageValues.map({ Language(rawValue: $0) }).compactMap({ $0 }).uniqued()
+                let languages: [Language] = languageValues.map({ Language.language(of: $0) }).compactMap({ $0 }).uniqued()
                 return commentLanguages.filter({ languages.contains($0) })
         }()
         static func updateCommentLanguage(_ language: Language, shouldEnable: Bool) {
@@ -176,7 +178,7 @@ struct AppSettings {
                         return item
                 })
                 enabledCommentLanguages = handledNewLanguages.compactMap({ $0 }).uniqued()
-                let newText: String = enabledCommentLanguages.map(\.rawValue).joined(separator: ",")
+                let newText: String = enabledCommentLanguages.map(\.name).joined(separator: ",")
                 UserDefaults.standard.set(newText, forKey: SettingsKey.EnabledCommentLanguages)
         }
 
