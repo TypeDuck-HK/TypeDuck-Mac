@@ -13,7 +13,7 @@ struct CandidateLabel: View {
                 HStack {
                         HStack(spacing: 14) {
                                 SerialNumberLabel(index: index).foregroundColor(shouldHighlight ? .white : .secondary)
-                                CandidateContentLabel(candidate: candidate)
+                                CandidateContentView(candidate: candidate)
                         }
                         Spacer()
                         Image.infoCircle

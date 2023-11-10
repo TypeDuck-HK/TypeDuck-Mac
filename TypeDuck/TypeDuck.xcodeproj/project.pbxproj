@@ -28,7 +28,7 @@
 		3704E31B2A4DB44600E3F995 /* SerialNumberLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3002A4DB44600E3F995 /* SerialNumberLabel.swift */; };
 		3704E31C2A4DB44600E3F995 /* CandidateBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3012A4DB44600E3F995 /* CandidateBoard.swift */; };
 		3704E31D2A4DB44600E3F995 /* CandidateLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3022A4DB44600E3F995 /* CandidateLabel.swift */; };
-		3704E31E2A4DB44600E3F995 /* CandidateContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3032A4DB44600E3F995 /* CandidateContentLabel.swift */; };
+		3704E31E2A4DB44600E3F995 /* CandidateContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3032A4DB44600E3F995 /* CandidateContentView.swift */; };
 		3704E31F2A4DB44600E3F995 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3052A4DB44600E3F995 /* Direction.swift */; };
 		3704E3202A4DB44600E3F995 /* PunctuationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3062A4DB44600E3F995 /* PunctuationKey.swift */; };
 		3704E3212A4DB44600E3F995 /* KeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3704E3072A4DB44600E3F995 /* KeyCode.swift */; };
@@ -92,7 +92,7 @@
 		3704E3002A4DB44600E3F995 /* SerialNumberLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerialNumberLabel.swift; sourceTree = "<group>"; };
 		3704E3012A4DB44600E3F995 /* CandidateBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateBoard.swift; sourceTree = "<group>"; };
 		3704E3022A4DB44600E3F995 /* CandidateLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateLabel.swift; sourceTree = "<group>"; };
-		3704E3032A4DB44600E3F995 /* CandidateContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateContentLabel.swift; sourceTree = "<group>"; };
+		3704E3032A4DB44600E3F995 /* CandidateContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateContentView.swift; sourceTree = "<group>"; };
 		3704E3052A4DB44600E3F995 /* Direction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		3704E3062A4DB44600E3F995 /* PunctuationKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PunctuationKey.swift; sourceTree = "<group>"; };
 		3704E3072A4DB44600E3F995 /* KeyCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCode.swift; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 				3704E3002A4DB44600E3F995 /* SerialNumberLabel.swift */,
 				3704E3012A4DB44600E3F995 /* CandidateBoard.swift */,
 				3704E3022A4DB44600E3F995 /* CandidateLabel.swift */,
-				3704E3032A4DB44600E3F995 /* CandidateContentLabel.swift */,
+				3704E3032A4DB44600E3F995 /* CandidateContentView.swift */,
 			);
 			path = CandidateUI;
 			sourceTree = "<group>";
@@ -464,7 +464,7 @@
 				3704E31D2A4DB44600E3F995 /* CandidateLabel.swift in Sources */,
 				3704E3302A4DB5B000E3F995 /* CharacterExtensions.swift in Sources */,
 				3704E3112A4DB44600E3F995 /* WindowPattern.swift in Sources */,
-				3704E31E2A4DB44600E3F995 /* CandidateContentLabel.swift in Sources */,
+				3704E31E2A4DB44600E3F995 /* CandidateContentView.swift in Sources */,
 				3704E30C2A4DB44600E3F995 /* Comment.swift in Sources */,
 				3704E3212A4DB44600E3F995 /* KeyCode.swift in Sources */,
 				3704E3182A4DB44600E3F995 /* Options.swift in Sources */,

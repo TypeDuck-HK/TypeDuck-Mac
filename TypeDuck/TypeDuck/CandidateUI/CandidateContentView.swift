@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreIME
 
-struct CandidateContentLabel: View {
+struct CandidateContentView: View {
 
         let candidate: DisplayCandidate
 
