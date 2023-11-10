@@ -175,6 +175,7 @@ public struct Engine {
         }
 
         private static func processVerbatim(text: String, limit: Int? = nil) -> [CoreCandidate] {
+                guard canProcess(text) else { return [] }
                 let rounds = (0..<text.count).map({ number -> [CoreCandidate] in
                         let leading: String = String(text.dropLast(number))
                         return match(text: leading, input: leading, limit: limit) + shortcut(text: leading, limit: limit)
@@ -182,7 +183,19 @@ public struct Engine {
                 return rounds.flatMap({ $0 }).uniqued()
         }
 
+        static func canProcess(_ text: String) -> Bool {
+                guard let anchor = text.first else { return false }
+                let code: Int = (anchor == "y") ? "j".hash : String(anchor).hash
+                let query: String = "SELECT rowid FROM lexicontable WHERE shortcut = \(code) LIMIT 1;"
+                var statement: OpaquePointer? = nil
+                defer { sqlite3_finalize(statement) }
+                guard sqlite3_prepare_v2(database, query, -1, &statement, nil) == SQLITE_OK else { return false }
+                guard sqlite3_step(statement) == SQLITE_ROW else { return false }
+                return true
+        }
+
         private static func process(text: String, segmentation: Segmentation, limit: Int? = nil) -> [CoreCandidate] {
+                guard canProcess(text) else { return [] }
                 let textCount = text.count
                 let fullMatch = match(text: text, input: text, limit: limit)
                 let fullShortcut = shortcut(text: text, limit: limit)
@@ -207,6 +220,7 @@ public struct Engine {
                 let concatenated = headingTexts.map { headingText -> Array<Candidate>.SubSequence in
                         let headingInputCount = headingText.count
                         let tailText = String(text.dropFirst(headingInputCount))
+                        guard canProcess(tailText) else { return [] }
                         let tailSegmentation = Segmentor.segment(text: tailText)
                         let tailCandidates = process(text: tailText, segmentation: tailSegmentation, limit: 4)
                         guard !(tailCandidates.isEmpty) else { return [] }
