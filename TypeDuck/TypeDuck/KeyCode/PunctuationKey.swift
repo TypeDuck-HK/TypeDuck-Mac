@@ -9,6 +9,7 @@ struct PunctuationKey: Hashable {
 
         private static let halfWidth: String = "半形"
         private static let fullWidth: String = "全形"
+        private static let verticalText: String = "縱書"
 
         static let comma: PunctuationKey = {
                 let shiftingSymbols: [PunctuationSymbol] = [
@@ -47,12 +48,12 @@ struct PunctuationKey: Hashable {
                         PunctuationSymbol("【"),
                         PunctuationSymbol("〖"),
                         PunctuationSymbol("〔"),
-                        PunctuationSymbol("﹂", comment: "縱書"),
-                        PunctuationSymbol("﹄", comment: "縱書"),
                         PunctuationSymbol("[", comment: halfWidth),
                         PunctuationSymbol("［", comment: fullWidth),
                         PunctuationSymbol("{", comment: halfWidth),
-                        PunctuationSymbol("｛", comment: fullWidth)
+                        PunctuationSymbol("｛", comment: fullWidth),
+                        PunctuationSymbol("﹂", comment: verticalText),
+                        PunctuationSymbol("﹄", comment: verticalText)
                 ]
                 return PunctuationKey(keyText: "[", shiftingKeyText: "{", instantSymbol: "「", instantShiftingSymbol: nil, symbols: [.init("「")], shiftingSymbols: shiftingSymbols)
         }()
@@ -62,12 +63,12 @@ struct PunctuationKey: Hashable {
                         PunctuationSymbol("】"),
                         PunctuationSymbol("〗"),
                         PunctuationSymbol("〕"),
-                        PunctuationSymbol("﹁", comment: "縱書"),
-                        PunctuationSymbol("﹃", comment: "縱書"),
                         PunctuationSymbol("]", comment: halfWidth),
                         PunctuationSymbol("］", comment: fullWidth),
                         PunctuationSymbol("}", comment: halfWidth),
-                        PunctuationSymbol("｝", comment: fullWidth)
+                        PunctuationSymbol("｝", comment: fullWidth),
+                        PunctuationSymbol("﹁", comment: verticalText),
+                        PunctuationSymbol("﹃", comment: verticalText)
                 ]
                 return PunctuationKey(keyText: "]", shiftingKeyText: "}", instantSymbol: "」", instantShiftingSymbol: nil, symbols: [.init("」")], shiftingSymbols: shiftingSymbols)
         }()
@@ -106,7 +107,6 @@ struct PunctuationKey: Hashable {
         static let equal = PunctuationKey(keyText: "=", shiftingKeyText: "+", instantSymbol: "=", instantShiftingSymbol: "+", symbols: [.init("=")], shiftingSymbols: [.init("+")])
 }
 
-
 struct PunctuationSymbol: Hashable {
 
         let symbol: String
@@ -119,4 +119,3 @@ struct PunctuationSymbol: Hashable {
                 self.secondaryComment = secondaryComment
         }
 }
-
