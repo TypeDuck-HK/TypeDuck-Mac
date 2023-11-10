@@ -2,6 +2,7 @@
 
 "menu.title" = "TypeDuck";
 "menu.help" = "Help";
+"menu.about" = "About";
 "menu.terminate" = "Quit";
 
 
