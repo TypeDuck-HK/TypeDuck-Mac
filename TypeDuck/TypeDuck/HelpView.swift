@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HelpView: View {
 
-        private let footer: String = """
+private let aboutText: String = """
 歡迎使用 TypeDuck打得 - 設有少數族裔語言提示粵拼輸入法！有字想打？一裝即用，毋須再等，即刻打得！
 Welcome to TypeDuck: a Cantonese input keyboard with minority language prompts! Got something you want to type? Have your fingers ready, get, set, TYPE DUCK!
 
@@ -13,9 +13,13 @@ Should you have any enquiries, please email admin@typeduck.hk or lchaakming@eduh
 This input method is developed by the Department of Linguistics and Modern Languages, the Education University of Hong Kong. Special thanks to the Standing Committee on Language Education and Research for funding this project.
 """
 
+
         var body: some View {
                 ScrollView {
-                        LazyVStack(spacing: 16) {
+                        LazyVStack(alignment: .leading, spacing: 16) {
+                                Text(verbatim: "Welcome to TypeDuck").font(.title3.bold())
+                                Text(verbatim: aboutText)
+                                Text(verbatim: "TypeDuck Shortcuts").font(.title3.bold()).padding(.top, 24)
                                 VStack(spacing: 8) {
                                         HStack(spacing: 4) {
                                                 LabelText("Enter/Exit Options View")
@@ -70,6 +74,10 @@ This input method is developed by the Department of Linguistics and Modern Langu
                                                 LabelText("Highlight previous Candidate")
                                                 Text.separator
                                                 KeyBlockView("⯅")
+                                                Text.or
+                                                KeyBlockView.shift
+                                                Text.plus
+                                                KeyBlockView.tab
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
@@ -77,7 +85,7 @@ This input method is developed by the Department of Linguistics and Modern Langu
                                                 Text.separator
                                                 KeyBlockView("⯆")
                                                 Text.or
-                                                KeyBlockView("Tab ⇥")
+                                                KeyBlockView.tab
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
@@ -110,15 +118,13 @@ This input method is developed by the Department of Linguistics and Modern Langu
                                 .block()
 
                                 HStack(spacing: 0) {
+                                        Spacer()
                                         Text("Version")
                                         Text.separator
                                         Text(verbatim: AppSettings.version)
-                                }
-
-                                HStack {
-                                        Text(verbatim: footer)
                                         Spacer()
                                 }
+                                .padding(.vertical)
                         }
                         .textSelection(.enabled)
                         .padding()
@@ -161,6 +167,7 @@ private struct KeyBlockView: View {
         static let number: KeyBlockView = KeyBlockView("number")
         static let space: KeyBlockView = KeyBlockView("Space ␣")
         static let escape: KeyBlockView = KeyBlockView("Esc ⎋")
+        static let tab: KeyBlockView = KeyBlockView("Tab ⇥")
 
         /// Backspace. NOT Forward-Delete.
         static let backwardDelete: KeyBlockView = KeyBlockView("Delete ⌫")

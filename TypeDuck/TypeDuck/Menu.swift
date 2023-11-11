@@ -35,13 +35,9 @@ extension TypeDuckInputController {
 
                 menu.addItem(.separator())
 
-                let helpTitle: String = NSLocalizedString(Constant.menuHelpTitleKey, comment: "")
-                let help = NSMenuItem(title: helpTitle, action: #selector(openHelpWindow), keyEquivalent: "")
-                menu.addItem(help)
-
-                let aboutTitle: String = NSLocalizedString(Constant.menuAboutTitleKey, comment: "")
-                let about = NSMenuItem(title: aboutTitle, action: #selector(openHelpWindow), keyEquivalent: "")
-                menu.addItem(about)
+                let aboutHelpTitle: String = NSLocalizedString(Constant.menuAboutHelpTitleKey, comment: "")
+                let aboutHelp = NSMenuItem(title: aboutHelpTitle, action: #selector(openHelpWindow), keyEquivalent: "")
+                menu.addItem(aboutHelp)
 
                 /*
                 let terminateTitle: String = NSLocalizedString(Constant.menuTerminateTitleKey, comment: "")
@@ -153,6 +149,7 @@ struct Constant {
         static let menuTitleKey: String = "menu.title"
         static let menuHelpTitleKey: String = "menu.help"
         static let menuAboutTitleKey: String = "menu.about"
+        static let menuAboutHelpTitleKey: String = "menu.about.help"
         static let menuTerminateTitleKey: String = "menu.terminate"
         static let preferencesWindowTitleKey: String = "Preferences.Window.Title"
         static let preferencesWindowIdentifier: String = "TypeDuckPreferencesWindowIdentifier"

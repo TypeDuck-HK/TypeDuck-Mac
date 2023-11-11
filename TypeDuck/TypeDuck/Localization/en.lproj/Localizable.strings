@@ -3,6 +3,7 @@
 "menu.title" = "TypeDuck";
 "menu.help" = "Help";
 "menu.about" = "About";
+"menu.about.help" = "About & Help";
 "menu.terminate" = "Quit";
 
 
@@ -18,8 +19,8 @@
 
 // MARK: - Preferences Window
 
-"Preferences.Window.Title" = "TypeDuck Help";
-"Preferences.HelpView.Title" = "TypeDuck Help";
+"Preferences.Window.Title" = "TypeDuck";
+"Preferences.HelpView.Title" = "TypeDuck";
 
 "Enter/Exit Options View" = "Enter/Exit Options View";
 "Directly toggle specific option" = "Directly toggle specific option";
