@@ -13,10 +13,12 @@
 
 添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話 語言項揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
 
-<img width="300" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png">
-<img width="300" alt="Screenshot 2" src="images/screenshot-step-3.png">
-<img width="300" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png">
-<img width="300" alt="Screenshot 4" src="images/screenshot-step-6.png">
+
+<img width="280" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png"/>
+<img width="280" alt="Screenshot 2" src="images/screenshot-step-3.png"/>
+<img width="280" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png"/>
+<img width="280" alt="Screenshot 4" src="images/screenshot-step-6.png"/>
+
 
 ## 如何卸載（How to uninstall）
 首先，去 系統設定 → 鍵盤 → 輸入方式，移除 TypeDuck。
