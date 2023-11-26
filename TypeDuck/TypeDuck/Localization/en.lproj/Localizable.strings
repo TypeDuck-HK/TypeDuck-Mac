@@ -1,6 +1,7 @@
 // MARK: - Menu
 
 "menu.title" = "TypeDuck";
+"menu.emoji.suggestions" = "Emoji Suggestions";
 "menu.help" = "Help";
 "menu.about" = "About";
 "menu.about.help" = "About & Help";

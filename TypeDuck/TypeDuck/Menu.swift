@@ -35,6 +35,13 @@ extension TypeDuckInputController {
 
                 menu.addItem(.separator())
 
+                let emojiSuggestionsTitle: String = NSLocalizedString(Constant.menuEmojiSuggestionsTitleKey, comment: "")
+                let emojiSuggestions = NSMenuItem(title: emojiSuggestionsTitle, action: #selector(toggleEmojiSuggestions), keyEquivalent: "")
+                emojiSuggestions.state = Options.isEmojiSuggestionsOn ? .on : .off
+                menu.addItem(emojiSuggestions)
+
+                menu.addItem(.separator())
+
                 let aboutHelpTitle: String = NSLocalizedString(Constant.menuAboutHelpTitleKey, comment: "")
                 let aboutHelp = NSMenuItem(title: aboutHelpTitle, action: #selector(openHelpWindow), keyEquivalent: "")
                 menu.addItem(aboutHelp)
@@ -77,6 +84,11 @@ extension TypeDuckInputController {
                 let isEnabled: Bool = language.isEnabledCommentLanguage
                 let shouldEnable: Bool = !isEnabled
                 AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
+        }
+
+        @objc private func toggleEmojiSuggestions() {
+                let newState: Bool = !(Options.isEmojiSuggestionsOn)
+                Options.updateEmojiSuggestions(to: newState)
         }
 
         @objc private func openHelpWindow() {
@@ -147,6 +159,7 @@ extension TypeDuckInputController {
 
 struct Constant {
         static let menuTitleKey: String = "menu.title"
+        static let menuEmojiSuggestionsTitleKey: String = "menu.emoji.suggestions"
         static let menuHelpTitleKey: String = "menu.help"
         static let menuAboutTitleKey: String = "menu.about"
         static let menuAboutHelpTitleKey: String = "menu.about.help"
