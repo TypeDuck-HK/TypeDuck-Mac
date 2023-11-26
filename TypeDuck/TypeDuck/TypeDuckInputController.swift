@@ -165,19 +165,26 @@ final class TypeDuckInputController: IMKInputController {
                         case .none:
                                 clearMarkedText()
                                 candidates = []
-                        case .some("r"):
-                                pinyinReverseLookup()
-                        case .some("v"):
-                                cangjieReverseLookup()
-                        case .some("x"):
-                                strokeReverseLookup()
-                        case .some("q"):
-                                composeReverseLookup()
                         case .some(let character) where character.isBasicLatinLetter:
                                 suggest()
-                        default:
+                        case .some(_) where bufferText.count == 1:
                                 mark(text: bufferText)
                                 handlePunctuation()
+                        case .some(.backtick):
+                                switch bufferText.dropFirst().first {
+                                case .some("p"):
+                                        pinyinReverseLookup()
+                                case .some("c"):
+                                        cangjieReverseLookup()
+                                case .some("b"):
+                                        strokeReverseLookup()
+                                case .some("l"):
+                                        composeReverseLookup()
+                                default:
+                                        mark(text: bufferText)
+                                }
+                        default:
+                                mark(text: bufferText)
                         }
                 }
         }
@@ -294,7 +301,7 @@ final class TypeDuckInputController: IMKInputController {
                 candidates = combined.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
         }
         private func pinyinReverseLookup() {
-                let text: String = String(bufferText.dropFirst())
+                let text: String = String(bufferText.dropFirst(2))
                 guard !(text.isEmpty) else {
                         mark(text: bufferText)
                         candidates = []
@@ -309,15 +316,15 @@ final class TypeDuckInputController: IMKInputController {
                         let tailText = text.dropFirst(leadingLength)
                         return leadingText + " " + tailText
                 }()
-                let text2mark: String = "r " + tailMarkedText
+                let text2mark: String = "`p " + tailMarkedText
                 mark(text: text2mark)
                 let lookup: [Candidate] = Engine.pinyinReverseLookup(text: text, schemes: schemes)
                 candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
         }
         private func cangjieReverseLookup() {
-                let text: String = String(bufferText.dropFirst())
+                let text: String = String(bufferText.dropFirst(2))
                 let converted = text.map({ CharacterStandard.cangjie(of: $0) }).compactMap({ $0 })
-                let isValidSequence: Bool = !converted.isEmpty && converted.count == text.count
+                let isValidSequence: Bool = !(converted.isEmpty) && (converted.count == text.count)
                 if isValidSequence {
                         mark(text: String(converted))
                         let lookup: [Candidate] = Engine.cangjieReverseLookup(text: text)
@@ -328,10 +335,10 @@ final class TypeDuckInputController: IMKInputController {
                 }
         }
         private func strokeReverseLookup() {
-                let text: String = String(bufferText.dropFirst())
+                let text: String = String(bufferText.dropFirst(2))
                 let transformed: String = CharacterStandard.strokeTransform(text)
                 let converted = transformed.map({ CharacterStandard.stroke(of: $0) }).compactMap({ $0 })
-                let isValidSequence: Bool = !converted.isEmpty && converted.count == text.count
+                let isValidSequence: Bool = !(converted.isEmpty) && (converted.count == text.count)
                 if isValidSequence {
                         mark(text: String(converted))
                         let lookup: [Candidate] = Engine.strokeReverseLookup(text: transformed)
@@ -343,12 +350,12 @@ final class TypeDuckInputController: IMKInputController {
         }
         /// Compose(LoengFan) Reverse Lookup
         private func composeReverseLookup() {
-                guard bufferText.count > 2 else {
+                guard bufferText.count > 3 else {
                         mark(text: bufferText)
                         candidates = []
                         return
                 }
-                let text = bufferText.dropFirst().toneConverted()
+                let text = bufferText.dropFirst(2).toneConverted()
                 let segmentation = Segmentor.segment(text: text)
                 let tailMarkedText: String = {
                         let isMarkFree: Bool = text.first(where: { $0.isSeparatorOrTone }) == nil
@@ -360,7 +367,7 @@ final class TypeDuckInputController: IMKInputController {
                         let tailText = text.dropFirst(leadingLength)
                         return leadingText + " " + tailText
                 }()
-                let text2mark: String = "q " + tailMarkedText
+                let text2mark: String = "`l " + tailMarkedText
                 mark(text: text2mark)
                 let lookup: [Candidate] = Engine.composeReverseLookup(text: text, input: bufferText, segmentation: segmentation)
                 candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
@@ -386,7 +393,7 @@ final class TypeDuckInputController: IMKInputController {
                         case PunctuationKey.backquote.shiftingKeyText:
                                 return PunctuationKey.backquote.shiftingSymbols
                         default:
-                                return PunctuationKey.slash.symbols
+                                return []
                         }
                 }()
                 candidates = symbols.map({ Candidate(text: $0.symbol, comment: $0.comment, secondaryComment: $0.secondaryComment, input: bufferText) })

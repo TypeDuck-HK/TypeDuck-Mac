@@ -3,7 +3,7 @@ extension Character {
         /// U+0020
         static let space: Character = "\u{20}"
 
-        /// U+0020.
+        /// U+0020
         var isSpace: Bool {
                 return self == Self.space
         }
@@ -14,6 +14,14 @@ extension Character {
         /// U+0027 ( ' ) apostrophe
         var isSeparator: Bool {
                 return self == Self.separator
+        }
+
+        /// U+0060, backquote, grave accent
+        static let backtick: Character = "`"
+
+        /// U+0060, backquote, grave accent
+        var isBacktick: Bool {
+                return self == Self.backtick
         }
 
         /// a-z or A-Z

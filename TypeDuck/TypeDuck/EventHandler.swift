@@ -429,18 +429,19 @@ extension TypeDuckInputController {
                 switch bufferText.first {
                 case .none:
                         return
-                case .some(let character) where !(character.isBasicLatinLetter):
+                case .some(.backtick):
                         selectedCandidates = []
-                        clearBufferText()
-                case .some(let character) where character.isReverseLookupTrigger:
-                        selectedCandidates = []
-                        let leadingCount: Int = candidate.input.count + 1
+                        let leadingCount: Int = candidate.input.count + 2
                         if bufferText.count > leadingCount {
-                                let tail = bufferText.dropFirst(candidate.input.count + 1)
-                                bufferText = String(character) + tail
+                                let head = bufferText.prefix(2)
+                                let tail = bufferText.dropFirst(leadingCount)
+                                bufferText = String(head + tail)
                         } else {
                                 clearBufferText()
                         }
+                case .some(let character) where !(character.isBasicLatinLetter):
+                        selectedCandidates = []
+                        clearBufferText()
                 default:
                         selectedCandidates.append(candidate)
                         let inputCount: Int = candidate.input.replacingOccurrences(of: "(4|5|6)", with: "RR", options: .regularExpression).count
