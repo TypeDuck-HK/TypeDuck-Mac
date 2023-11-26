@@ -172,13 +172,13 @@ final class TypeDuckInputController: IMKInputController {
                                 handlePunctuation()
                         case .some(.backtick):
                                 switch bufferText.dropFirst().first {
-                                case .some("p"):
+                                case .some("p"), .some("r"):
                                         pinyinReverseLookup()
-                                case .some("c"):
+                                case .some("c"), .some("v"):
                                         cangjieReverseLookup()
-                                case .some("b"):
+                                case .some("s"), .some("x"), .some("b"):
                                         strokeReverseLookup()
-                                case .some("l"):
+                                case .some("l"), .some("q"):
                                         composeReverseLookup()
                                 default:
                                         mark(text: bufferText)
@@ -316,7 +316,8 @@ final class TypeDuckInputController: IMKInputController {
                         let tailText = text.dropFirst(leadingLength)
                         return leadingText + " " + tailText
                 }()
-                let text2mark: String = "`p " + tailMarkedText
+                let head = bufferText.prefix(2) + " "
+                let text2mark: String = head + tailMarkedText
                 mark(text: text2mark)
                 let lookup: [Candidate] = Engine.pinyinReverseLookup(text: text, schemes: schemes)
                 candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
@@ -367,7 +368,8 @@ final class TypeDuckInputController: IMKInputController {
                         let tailText = text.dropFirst(leadingLength)
                         return leadingText + " " + tailText
                 }()
-                let text2mark: String = "`l " + tailMarkedText
+                let head = bufferText.prefix(2) + " "
+                let text2mark: String = head + tailMarkedText
                 mark(text: text2mark)
                 let lookup: [Candidate] = Engine.composeReverseLookup(text: text, input: bufferText, segmentation: segmentation)
                 candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
