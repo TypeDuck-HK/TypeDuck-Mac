@@ -66,16 +66,16 @@ struct Options {
                 let savedValue: Int = UserDefaults.standard.integer(forKey: OptionsKey.EmojiSuggestions)
                 switch savedValue {
                 case 0, 1:
-                        return true
-                case 2:
                         return false
-                default:
+                case 2:
                         return true
+                default:
+                        return false
                 }
         }()
-        static func updateEmojiSuggestions(to state: Bool) {
-                isEmojiSuggestionsOn = state
-                let value: Int = state ? 1 : 2
+        static func updateEmojiSuggestions(to isOn: Bool) {
+                isEmojiSuggestionsOn = isOn
+                let value: Int = isOn ? 2 : 1
                 UserDefaults.standard.set(value, forKey: OptionsKey.EmojiSuggestions)
         }
 
