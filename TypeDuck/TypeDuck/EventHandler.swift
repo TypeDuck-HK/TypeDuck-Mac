@@ -276,7 +276,7 @@ extension TypeDuckInputController {
                                         passBuffer()
                                         Options.updateInputMethodMode(to: .abc)
                                         appContext.updateInputForm(to: .transparent)
-                                        window?.setFrame(.zero, display: true)
+                                        setWindowFrame(.zero)
                                         return true
                                 }
                                 */
@@ -381,7 +381,7 @@ extension TypeDuckInputController {
                 let selectedIndex: Int = index ?? appContext.optionsHighlightedIndex
                 defer {
                         let frame: CGRect = candidates.isEmpty ? .zero : windowFrame
-                        window?.setFrame(frame, display: true)
+                        setWindowFrame(frame)
                         appContext.updateInputForm()
                 }
                 switch selectedIndex {
