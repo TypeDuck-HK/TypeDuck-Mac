@@ -68,3 +68,7 @@ public struct Notation: Hashable {
         /// 印尼語
         public let indonesian: String
 }
+
+extension Notation {
+        public static let example: Notation = Notation(word: "舉例", jyutping: "geoi2 lai6", frequency: 1, altFrequency: 1, pronunciationOrder: 1, isSandhi: true, literaryColloquial: "lit", partOfSpeech: "n", register: "for", label: "surname", normalized: "示例", written: "示例", vernacular: "示例", collocation: "示例", english: "example", urdu: "مثال", nepali: "उदाहरण", hindi: "उदाहरण", indonesian: "contoh")
+}

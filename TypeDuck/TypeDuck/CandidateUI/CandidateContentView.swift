@@ -41,3 +41,7 @@ struct CandidateContentView: View {
                 }
         }
 }
+
+#Preview {
+        CandidateContentView(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3))
+}

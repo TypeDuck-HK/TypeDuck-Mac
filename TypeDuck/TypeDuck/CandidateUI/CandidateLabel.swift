@@ -64,3 +64,7 @@ struct CandidateLabel: View {
                 }
         }
 }
+
+#Preview {
+        CandidateLabel(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3), index: 3, shouldHighlight: false)
+}

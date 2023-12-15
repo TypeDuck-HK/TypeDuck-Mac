@@ -12,3 +12,7 @@ struct SerialNumberLabel: View {
                 Text(verbatim: "\(number)").font(.serialNumber)
         }
 }
+
+#Preview {
+        SerialNumberLabel(index: 3)
+}

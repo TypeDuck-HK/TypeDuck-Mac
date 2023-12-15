@@ -16,3 +16,12 @@ struct CandidateBoard: View {
                 .fixedSize()
         }
 }
+
+#Preview {
+        let context = AppContext()
+        context.update(with: [.init(candidate: .example, candidateIndex: 0),
+                              .init(candidate: .example, candidateIndex: 1),
+                              .init(candidate: .example, candidateIndex: 2)],
+                       highlight: .start)
+        return CandidateBoard().environmentObject(context)
+}

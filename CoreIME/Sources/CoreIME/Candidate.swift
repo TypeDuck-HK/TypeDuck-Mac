@@ -167,3 +167,8 @@ extension CoreCandidate {
                 self.type = .cantonese
         }
 }
+
+
+extension Candidate {
+        public static let example: Candidate = Candidate(text: "舉例", romanization: "geoi2 lai6", input: "geoilai", lexiconText: "舉例", notation: .example)
+}

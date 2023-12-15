@@ -88,6 +88,10 @@ struct NotationView: View {
         }
 }
 
+#Preview {
+        NotationView(notation: .example)
+}
+
 private struct Decorator {
 
         static func partOfSpeechList(of text: String ) -> [String] {

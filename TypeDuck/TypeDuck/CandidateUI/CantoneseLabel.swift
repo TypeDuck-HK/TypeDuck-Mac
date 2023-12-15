@@ -20,3 +20,7 @@ struct CantoneseLabel: View {
                 }
         }
 }
+
+#Preview {
+        CantoneseLabel(text: "示例", romanization: "si6 lai6", shouldDisplayRomanization: true)
+}
