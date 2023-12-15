@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "CRLLS logo_PNG.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

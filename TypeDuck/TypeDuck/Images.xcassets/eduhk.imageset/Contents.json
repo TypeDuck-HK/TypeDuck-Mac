@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "EdUHK_Signature_RGB.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
