@@ -12,12 +12,12 @@ final class TypeDuckInputController: IMKInputController {
                 _ = window?.contentView?.subviews.map({ $0.removeFromSuperview() })
                 _ = window?.contentViewController?.children.map({ $0.removeFromParent() })
                 window = NSPanel(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
-                let maxLevel: CGWindowLevel = max(CGShieldingWindowLevel(), kCGScreenSaverWindowLevel, kCGPopUpMenuWindowLevel)
-                let levelValue: Int = Int(maxLevel) + 2
+                let levelValue: Int = Int(CGShieldingWindowLevel())
                 window?.level = NSWindow.Level(levelValue)
                 window?.isFloatingPanel = true
                 window?.worksWhenModal = true
                 window?.hidesOnDeactivate = false
+                window?.isReleasedWhenClosed = true
                 window?.collectionBehavior = .moveToActiveSpace
                 window?.hasShadow = false
                 window?.backgroundColor = .clear
@@ -230,6 +230,13 @@ final class TypeDuckInputController: IMKInputController {
                 }
                 didSet {
                         updateDisplayCandidates(.establish, highlight: .start)
+                        guard !(candidates.isEmpty) else { return }
+                        let windowWidth: CGFloat = window?.frame.size.width ?? 0
+                        let shouldResetWindow: Bool = windowWidth < 100
+                        guard shouldResetWindow else { return }
+                        window?.close()
+                        createMasterWindow()
+                        setWindowFrame(windowFrame)
                 }
         }
 
