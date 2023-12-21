@@ -228,9 +228,9 @@ public struct Engine {
                         let combines = tailCandidates.map { tail -> [Candidate] in
                                 return qualified.map({ $0 + tail })
                         }
-                        return combines.flatMap({ $0 }).prefix(6)
+                        return combines.flatMap({ $0 }).prefix(8)
                 }
-                let preferredConcatenated = concatenated.flatMap({ $0 }).filter({ $0.input.count > firstInputCount }).uniqued().preferred(with: text).prefix(6)
+                let preferredConcatenated = concatenated.flatMap({ $0 }).filter({ $0.input.count > firstInputCount }).uniqued().preferred(with: text).prefix(2)
                 return preferredConcatenated + primary
         }
 
@@ -324,11 +324,12 @@ extension Array where Element == Candidate {
         /// - Returns: Preferred Candidates
         func preferred(with text: String) -> [Candidate] {
                 let sorted = self.sorted { (lhs, rhs) -> Bool in
-                        if (lhs.input.count == rhs.input.count) {
-                                return lhs.text.count < rhs.text.count
-                        } else {
-                                return lhs.input.count > rhs.input.count
+                        let lhsInputCount: Int = lhs.input.count
+                        let rhsInputCount: Int = rhs.input.count
+                        guard lhsInputCount == rhsInputCount else {
+                                return lhsInputCount > rhsInputCount
                         }
+                        return lhs.text.count < rhs.text.count
                 }
                 let matched = sorted.filter({ $0.romanization.removedSpacesTones() == text })
                 return matched.isEmpty ? sorted : matched
