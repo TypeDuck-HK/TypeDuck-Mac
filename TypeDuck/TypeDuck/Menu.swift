@@ -97,7 +97,6 @@ extension TypeDuckInputController {
                 guard shouldOpenNewWindow else { return }
                 let frame: CGRect = helpWindowFrame()
                 let window = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)
-                window.level = .floating
                 window.identifier = NSUserInterfaceItemIdentifier(rawValue: Constant.preferencesWindowIdentifier)
                 window.title = NSLocalizedString(Constant.preferencesWindowTitleKey, comment: "")
                 let visualEffectView = NSVisualEffectView()
