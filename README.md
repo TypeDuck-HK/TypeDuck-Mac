@@ -5,7 +5,7 @@
 1. 首先去 [Releases](https://github.com/TypeDuck-HK/TypeDuck-Mac/releases) 頁面下載個 PKG 檔案。
 2. 雙擊開啟下載到嘅 PKG 檔案，開始安裝。
 3. 按提示步驟進行。中途有可能系統設定App會彈出嚟，請求添加 TypeDuck 輸入法。
-4. 到最後一步，安裝程式會請求你登出電腦再登入，要登出再登入輸入法先會正常生效。
+4. 到最後一步，安裝程式會請求你登出電腦。要登出、再登入，Mac 輸入法先會正常生效。
 
 請注意，登出電腦嘅話會將所有程式結束運行。
 
@@ -14,10 +14,10 @@
 添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話 語言項揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
 
 
-<img width="280" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png"/>
-<img width="280" alt="Screenshot 2" src="images/screenshot-step-3.png"/>
-<img width="280" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png"/>
-<img width="280" alt="Screenshot 4" src="images/screenshot-step-6.png"/>
+<img width="300" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png"/>
+<img width="300" alt="Screenshot 2" src="images/screenshot-step-3.png"/>
+<img width="300" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png"/>
+<img width="300" alt="Screenshot 4" src="images/screenshot-step-6.png"/>
 
 
 ## 如何卸載（How to uninstall）
@@ -50,7 +50,7 @@ swift run -c release
 注意事項: 唔好直接喺 Xcode 撳 Run，只可以 Build 或 [Archive](https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases#Create-an-archive-of-your-app)
 
 
-如果要喺本機測試，請將 Archive & Export 出來嘅 TypeDuck.app 放入 `/Library/Input\ Methods/` 檔案夾。
+如果要喺自己本機測試，請將 Archive & Export 出來嘅 TypeDuck.app 放入 `/Library/Input\ Methods/` 檔案夾。
 
 如果替換舊有 TypeDuck.app 嗰陣，彈提示話佢運行緊、無法替換，可以喺 Terminal 用以下命令將佢結束運行：
 ~~~bash
