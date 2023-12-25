@@ -19,6 +19,9 @@ final class TypeDuckInputController: IMKInputController {
                 window?.hidesOnDeactivate = false
                 window?.isReleasedWhenClosed = true
                 window?.collectionBehavior = .moveToActiveSpace
+                window?.isMovable = true
+                window?.isMovableByWindowBackground = true
+                window?.isOpaque = false
                 window?.hasShadow = false
                 window?.backgroundColor = .clear
                 let motherBoard = NSHostingController(rootView: MotherBoard().environmentObject(appContext))
@@ -37,7 +40,6 @@ final class TypeDuckInputController: IMKInputController {
                         ])
                 }
                 window?.contentViewController?.addChild(motherBoard)
-                window?.setFrame(.zero, display: true)
                 window?.orderFrontRegardless()
         }
         private func prepareMasterWindow() {
