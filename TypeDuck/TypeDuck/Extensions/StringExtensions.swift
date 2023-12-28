@@ -37,6 +37,9 @@ extension String {
         }
 
         static let empty: String = ""
+
+        /// U+200B
+        static let zeroWidthSpace: String = "\u{200B}"
 }
 
 

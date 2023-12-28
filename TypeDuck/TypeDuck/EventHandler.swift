@@ -32,6 +32,7 @@ extension TypeDuckInputController {
                         case KeyCode.Symbol.VK_BACKQUOTE:
                                 switch currentInputForm {
                                 case .cantonese, .transparent:
+                                        markOptionsViewHintText()
                                         updateMasterWindow()
                                         appContext.updateInputForm(to: .options)
                                 case .options:
@@ -380,6 +381,7 @@ extension TypeDuckInputController {
         private func handleOptions(_ index: Int? = nil) {
                 let selectedIndex: Int = index ?? appContext.optionsHighlightedIndex
                 defer {
+                        clearOptionsViewHintText()
                         let frame: CGRect = candidates.isEmpty ? .zero : windowFrame
                         setWindowFrame(frame)
                         appContext.updateInputForm()

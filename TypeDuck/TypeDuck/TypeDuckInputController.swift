@@ -137,6 +137,7 @@ final class TypeDuckInputController: IMKInputController {
         override func deactivateServer(_ sender: Any!) {
                 selectedCandidates = []
                 if appContext.inputForm.isOptions {
+                        clearOptionsViewHintText()
                         appContext.updateInputForm()
                 }
                 if inputStage.isBuffering {
@@ -214,6 +215,14 @@ final class TypeDuckInputController: IMKInputController {
         }
         private func clearMarkedText() {
                 currentClient?.clearMarkedText()
+        }
+        func markOptionsViewHintText() {
+                guard !(inputStage.isBuffering) else { return }
+                mark(text: String.zeroWidthSpace)
+        }
+        func clearOptionsViewHintText() {
+                guard !(inputStage.isBuffering) else { return }
+                clearMarkedText()
         }
 
 
