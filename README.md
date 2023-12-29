@@ -19,14 +19,12 @@
 
 
 ## 如何卸載（How to uninstall）
-首先，去 系統設定App → 鍵盤 → 輸入方式，移除 TypeDuck。
-
+首先，去 系統設定App → 鍵盤 → 輸入方式，移除 TypeDuck。  
 跟住，刪除以下檔案／檔案夾：
 ~~~bash
 /Library/Input\ Methods/TypeDuck.app
 ~/Library/Application\ Scripts/hk.eduhk.inputmethod.TypeDuck
 ~/Library/Containers/hk.eduhk.inputmethod.TypeDuck
-~/Library/Preferences/hk.eduhk.inputmethod.TypeDuck.plist
 ~~~
 
 最後，登出電腦再登入，或者重啟電腦。
