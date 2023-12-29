@@ -37,7 +37,7 @@
 ## 如何構建（How to build）
 前置要求（Build requirements）
 - macOS 14.0+
-- Xcode 15.0+
+- Xcode 15.1+
 
 先構建數據庫 (Prepare database)
 ~~~bash

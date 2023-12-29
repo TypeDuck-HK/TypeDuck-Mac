@@ -1,8 +1,4 @@
-# SQLite
-*.sqlite binary
-*.sqlite3 binary
-
-# Image
+# Images
 *.png binary
 *.heic binary
 *.jpg binary
@@ -10,14 +6,18 @@
 *.gif binary
 *.webp binary
 *.apng binary
+*.pdf binary
 
-# Video
+# Videos
 *.mp4 binary
 *.mov binary
 *.webm binary
 
-# PDF
-*.pdf binary
+# Fonts
+*.otf binary
+*.ttf binary
+*.ttc binary
+*.otc binary
 
 # Swift Package Resources
 /CoreIME/Sources/CoreIME/Resources/** binary

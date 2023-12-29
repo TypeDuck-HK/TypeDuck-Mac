@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
         name: "Preparing",
         platforms: [.macOS(.v13)],
-        products: [.executable(name: "prepare", targets: ["Preparing"])],
+        products: [.executable(name: "Preparing", targets: ["Preparing"])],
         targets: [
                 .executableTarget(
                         name: "Preparing",

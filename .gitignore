@@ -31,6 +31,7 @@ Temporary Items
 *.xcworkspace/
 xcuserdata/
 xcshareddata/
+DerivedData/
 
 ## GCC Patch
 /*.gcno
@@ -48,23 +49,28 @@ timeline.xctimeline
 playground.xcworkspace
 
 
-### Swift Packages ###
+### Swift Package Manager ###
 Packages/
 Package.pins
 Package.resolved
 .build/
 .swiftpm/
+.netrc
+
+
+### IDEs and editors ###
+.vscode/
+.idea/
 
 
 ### Generated Databases ###
-*.sqlite3
 *.sqlite
+*.sqlite3
 
-### Products ###
-*.zip
-*.xz
-*.pkg
-*.app/
 
-### Editors ###
-.vscode/
+### Mac IME Packaging ###
+/packaging/app/
+/packaging/**/*.pkg
+/packaging/**/*.zip
+/packaging/**/*.gz
+/packaging/**/*.xz
