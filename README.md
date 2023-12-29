@@ -9,16 +9,13 @@
 
 請注意，登出電腦嘅話會將所有程式結束運行。
 
-安裝之後，如果見唔到有 TypeDuck 輸入法，請前往 系統設定App → 鍵盤 → 輸入方式，手動添加。
-
+安裝之後，如果見唔到有 TypeDuck 輸入法，請前往 系統設定App → 鍵盤 → 輸入方式，手動添加。  
 添加嗰陣，會喺「Cantonese, Traditional」/繁體粵語/繁體廣東話 語言項揾到TypeDuck。亦可以搜尋「TypeDuck」嚟搵。
 
 
-<img width="300" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png"/>
-<img width="300" alt="Screenshot 2" src="images/screenshot-step-3.png"/>
+<img width="300" alt="Screenshot 1" src="images/screenshot-step-1-and-2.png"/><img width="300" alt="Screenshot 2" src="images/screenshot-step-3.png"/>
 <br>
-<img width="300" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png"/>
-<img width="300" alt="Screenshot 4" src="images/screenshot-step-6.png"/>
+<img width="300" alt="Screenshot 3" src="images/screenshot-step-4-and-5.png"/><img width="300" alt="Screenshot 4" src="images/screenshot-step-6.png"/>
 
 
 ## 如何卸載（How to uninstall）
@@ -55,5 +52,6 @@ swift run -c release
 ~~~bash
 osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
 ~~~
+
 
 如果想要替換 CSV 詞庫，請替換 `./Preparing/Sources/Preparing/Resources/data.csv` 檔案，再依上文重新構建一次數據庫。
