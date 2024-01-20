@@ -65,8 +65,10 @@ final class TypeDuckInputController: IMKInputController {
         func updateMasterWindow() {
                 if window == nil {
                         createMasterWindow()
+                        window?.setFrame(windowFrame, display: true)
+                } else {
+                        window?.setFrame(windowFrame, display: true)
                 }
-                window?.setFrame(windowFrame, display: true)
         }
         func setWindowFrame(_ frame: CGRect) {
                 window?.setFrame(frame, display: true)
@@ -120,7 +122,18 @@ final class TypeDuckInputController: IMKInputController {
 
         // MARK: - Input Server lifecycle
 
+        override init() {
+                super.init()
+                activateServer(client())
+        }
+        override init!(server: IMKServer!, delegate: Any!, client inputClient: Any!) {
+                super.init(server: server, delegate: delegate, client: inputClient)
+                let parameterInputClient = inputClient as? (IMKTextInput & NSObjectProtocol)
+                let currentInputClient = parameterInputClient ?? client()
+                activateServer(currentInputClient)
+        }
         override func activateServer(_ sender: Any!) {
+                super.activateServer(sender)
                 UserLexicon.prepare()
                 Engine.prepare()
                 screenWidth = NSScreen.main?.frame.size.width ?? 1920
@@ -151,8 +164,9 @@ final class TypeDuckInputController: IMKInputController {
                 if NSApp.windows.count > 5 {
                         _ = NSApp.windows.map({ $0.close() })
                 } else {
-                        window?.setFrame(.zero, display: true)
+                        setWindowFrame(.zero)
                 }
+                super.deactivateServer(sender)
         }
 
         private(set) lazy var appContext: AppContext = AppContext()
@@ -249,13 +263,13 @@ final class TypeDuckInputController: IMKInputController {
                         switch (candidates.isEmpty, newValue.isEmpty) {
                         case (true, true):
                                 // Stay empty
-                                window?.setFrame(.zero, display: true)
+                                setWindowFrame(.zero)
                         case (true, false):
                                 // Become un-empty
                                 updateMasterWindow()
                         case (false, true):
                                 // End up to be empty
-                                window?.setFrame(.zero, display: true)
+                                setWindowFrame(.zero)
                         case (false, false):
                                 // Ongoing
                                 updateMasterWindow()
