@@ -1,7 +1,6 @@
 import AppKit
 import InputMethodKit
 
-@objc(PrincipalApplication)
 final class PrincipalApplication: NSApplication {
 
         private let appDelegate = AppDelegate()
@@ -11,19 +10,21 @@ final class PrincipalApplication: NSApplication {
                 self.delegate = appDelegate
         }
 
-        @available(*, unavailable)
-        required init?(coder: NSCoder) { fatalError() }
+        required init?(coder: NSCoder) {
+                fatalError("init(coder:) has not been implemented")
+        }
 }
 
 @main
-@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
+
+        static var server: IMKServer? = nil
 
         func applicationDidFinishLaunching(_ notification: Notification) {
                 handleCommandLineArguments()
                 let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk_eduhk_inputmethod_TypeDuck_Connection"
-                let identifier = Bundle.main.bundleIdentifier
-                _ = IMKServer(name: name, bundleIdentifier: identifier)
+                let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
+                Self.server = IMKServer(name: name, bundleIdentifier: identifier)
         }
 
         private func handleCommandLineArguments() {

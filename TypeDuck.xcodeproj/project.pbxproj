@@ -710,7 +710,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = NO;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "TypeDuck Developers";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© The Education University of Hong Kong";
 				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_MODULE_NAME).PrincipalApplication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -747,7 +747,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSBackgroundOnly = NO;
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "TypeDuck Developers";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© The Education University of Hong Kong";
 				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_MODULE_NAME).PrincipalApplication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
