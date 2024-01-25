@@ -1,11 +1,10 @@
 // MARK: - Menu
 
 "menu.title" = "TypeDuck";
-"menu.emoji.suggestions" = "Emoji Suggestions";
+"menu.settings" = "Settings…";
+"menu.check4updates" = "Check for Updates…";
 "menu.help" = "Help";
 "menu.about" = "About";
-"menu.about.help" = "About & Help";
-"menu.terminate" = "Quit";
 
 
 // MARK: - Languages
@@ -18,10 +17,20 @@
 "Urdu" = "Urdu";
 
 
-// MARK: - Preferences Window
+// MARK: - Settings Window
 
-"Preferences.Window.Title" = "TypeDuck";
-"Preferences.HelpView.Title" = "TypeDuck";
+"Settings.Window.Title" = "TypeDuck";
+"SettingsView.NavigationTitle.Settings" = "Settings";
+"SettingsView.NavigationTitle.Candidates" = "Candidates";
+"SettingsView.NavigationTitle.Help" = "Help";
+"SettingsView.NavigationTitle.About" = "About";
+
+"SettingsView.CandidatesView.Title" = "TypeDuck";
+"SettingsView.HelpView.Title" = "Help";
+"SettingsView.AboutView.Title" = "About";
+
+"Emoji Suggestions" = "Emoji Suggestions";
+"Candidate Count Per Page" = "Candidate Count Per Page";
 
 "Enter/Exit Options View" = "Enter/Exit Options View";
 "Directly toggle specific option" = "Directly toggle specific option";

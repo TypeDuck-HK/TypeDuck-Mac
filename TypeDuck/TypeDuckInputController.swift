@@ -297,7 +297,7 @@ final class TypeDuckInputController: IMKInputController {
                         appContext.resetDisplayContext()
                         return
                 }
-                let pageSize: Int = AppSettings.pageSize
+                let pageSize: Int = AppSettings.candidatePageSize
                 let newFirstIndex: Int? = {
                         switch transformation {
                         case .establish:
