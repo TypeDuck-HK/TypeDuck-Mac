@@ -35,7 +35,7 @@
 "Enter/Exit Options View" = "進入／退出快捷設定䈎面";
 "Directly toggle specific option" = "直接選擇某個快捷設定選項";
 "Remove highlighted Candidate from User Lexicon" = "從用戶詞庫刪除當前高亮(highlighted)候選詞";
-"Clear current Input Buffer" = "清除當前已輸入音節（即 Input Buffer）";
+"Clear current pre-edit text" = "清除當前預輸入音節";
 
 "Highlight previous Candidate" = "高亮(Highlight)上一個候選詞";
 "Highlight next Candidate" = "高亮(Highlight)下一個候選詞";
