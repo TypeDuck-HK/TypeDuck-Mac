@@ -53,7 +53,6 @@
 		371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F62B3EB98800EC1271 /* InfoPlist.strings */; };
 		371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F82B3EB98800EC1271 /* Localizable.strings */; };
 		37279F3B2B62873600CC50A4 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3A2B62873600CC50A4 /* AppSettings.swift */; };
-		37279F3D2B6287B500CC50A4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3C2B6287B500CC50A4 /* Constant.swift */; };
 		37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3E2B62909600CC50A4 /* SettingsView.swift */; };
 		37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F402B62968C00CC50A4 /* CandidatesView.swift */; };
 		37279F432B6296A600CC50A4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F422B6296A600CC50A4 /* AboutView.swift */; };
@@ -146,7 +145,6 @@
 		371B280B2B3EB98800EC1271 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		371B280E2B3EBA0900EC1271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		37279F3A2B62873600CC50A4 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		37279F3C2B6287B500CC50A4 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		37279F3E2B62909600CC50A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		37279F402B62968C00CC50A4 /* CandidatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesView.swift; sourceTree = "<group>"; };
 		37279F422B6296A600CC50A4 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 		37279F392B62871300CC50A4 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				37279F3C2B6287B500CC50A4 /* Constant.swift */,
 				371B27B92B3EB93A00EC1271 /* Menu.swift */,
 				37279F3A2B62873600CC50A4 /* AppSettings.swift */,
 				37279F3E2B62909600CC50A4 /* SettingsView.swift */,
@@ -497,7 +494,6 @@
 				371B27DD2B3EB93A00EC1271 /* PageTransformation.swift in Sources */,
 				371B27E92B3EB93A00EC1271 /* ImageExtensions.swift in Sources */,
 				371B27E82B3EB93A00EC1271 /* IMKTextInputExtensions.swift in Sources */,
-				37279F3D2B6287B500CC50A4 /* Constant.swift in Sources */,
 				371B27DE2B3EB93A00EC1271 /* TypeDuckApp.swift in Sources */,
 				371B27D22B3EB93A00EC1271 /* KeyCode.swift in Sources */,
 				371B27DC2B3EB93A00EC1271 /* Menu.swift in Sources */,

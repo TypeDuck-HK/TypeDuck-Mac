@@ -56,6 +56,8 @@ struct AppSettings {
                 let currentProjectVersion: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "build_not_found"
                 return marketingVersion + " (" + currentProjectVersion + ")"
         }()
+
+        static let TypeDuckSettingsWindowIdentifier: String = "TypeDuckSettingsWindowIdentifier"
 }
 
 struct SettingsKey {

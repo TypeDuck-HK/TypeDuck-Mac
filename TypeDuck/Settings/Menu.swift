@@ -4,7 +4,7 @@ import InputMethodKit
 extension TypeDuckInputController {
 
         override func menu() -> NSMenu! {
-                let menuTitle: String = NSLocalizedString(Constant.menuTitleKey, comment: "")
+                let menuTitle: String = String(localized: "menu.title")
                 let menu = NSMenu(title: menuTitle)
 
                 for language in AppSettings.commentLanguages {
@@ -26,8 +26,8 @@ extension TypeDuckInputController {
                                         return nil
                                 }
                         }()
-                        let name: String = language.name
-                        let localizedName: String = NSLocalizedString(name, comment: "")
+                        let nameValue: String.LocalizationValue = String.LocalizationValue(language.name)
+                        let localizedName: String = String(localized: nameValue)
                         let item: NSMenuItem = NSMenuItem(title: localizedName, action: selector, keyEquivalent: "")
                         item.state = language.isEnabledCommentLanguage ? .on : .off
                         menu.addItem(item)
@@ -35,23 +35,23 @@ extension TypeDuckInputController {
 
                 menu.addItem(.separator())
 
-                let settingsTitle: String = NSLocalizedString(Constant.menuSettingsTitleKey, comment: "")
+                let settingsTitle: String = String(localized: "menu.settings")
                 let settings = NSMenuItem(title: settingsTitle, action: #selector(openSettings), keyEquivalent: ",")
                 settings.keyEquivalentModifierMask = [.control, .shift]
                 menu.addItem(settings)
 
                 // TODO: - Check for Updates
                 /*
-                let check4updatesTitle: String = NSLocalizedString(Constant.menuCheck4UpdatesTitleKey, comment: "")
+                let check4updatesTitle: String = String(localized: "menu.check4updates")
                 let check4updates = NSMenuItem(title: check4updatesTitle, action: #selector(openSettings), keyEquivalent: "")
                 menu.addItem(check4updates)
                 */
 
-                let helpTitle: String = NSLocalizedString(Constant.menuHelpTitleKey, comment: "")
+                let helpTitle: String = String(localized: "menu.help")
                 let help = NSMenuItem(title: helpTitle, action: #selector(openHelp), keyEquivalent: "")
                 menu.addItem(help)
 
-                let aboutTitle: String = NSLocalizedString(Constant.menuAboutTitleKey, comment: "")
+                let aboutTitle: String = String(localized: "menu.about")
                 let about = NSMenuItem(title: aboutTitle, action: #selector(openAbout), keyEquivalent: "")
                 menu.addItem(about)
 
@@ -104,12 +104,12 @@ extension TypeDuckInputController {
         }
         private func displaySettingsWindow() {
                 let windowIdentifiers: [String] = NSApp.windows.map(\.identifier?.rawValue).compactMap({ $0 })
-                let shouldOpenNewWindow: Bool = !(windowIdentifiers.contains(Constant.TypeDuckSettingsWindowIdentifier))
+                let shouldOpenNewWindow: Bool = !(windowIdentifiers.contains(AppSettings.TypeDuckSettingsWindowIdentifier))
                 guard shouldOpenNewWindow else { return }
                 let frame: CGRect = settingsWindowFrame()
                 let window = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)
-                window.identifier = NSUserInterfaceItemIdentifier(rawValue: Constant.TypeDuckSettingsWindowIdentifier)
-                window.title = NSLocalizedString(Constant.settingsWindowTitleKey, comment: "")
+                window.identifier = NSUserInterfaceItemIdentifier(rawValue: AppSettings.TypeDuckSettingsWindowIdentifier)
+                window.title = String(localized: "Settings.Window.Title")
                 let visualEffectView = NSVisualEffectView()
                 visualEffectView.material = .sidebar
                 visualEffectView.blendingMode = .behindWindow
