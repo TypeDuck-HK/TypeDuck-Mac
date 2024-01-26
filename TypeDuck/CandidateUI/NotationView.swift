@@ -8,19 +8,19 @@ struct NotationView: View {
                 self.partOfSpeechList = Decorator.partOfSpeechList(of: notation.partOfSpeech)
                 var formList: [KeyValue] = []
                 if notation.normalized.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Standard Form", textValue: notation.normalized)
+                        let pair: KeyValue = KeyValue(titleKey: "Standard Form 標準字形", textValue: notation.normalized)
                         formList.append(pair)
                 }
                 if notation.written.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Written Form", textValue: notation.written)
+                        let pair: KeyValue = KeyValue(titleKey: "Written Form 書面語", textValue: notation.written)
                         formList.append(pair)
                 }
                 if notation.vernacular.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Vernacular Form", textValue: notation.vernacular)
+                        let pair: KeyValue = KeyValue(titleKey: "Vernacular Form 口語", textValue: notation.vernacular)
                         formList.append(pair)
                 }
                 if notation.collocation.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Word Form", textValue: notation.collocation)
+                        let pair: KeyValue = KeyValue(titleKey: "Collocation 配搭", textValue: notation.collocation)
                         formList.append(pair)
                 }
                 self.keyValueList = formList
@@ -51,7 +51,7 @@ struct NotationView: View {
                                                 .italic()
                                 }
                                 if notation.isSandhi {
-                                        Text(verbatim: "Changed Tone 變音")
+                                        Text(verbatim: "changed tone 變音")
                                                 .padding(3)
                                                 .overlay {
                                                         RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.secondary, lineWidth: 1)
@@ -63,8 +63,8 @@ struct NotationView: View {
                                                 .foregroundStyle(Color.white)
                                                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                                 }
-                                if notation.label.isValid {
-                                        Text(verbatim: "(\(notation.label))")
+                                if let label = Decorator.label(of: notation.label) {
+                                        Text(verbatim: label)
                                 }
                         }
                         .fixedSize()
@@ -133,9 +133,27 @@ private struct Decorator {
                 return registerMap[text] ?? text
         }
         private static let registerMap: [String: String] = [
-                "wri": "written",
-                "ver": "vernacular",
-                "for": "formal",
-                "lzh": "archaic",
+                "wri": "written 書面語",
+                "ver": "vernacular 口語",
+                "for": "formal 公文體",
+                "lzh": "classical chinese 文言",
+        ]
+
+        static func label(of text: String) -> String? {
+                guard text.isValid else { return nil }
+                let content: String = labelMap[text] ?? text
+                return "(" + content + ")"
+        }
+        private static let labelMap: [String: String] = [
+                "abbrev": "abbreviation 簡稱",
+                "astro": "astronomy 天文",
+                "ChinMeta": "sexagenary cycle 干支",
+                "horo": "horoscope 星座",
+                "org": "organisation 機構",
+                "person": "person 人名",
+                "place": "place 地名",
+                "reli": "religion 宗教",
+                "rare": "rare 罕見",
+                "composition": "compound 詞組",
         ]
 }
