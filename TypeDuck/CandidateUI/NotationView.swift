@@ -63,8 +63,8 @@ struct NotationView: View {
                                                 .foregroundStyle(Color.white)
                                                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                                 }
-                                if let label = Decorator.label(of: notation.label) {
-                                        Text(verbatim: label)
+                                if let labelsText = Decorator.labelsText(of: notation.label) {
+                                        Text(verbatim: labelsText)
                                 }
                         }
                         .fixedSize()
@@ -96,12 +96,10 @@ private struct Decorator {
 
         static func partOfSpeechList(of text: String ) -> [String] {
                 guard text.isValid else { return [] }
-                let parts = text.split(separator: " ").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
-                let list = parts.map({ partOfSpeechMap[$0] }).compactMap({ $0 })
-                guard list.isEmpty else { return list }
-                return [text]
+                let list = text.split(separator: " ").map({ partOfSpeechMap[$0] ?? $0 })
+                return list.uniqued().map({ String($0) })
         }
-        private static let partOfSpeechMap: [String: String] = [
+        private static let partOfSpeechMap: [String.SubSequence: String.SubSequence] = [
                 "n": "noun 名詞",
                 "v": "verb 動詞",
                 "adj": "adjective 形容詞",
@@ -139,12 +137,18 @@ private struct Decorator {
                 "lzh": "classical chinese 文言",
         ]
 
-        static func label(of text: String) -> String? {
+        static func labelsText(of text: String) -> String? {
                 guard text.isValid else { return nil }
-                let content: String = labelMap[text] ?? text
-                return "(" + content + ")"
+                let labels = text.split(separator: " ").map({ rawLabel -> String in
+                        guard let matched = rawLabel.split(separator: "_").compactMap({ labelMap[$0] }).first else {
+                                return "(" + rawLabel + ")"
+                        }
+                        return "(" + matched + ")"
+                })
+                guard !(labels.isEmpty) else { return nil }
+                return labels.uniqued().joined(separator: " ")
         }
-        private static let labelMap: [String: String] = [
+        private static let labelMap: [String.SubSequence: String] = [
                 "abbrev": "abbreviation 簡稱",
                 "astro": "astronomy 天文",
                 "ChinMeta": "sexagenary cycle 干支",
