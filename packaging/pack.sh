@@ -2,15 +2,16 @@
 
 BUNDLE_IDENTIFIER='hk.eduhk.inputmethod.TypeDuck'
 APP_VERSION='0.9.0'
-
 INSTALL_LOCATION='/Library/Input Methods'
 
 pkgbuild \
-    --info PackageInfo \
-    --root "app" \
-    --component-plist TypeDuckComponent.plist \
+    --min-os-version 12.0 \
+    --compression latest \
     --identifier "${BUNDLE_IDENTIFIER}" \
     --version "${APP_VERSION}" \
     --install-location "${INSTALL_LOCATION}" \
+    --info PackageInfo \
+    --component-plist TypeDuckComponent.plist \
+    --root "app" \
     --scripts "scripts" \
     TypeDuck.pkg
