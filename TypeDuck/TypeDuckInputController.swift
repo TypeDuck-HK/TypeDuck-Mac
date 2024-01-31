@@ -97,7 +97,9 @@ final class TypeDuckInputController: IMKInputController {
 
         private lazy var screenWidth: CGFloat = NSScreen.main?.frame.size.width ?? 1920
         lazy var currentOrigin: CGPoint? = nil
-        lazy var currentClient: IMKTextInput? = nil {
+
+        typealias InputClient = (IMKTextInput & NSObjectProtocol)
+        lazy var currentClient: InputClient? = nil {
                 didSet {
                         guard let origin = currentClient?.position else { return }
                         let isRegularHorizontal: Bool = origin.x < (screenWidth - 400)
@@ -128,8 +130,7 @@ final class TypeDuckInputController: IMKInputController {
         }
         override init!(server: IMKServer!, delegate: Any!, client inputClient: Any!) {
                 super.init(server: server, delegate: delegate, client: inputClient)
-                let parameterInputClient = inputClient as? (IMKTextInput & NSObjectProtocol)
-                let currentInputClient = parameterInputClient ?? client()
+                let currentInputClient = (inputClient as? InputClient) ?? client()
                 activateServer(currentInputClient)
         }
         override func activateServer(_ sender: Any!) {
@@ -140,7 +141,7 @@ final class TypeDuckInputController: IMKInputController {
                 if inputStage.isBuffering {
                         clearBufferText()
                 }
-                currentClient = sender as? IMKTextInput
+                currentClient = sender as? InputClient
                 currentOrigin = currentClient?.position
                 prepareMasterWindow()
                 if appContext.inputForm.isOptions {
