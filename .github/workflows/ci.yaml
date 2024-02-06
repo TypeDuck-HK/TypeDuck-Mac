@@ -7,24 +7,24 @@ env:
 jobs:
   build_preparing:
     name: Build Preparing
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Swift Build Preparing
         run: swift build
         working-directory: ./Preparing
   build_coreime:
     name: Build CoreIME
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Swift Build CoreIME
         run: swift build
         working-directory: ./CoreIME
   build_typeduck:
     name: Build TypeDuck
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build TypeDuck Project
         run: set -o pipefail && xcodebuild clean build -project TypeDuck.xcodeproj -scheme TypeDuck -configuration Debug -destination "platform=macOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=NO | xcpretty
