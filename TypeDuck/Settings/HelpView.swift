@@ -5,7 +5,7 @@ struct HelpView: View {
                 ScrollView {
                         LazyVStack(alignment: .leading, spacing: 16) {
                                 HStack(spacing: 4) {
-                                        LabelText("Enter/Exit Options View")
+                                        LabelText("SettingsView.HelpView.Shortcut.ToggleOptionsView")
                                         Text.separator
                                         KeyBlockView.control
                                         Text.plus
@@ -15,26 +15,30 @@ struct HelpView: View {
                                         Spacer()
                                 }
                                 .block()
-                                VStack {
-                                        HStack(spacing: 4) {
-                                                LabelText("Directly toggle specific option")
-                                                Text.separator
-                                                KeyBlockView.control
-                                                Text.plus
-                                                KeyBlockView.shift
-                                                Text.plus
-                                                KeyBlockView.number
-                                                Spacer()
+                                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                        LabelText("SettingsView.HelpView.Shortcut.ToggleOption")
+                                        Text.separator
+                                        VStack(spacing: 6) {
+                                                HStack(spacing: 4) {
+                                                        KeyBlockView.control
+                                                        Text.plus
+                                                        KeyBlockView.shift
+                                                        Text.plus
+                                                        KeyBlockView.number
+                                                        Spacer()
+                                                }
+                                                HStack(spacing: 0) {
+                                                        Text("SettingsView.HelpView.Shortcut.ToggleOption.NumberKeys").fontWeight(.medium)
+                                                        Text("SettingsView.Colon").foregroundColor(.secondary)
+                                                        Text(verbatim: "1, 2, 3, …, 8, 9, 0")
+                                                        Spacer()
+                                                }
+                                                .font(.subheadline)
                                         }
-                                        HStack {
-                                                Text(verbatim: "number: 1, 2, 3, ... 8, 9, 0")
-                                                Spacer()
-                                        }
-                                        .font(.subheadline)
                                 }
                                 .block()
                                 HStack(spacing: 4) {
-                                        LabelText("Remove highlighted Candidate from User Lexicon")
+                                        LabelText("SettingsView.HelpView.Shortcut.RemoveCandidate")
                                         Text.separator
                                         KeyBlockView.control
                                         Text.plus
@@ -45,7 +49,7 @@ struct HelpView: View {
                                 }
                                 .block()
                                 HStack(spacing: 4) {
-                                        LabelText("Clear current pre-edit text")
+                                        LabelText("SettingsView.HelpView.Shortcut.ClearInput")
                                         Text.separator
                                         KeyBlockView.escape
                                         Spacer()
@@ -53,9 +57,9 @@ struct HelpView: View {
                                 .block()
                                 VStack(spacing: 8) {
                                         HStack(spacing: 4) {
-                                                LabelText("Highlight previous Candidate")
+                                                LabelText("SettingsView.HelpView.Shortcut.PrevCandidate")
                                                 Text.separator
-                                                KeyBlockView("⯅")
+                                                KeyBlockView("▲")
                                                 Text.or
                                                 KeyBlockView.shift
                                                 Text.plus
@@ -63,17 +67,17 @@ struct HelpView: View {
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
-                                                LabelText("Highlight next Candidate")
+                                                LabelText("SettingsView.HelpView.Shortcut.NextCandidate")
                                                 Text.separator
-                                                KeyBlockView("⯆")
+                                                KeyBlockView("▼")
                                                 Text.or
                                                 KeyBlockView.tab
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
-                                                LabelText("Backward to previous Candidate page")
+                                                LabelText("SettingsView.HelpView.Shortcut.PrevPage")
                                                 Text.separator
-                                                KeyBlockView("⯇")
+                                                KeyBlockView("◀")
                                                 Text.or
                                                 KeyBlockView("-")
                                                 Text.or
@@ -81,9 +85,9 @@ struct HelpView: View {
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
-                                                LabelText("Forward to next Candidate page")
+                                                LabelText("SettingsView.HelpView.Shortcut.NextPage")
                                                 Text.separator
-                                                KeyBlockView("⯈")
+                                                KeyBlockView("▶")
                                                 Text.or
                                                 KeyBlockView("=")
                                                 Text.or
@@ -91,7 +95,7 @@ struct HelpView: View {
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
-                                                LabelText("Jump to the first Candidate page")
+                                                LabelText("SettingsView.HelpView.Shortcut.FirstPage")
                                                 Text.separator
                                                 KeyBlockView("Home ⤒")
                                                 Spacer()
@@ -119,7 +123,7 @@ private struct LabelText: View {
                 Text(title)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
-                        .frame(width: 270, alignment: .leading)
+                        .frame(width: 250, alignment: .leading)
         }
 }
 
@@ -127,21 +131,35 @@ private struct KeyBlockView: View {
 
         init(_ keyText: String) {
                 self.keyText = keyText
+                self.key = nil
         }
 
-        private let keyText: String
+        init(localized key: LocalizedStringKey) {
+                self.keyText = nil
+                self.key = key
+        }
+
+        private let keyText: String?
+        private let key: LocalizedStringKey?
 
         var body: some View {
-                Text(verbatim: keyText)
+                let text: Text
+                if let key = key {
+                    text = Text(key)
+                } else {
+                    text = Text(verbatim: keyText!)
+                }
+                return text
                         .lineLimit(1)
                         .minimumScaleFactor(0.4)
-                        .frame(width: 72, height: 24)
+                        .frame(width: 84, height: 24)
+                        .padding(.horizontal, 4)
                         .background(Material.regular, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
         }
 
         static let control: KeyBlockView = KeyBlockView("Control ⌃")
         static let shift: KeyBlockView = KeyBlockView("Shift ⇧")
-        static let number: KeyBlockView = KeyBlockView("number")
+        static let number: KeyBlockView = KeyBlockView(localized: "SettingsView.HelpView.Shortcut.ToggleOption.NumberKeys")
         static let space: KeyBlockView = KeyBlockView("Space ␣")
         static let escape: KeyBlockView = KeyBlockView("Esc ⎋")
         static let tab: KeyBlockView = KeyBlockView("Tab ⇥")
@@ -151,9 +169,9 @@ private struct KeyBlockView: View {
 }
 
 private extension Text {
-        static let separator: Text = Text(verbatim: ": ").foregroundColor(.secondary)
-        static let plus: Text = Text(verbatim: "+")
-        static let or: Text = Text("or")
+        static let separator: Text = Text("SettingsView.Colon").foregroundColor(.secondary)
+        static let plus: Text = Text(verbatim: "＋")
+        static let or: Text = Text("SettingsView.HelpView.Disjunction")
 }
 
 

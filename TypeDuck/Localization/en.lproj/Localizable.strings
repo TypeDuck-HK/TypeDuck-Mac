@@ -1,10 +1,10 @@
 // MARK: - Menu
 
-"menu.title" = "TypeDuck";
-"menu.settings" = "Settings…";
-"menu.check4updates" = "Check for Updates…";
-"menu.help" = "Help";
-"menu.about" = "About";
+"Menu.Title" = "TypeDuck";
+"Menu.Settings" = "Settings…";
+"Menu.CheckForUpdates" = "Check for Updates…";
+"Menu.Help" = "Help";
+"Menu.About" = "About";
 
 
 // MARK: - Languages
@@ -21,7 +21,6 @@
 
 "Settings.Window.Title" = "TypeDuck";
 "SettingsView.NavigationTitle.Settings" = "Settings";
-"SettingsView.NavigationTitle.Candidates" = "Candidates";
 "SettingsView.NavigationTitle.Help" = "Help";
 "SettingsView.NavigationTitle.About" = "About";
 
@@ -29,19 +28,24 @@
 "SettingsView.HelpView.Title" = "Help";
 "SettingsView.AboutView.Title" = "About";
 
-"Emoji Suggestions" = "Emoji Suggestions";
-"Candidate Count Per Page" = "Candidate Count Per Page";
+"SettingsView.Settings.EmojiSuggestions" = "Emoji Suggestions";
+"SettingsView.Settings.CandidateCountPerPage" = "Candidate Count Per Page";
 
-"Enter/Exit Options View" = "Enter/Exit Options View";
-"Directly toggle specific option" = "Directly toggle specific option";
-"Remove highlighted Candidate from User Lexicon" = "Remove highlighted Candidate from User Lexicon";
-"Clear current pre-edit text" = "Clear current pre-edit text";
+"SettingsView.Colon" = ": ";
 
-"Highlight previous Candidate" = "Highlight previous Candidate";
-"Highlight next Candidate" = "Highlight next Candidate";
-"Backward to previous Candidate page" = "Backward to previous Candidate page";
-"Forward to next Candidate page" = "Forward to next Candidate page";
-"Jump to the first Candidate page" = "Jump to the first Candidate page";
-"or" = "or";
+"SettingsView.HelpView.Shortcut.ToggleOptionsView" = "Enter/Exit Options View";
+"SettingsView.HelpView.Shortcut.ToggleOption" = "Directly Toggle Specific Option";
+"SettingsView.HelpView.Shortcut.ToggleOption.NumberKeys" = "number keys";
+"SettingsView.HelpView.Shortcut.RemoveCandidate" = "Remove Current Candidate from User Lexicon";
+"SettingsView.HelpView.Shortcut.ClearInput" = "Clear Current Input";
 
-"Version" = "Version";
+"SettingsView.HelpView.Shortcut.PrevCandidate" = "Move to Previous Candidate";
+"SettingsView.HelpView.Shortcut.NextCandidate" = "Move to Next Candidate";
+"SettingsView.HelpView.Shortcut.PrevPage" = "Move to Previous Page";
+"SettingsView.HelpView.Shortcut.NextPage" = "Move to Next Page";
+"SettingsView.HelpView.Shortcut.FirstPage" = "Back to the First Page";
+
+"SettingsView.HelpView.Disjunction" = "or";
+
+"SettingsView.AboutView.Welcome" = "Welcome to TypeDuck";
+"SettingsView.AboutView.Version" = "Version";

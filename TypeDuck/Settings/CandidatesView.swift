@@ -11,7 +11,7 @@ struct CandidatesView: View {
                 ScrollView {
                         LazyVStack(spacing: 16) {
                                 HStack {
-                                        Toggle("Emoji Suggestions", isOn: $isEmojiSuggestionsOn)
+                                        Toggle("SettingsView.CandidatesView.Settings.EmojiSuggestions", isOn: $isEmojiSuggestionsOn)
                                                 .toggleStyle(.switch)
                                                 .scaledToFit()
                                                 .onChange(of: isEmojiSuggestionsOn) { newState in
@@ -21,7 +21,7 @@ struct CandidatesView: View {
                                 }
                                 .block()
                                 HStack {
-                                        Picker("Candidate Count Per Page", selection: $pageSize) {
+                                        Picker("SettingsView.CandidatesView.Settings.CandidateCountPerPage", selection: $pageSize) {
                                                 ForEach(pageSizeRange, id: \.self) {
                                                         Text(verbatim: "\($0)").tag($0)
                                                 }

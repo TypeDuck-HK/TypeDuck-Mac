@@ -4,7 +4,7 @@ import InputMethodKit
 extension TypeDuckInputController {
 
         override func menu() -> NSMenu! {
-                let menuTitle: String = String(localized: "menu.title")
+                let menuTitle: String = String(localized: "Menu.Title")
                 let menu = NSMenu(title: menuTitle)
 
                 for language in AppSettings.commentLanguages {
@@ -35,23 +35,23 @@ extension TypeDuckInputController {
 
                 menu.addItem(.separator())
 
-                let settingsTitle: String = String(localized: "menu.settings")
+                let settingsTitle: String = String(localized: "Menu.Settings")
                 let settings = NSMenuItem(title: settingsTitle, action: #selector(openSettings), keyEquivalent: ",")
                 settings.keyEquivalentModifierMask = [.control, .shift]
                 menu.addItem(settings)
 
                 // TODO: - Check for Updates
                 /*
-                let check4updatesTitle: String = String(localized: "menu.check4updates")
+                let check4updatesTitle: String = String(localized: "Menu.CheckForUpdates")
                 let check4updates = NSMenuItem(title: check4updatesTitle, action: #selector(openSettings), keyEquivalent: "")
                 menu.addItem(check4updates)
                 */
 
-                let helpTitle: String = String(localized: "menu.help")
+                let helpTitle: String = String(localized: "Menu.Help")
                 let help = NSMenuItem(title: helpTitle, action: #selector(openHelp), keyEquivalent: "")
                 menu.addItem(help)
 
-                let aboutTitle: String = String(localized: "menu.about")
+                let aboutTitle: String = String(localized: "Menu.About")
                 let about = NSMenuItem(title: aboutTitle, action: #selector(openAbout), keyEquivalent: "")
                 menu.addItem(about)
 
