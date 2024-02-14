@@ -9,7 +9,7 @@ struct PunctuationKey: Hashable {
 
         private static let halfWidth: String = "半形"
         private static let fullWidth: String = "全形"
-        private static let verticalText: String = "縱書"
+        private static let verticalText: String = "直寫"
 
         static let comma: PunctuationKey = {
                 let shiftingSymbols: [PunctuationSymbol] = [
@@ -26,7 +26,7 @@ struct PunctuationKey: Hashable {
                         PunctuationSymbol("〉"),
                         PunctuationSymbol(">", comment: halfWidth),
                         PunctuationSymbol("＞", comment: fullWidth),
-                        PunctuationSymbol("．", comment: "全形英文句號", secondaryComment: "U+FF0E"),
+                        PunctuationSymbol("．", comment: "全形英文句點", secondaryComment: "U+FF0E"),
                         PunctuationSymbol("｡", comment: "半形句號", secondaryComment: "U+FF61")
                 ]
                 return PunctuationKey(keyText: ".", shiftingKeyText: ">", instantSymbol: "。", instantShiftingSymbol: nil, symbols: [.init("。")], shiftingSymbols: shiftingSymbols)
@@ -78,7 +78,7 @@ struct PunctuationKey: Hashable {
                         PunctuationSymbol("｜", comment: fullWidth),
                         PunctuationSymbol("\\", comment: halfWidth),
                         PunctuationSymbol("＼", comment: fullWidth),
-                        PunctuationSymbol("•", comment: "Bullet", secondaryComment: "U+2022"),
+                        PunctuationSymbol("•", comment: "項目符號", secondaryComment: "U+2022"),
                         PunctuationSymbol("·", comment: "間隔號", secondaryComment: "U+00B7"),
                         PunctuationSymbol("‧", comment: "連字點", secondaryComment: "U+2027"),
                         PunctuationSymbol("･", comment: "半形中點", secondaryComment: "U+FF65"),
@@ -90,7 +90,7 @@ struct PunctuationKey: Hashable {
         static let backquote: PunctuationKey = {
                 let symbols: [PunctuationSymbol] = [
                         PunctuationSymbol("`"),
-                        PunctuationSymbol("•", comment: "Bullet", secondaryComment: "U+2022"),
+                        PunctuationSymbol("•", comment: "項目符號", secondaryComment: "U+2022"),
                         PunctuationSymbol("·", comment: "間隔號", secondaryComment: "U+00B7"),
                         PunctuationSymbol("‧", comment: "連字點", secondaryComment: "U+2027"),
                         PunctuationSymbol("･", comment: "半形中點", secondaryComment: "U+FF65"),
