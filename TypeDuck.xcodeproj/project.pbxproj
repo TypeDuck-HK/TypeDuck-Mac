@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		141F56B02B7D5024005855B9 /* typeduck_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */; };
+		141F56B12B7D5024005855B9 /* typeduck_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 141F56AF2B7D5024005855B9 /* typeduck_small.png */; };
 		371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */; };
 		371B27892B3EB66A00EC1271 /* TypeDuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27882B3EB66A00EC1271 /* TypeDuckTests.swift */; };
 		371B27932B3EB66A00EC1271 /* TypeDuckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27922B3EB66A00EC1271 /* TypeDuckUITests.swift */; };
@@ -48,8 +50,6 @@
 		371B27EC2B3EB93A00EC1271 /* OptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27CA2B3EB93A00EC1271 /* OptionsView.swift */; };
 		371B27EF2B3EB95F00EC1271 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B27ED2B3EB95F00EC1271 /* Assets.xcassets */; };
 		371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B27EE2B3EB95F00EC1271 /* Images.xcassets */; };
-		371B27F32B3EB97400EC1271 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F12B3EB97400EC1271 /* typeduck@2x.png */; };
-		371B27F42B3EB97400EC1271 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F22B3EB97400EC1271 /* typeduck.png */; };
 		371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F62B3EB98800EC1271 /* InfoPlist.strings */; };
 		371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F82B3EB98800EC1271 /* Localizable.strings */; };
 		37279F3B2B62873600CC50A4 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3A2B62873600CC50A4 /* AppSettings.swift */; };
@@ -76,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck_small@2x.png"; sourceTree = "<group>"; };
+		141F56AF2B7D5024005855B9 /* typeduck_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck_small.png; sourceTree = "<group>"; };
 		371B27732B3EB66800EC1271 /* TypeDuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeDuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TypeDuck.entitlements; sourceTree = "<group>"; };
@@ -121,8 +123,6 @@
 		371B27CA2B3EB93A00EC1271 /* OptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsView.swift; sourceTree = "<group>"; };
 		371B27ED2B3EB95F00EC1271 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		371B27EE2B3EB95F00EC1271 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		371B27F12B3EB97400EC1271 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
-		371B27F22B3EB97400EC1271 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
 		371B27F72B3EB98800EC1271 /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		371B27F92B3EB98800EC1271 /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		371B27FA2B3EB98800EC1271 /* zh-Hant-MO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-MO"; path = "zh-Hant-MO.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -222,8 +222,8 @@
 				371B27AB2B3EB93A00EC1271 /* KeyCode */,
 				371B27F52B3EB98800EC1271 /* Localization */,
 				371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */,
-				371B27F22B3EB97400EC1271 /* typeduck.png */,
-				371B27F12B3EB97400EC1271 /* typeduck@2x.png */,
+				141F56AF2B7D5024005855B9 /* typeduck_small.png */,
+				141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */,
 				371B27ED2B3EB95F00EC1271 /* Assets.xcassets */,
 				371B27EE2B3EB95F00EC1271 /* Images.xcassets */,
 				371B277C2B3EB66A00EC1271 /* Preview Content */,
@@ -450,12 +450,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */,
+				141F56B12B7D5024005855B9 /* typeduck_small.png in Resources */,
 				371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */,
-				371B27F32B3EB97400EC1271 /* typeduck@2x.png in Resources */,
+				141F56B02B7D5024005855B9 /* typeduck_small@2x.png in Resources */,
 				371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */,
 				371B27EF2B3EB95F00EC1271 /* Assets.xcassets in Resources */,
 				371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */,
-				371B27F42B3EB97400EC1271 /* typeduck.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
