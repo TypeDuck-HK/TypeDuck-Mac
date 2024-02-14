@@ -7,12 +7,8 @@ struct Options {
         private(set) static var characterStandard: CharacterStandard = {
                 let savedValue: Int = UserDefaults.standard.integer(forKey: OptionsKey.CharacterStandard)
                 switch savedValue {
-                case 0, 1:
+                case 0, 1, 2, 3:
                         return .traditional
-                case 2:
-                        return .hongkong
-                case 3:
-                        return .taiwan
                 case 4:
                         return .simplified
                 default:
@@ -43,7 +39,7 @@ struct Options {
                 UserDefaults.standard.set(value, forKey: OptionsKey.CharacterForm)
         }
 
-        /// 標點符號形態. 粵文句讀／英文標點
+        /// 標點符號形態. 中文／英文標點
         private(set) static var punctuationForm: PunctuationForm = {
                 let savedValue: Int = UserDefaults.standard.integer(forKey: OptionsKey.PunctuationForm)
                 switch savedValue {

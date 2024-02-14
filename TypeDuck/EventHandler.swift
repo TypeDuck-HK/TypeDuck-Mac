@@ -389,17 +389,17 @@ extension TypeDuckInputController {
                 switch selectedIndex {
                 case -1:
                         break
-                case 4:
+                case 2:
                         Options.updateCharacterForm(to: .halfWidth)
-                case 5:
+                case 3:
                         Options.updateCharacterForm(to: .fullWidth)
-                case 6:
+                case 4:
                         Options.updatePunctuationForm(to: .cantonese)
-                case 7:
+                case 5:
                         Options.updatePunctuationForm(to: .english)
-                case 8:
+                case 6:
                         Options.updateEmojiSuggestions(to: true)
-                case 9:
+                case 7:
                         Options.updateEmojiSuggestions(to: false)
                 default:
                         break
@@ -409,10 +409,6 @@ extension TypeDuckInputController {
                         case 0:
                                 return .traditional
                         case 1:
-                                return .hongkong
-                        case 2:
-                                return .taiwan
-                        case 3:
                                 return .simplified
                         default:
                                 return nil
