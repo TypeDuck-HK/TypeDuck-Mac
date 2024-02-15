@@ -4,6 +4,7 @@ import CoreIME
 struct CandidateContentView: View {
 
         let candidate: DisplayCandidate
+        let shouldDisplayNotation: Bool
 
         var body: some View {
                 let annotationComments = candidate.comments.filter({ $0.language.isAnnotation })
@@ -11,6 +12,17 @@ struct CandidateContentView: View {
                 let devanagariComments = candidate.comments.filter({ $0.language.isDevanagari })
                 HStack(alignment: .lastTextBaseline, spacing: 18) {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
+                        if !shouldDisplayNotation, let notation = candidate.candidate.notation {
+                                let labelList = Decorator.labelList(of: notation.label)
+                                if !(labelList.isEmpty) {
+                                        HStack(alignment: .lastTextBaseline, spacing: 4) {
+                                                ForEach(0..<labelList.count, id: \.self) { index in
+                                                        let label = labelList[index]
+                                                        Text(verbatim: label).foregroundColor(.secondary)
+                                                }
+                                        }
+                                }
+                        }
                         if !(annotationComments.isEmpty) {
                                 HStack(alignment: .lastTextBaseline, spacing: 18) {
                                         ForEach(0..<annotationComments.count, id: \.self) { index in
@@ -43,5 +55,5 @@ struct CandidateContentView: View {
 }
 
 #Preview {
-        CandidateContentView(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3))
+        CandidateContentView(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3), shouldDisplayNotation: true)
 }

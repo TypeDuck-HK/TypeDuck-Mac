@@ -142,7 +142,7 @@ struct NotationView: View {
         NotationView(notation: .example, comments: DisplayCandidate(candidate: .example, candidateIndex: 3).comments)
 }
 
-private struct Decorator {
+struct Decorator {
     
         static func pronunciationType(of notation: Notation) -> String? {
                 var pronunciationType = [String]()
@@ -222,7 +222,7 @@ private struct Decorator {
                 "composition": "compound 詞組",
         ]
     
-        static func dataList(of notation: Notation) -> [KeyValue] {
+        fileprivate static func dataList(of notation: Notation) -> [KeyValue] {
                 var dataList: [KeyValue] = []
                 if notation.normalized.isValid {
                         let pair: KeyValue = KeyValue(titleKey: "Standard Form 標準字形", textValue: notation.normalized)
