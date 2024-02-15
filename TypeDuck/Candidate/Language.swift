@@ -1,3 +1,5 @@
+import SwiftUI
+
 enum Language: Int, Hashable, Identifiable, CaseIterable {
 
         /// 粵語
@@ -60,6 +62,16 @@ enum Language: Int, Hashable, Identifiable, CaseIterable {
                         return false
                 }
         }
+
+        /// Non-Annotation
+        var isTranslation: Bool {
+                switch self {
+                case .Cantonese, .Unicode:
+                        return false
+                default:
+                        return true
+                }
+        }
         
         /// Language name in English
         var name: String {
@@ -86,5 +98,35 @@ enum Language: Int, Hashable, Identifiable, CaseIterable {
         /// - Returns: A language?
         static func language(of name: String) -> Language? {
                 return Language.allCases.first(where: { $0.name == name })
+        }
+
+        var font: Font {
+                switch self {
+                case .Cantonese:
+                        return .body
+                case .English:
+                        return .englishComment
+                case .Hindi:
+                        return .devanagariComment
+                case .Indonesian:
+                        return .indonesianComment
+                case .Nepali:
+                        return .devanagariComment
+                case .Urdu:
+                        return .urduComment
+                case .Unicode:
+                        return .body
+                }
+        }
+    
+        var padding: EdgeInsets {
+                switch self {
+                case .Hindi, .Nepali:
+                        return EdgeInsets(top: 0, leading: 0, bottom: -7, trailing: 0)
+                case .Urdu:
+                        return EdgeInsets(top: -3, leading: 0, bottom: -3, trailing: 0)
+                default:
+                        return EdgeInsets()
+                }
         }
 }

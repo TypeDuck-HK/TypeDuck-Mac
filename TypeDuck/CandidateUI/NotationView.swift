@@ -3,84 +3,134 @@ import CoreIME
 
 struct NotationView: View {
 
-        init(notation: Notation) {
+        init(notation: Notation, comments: [Comment]) {
                 self.notation = notation
                 self.partOfSpeechList = Decorator.partOfSpeechList(of: notation.partOfSpeech)
-                var formList: [KeyValue] = []
-                if notation.normalized.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Standard Form 標準字形", textValue: notation.normalized)
-                        formList.append(pair)
-                }
-                if notation.written.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Written Form 書面語", textValue: notation.written)
-                        formList.append(pair)
-                }
-                if notation.vernacular.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Vernacular Form 口語", textValue: notation.vernacular)
-                        formList.append(pair)
-                }
-                if notation.collocation.isValid {
-                        let pair: KeyValue = KeyValue(titleKey: "Collocation 配搭", textValue: notation.collocation)
-                        formList.append(pair)
-                }
-                self.keyValueList = formList
+                self.labelList = Decorator.labelList(of: notation.label)
+                self.dataList = Decorator.dataList(of: notation)
+                self.commentList = comments.filter(\.language.isTranslation)
         }
 
         private let notation: Notation
         private let partOfSpeechList: [String]
-        private let keyValueList: [KeyValue]
-
-        private struct KeyValue {
-                let titleKey: String
-                let textValue: String
-        }
+        private let labelList: [String]
+        private let dataList: [KeyValue]
+        private let commentList: [Comment]
 
         var body: some View {
-                VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                                ForEach(0..<partOfSpeechList.count, id: \.self) { index in
-                                        Text(verbatim: partOfSpeechList[index])
-                                                .padding(3)
-                                                .overlay {
-                                                        RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.accentColor, lineWidth: 1)
-                                                }
-                                }
-                                if let register = Decorator.register(of: notation.register) {
-                                        Text(verbatim: register)
-                                                .font(.system(.body, design: .serif))
-                                                .italic()
-                                }
-                                if notation.isSandhi {
-                                        Text(verbatim: "changed tone 變音")
-                                                .padding(3)
-                                                .overlay {
-                                                        RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.secondary, lineWidth: 1)
-                                                }
-                                }
-                                if let reading = Decorator.literaryColloquialReading(of: notation.literaryColloquial) {
-                                        Text(verbatim: reading)
-                                                .padding(3)
-                                                .foregroundStyle(Color.white)
-                                                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
-                                }
-                                if let labelsText = Decorator.labelsText(of: notation.label) {
-                                        Text(verbatim: labelsText)
+                VStack(alignment: .leading, spacing: 16) {
+                        HStack(alignment: .firstTextBaseline, spacing: 16) {
+                                Text(verbatim: notation.word)
+                                        .font(.system(size: 32))
+                                Text(verbatim: notation.jyutping)
+                                        .font(.title2)
+                                        .foregroundColor(.secondary)
+                                if let pronunciationType = Decorator.pronunciationType(of: notation) {
+                                        Text(verbatim: pronunciationType)
+                                                .font(.title3)
+                                                .foregroundColor(.secondary)
                                 }
                         }
                         .fixedSize()
-                        if !(keyValueList.isEmpty) {
+                        HStack(alignment: .firstTextBaseline, spacing: 12) {
+                                if !partOfSpeechList.isEmpty {
+                                        HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                                ForEach(0..<partOfSpeechList.count, id: \.self) { index in
+                                                        Text(verbatim: partOfSpeechList[index])
+                                                                .font(.body.weight(.light))
+                                                                .foregroundColor(.secondary)
+                                                                .padding(3)
+                                                                .overlay {
+                                                                    RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.secondary, lineWidth: 0.75)
+                                                                }
+                                                }
+                                        }
+                                }
+                                if let register = Decorator.register(of: notation.register) {
+                                        Text(verbatim: register)
+                                                .font(.body.italic())
+                                                .foregroundColor(.secondary)
+                                }
+                                if !labelList.isEmpty {
+                                        HStack(alignment: .firstTextBaseline, spacing: 4) {
+                                                ForEach(0..<labelList.count, id: \.self) { index in
+                                                        Text(verbatim: labelList[index])
+                                                                .font(.body)
+                                                                .foregroundColor(.secondary)
+                                                }
+                                        }
+                                }
+                                if let definition = commentList.first {
+                                        Text(verbatim: definition.text)
+                                                .font(definition.language.font)
+                                }
+                        }
+                        .fixedSize()
+                        if !dataList.isEmpty {
                                 if #available(macOS 13.0, *) {
-                                        Grid {
-                                                ForEach(0..<keyValueList.count, id: \.self) { index in
+                                        Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 12, verticalSpacing: 8) {
+                                                ForEach(0..<dataList.count, id: \.self) { index in
                                                         GridRow {
-                                                                Text(verbatim: "\(keyValueList[index].titleKey):").gridColumnAlignment(.trailing)
-                                                                Text(verbatim: keyValueList[index].textValue).gridColumnAlignment(.leading)
+                                                                Text(verbatim: dataList[index].titleKey)
+                                                                        .font(.headline)
+                                                                        .foregroundColor(.secondary)
+                                                                        .gridColumnAlignment(.trailing)
+                                                                Text(verbatim: dataList[index].textValue)
+                                                                        .font(.body)
                                                         }
                                                 }
                                         }
+                                        .fixedSize()
                                 } else {
-                                        ForEach(0..<keyValueList.count, id: \.self) { index in
-                                                Text(verbatim: keyValueList[index].titleKey) + Text(verbatim: ": ") +  Text(verbatim: keyValueList[index].textValue)
+                                    VStack(alignment: .leading, spacing: 8) {
+                                                ForEach(0..<dataList.count, id: \.self) { index in
+                                                        HStack(alignment: .firstTextBaseline, spacing: 12) {
+                                                                Text(verbatim: dataList[index].titleKey)
+                                                                        .font(.headline)
+                                                                        .foregroundColor(.secondary)
+                                                                        .frame(width: 100, alignment: .trailing)
+                                                                Text(verbatim: dataList[index].textValue)
+                                                                        .font(.body)
+                                                        }
+                                                }
+                                        }
+                                        .fixedSize()
+                                }
+                        }
+                        if commentList.count > 1 {
+                                VStack(alignment: .leading, spacing: 8) {
+                                        Text(verbatim: "More Languages")
+                                            .font(.title3.bold())
+                                        if #available(macOS 13.0, *) {
+                                                Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 12, verticalSpacing: 8) {
+                                                        ForEach(1..<commentList.count, id: \.self) { index in
+                                                                GridRow {
+                                                                        Text(verbatim: commentList[index].language.name)
+                                                                                .font(.headline)
+                                                                                .foregroundColor(.secondary)
+                                                                                .gridColumnAlignment(.trailing)
+                                                                        Text(verbatim: commentList[index].text)
+                                                                                .font(commentList[index].language.font)
+                                                                }
+                                                                .padding(commentList[index].language.padding)
+                                                        }
+                                                }
+                                                .fixedSize()
+                                        } else {
+                                                VStack(alignment: .leading, spacing: 8) {
+                                                        ForEach(1..<commentList.count, id: \.self) { index in
+                                                                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                                                                        Text(verbatim: commentList[index].language.name)
+                                                                                .font(.headline)
+                                                                                .foregroundColor(.secondary)
+                                                                                .frame(width: 100, alignment: .trailing)
+                                                                        Text(verbatim: commentList[index].text)
+                                                                                .font(commentList[index].language.font)
+                                                                }
+                                                                .padding(commentList[index].language.padding)
+                                                        }
+                                                }
+                                                .fixedSize()
                                         }
                                 }
                         }
@@ -89,17 +139,31 @@ struct NotationView: View {
 }
 
 #Preview {
-        NotationView(notation: .example)
+        NotationView(notation: .example, comments: DisplayCandidate(candidate: .example, candidateIndex: 3).comments)
 }
 
 private struct Decorator {
-
-        static func partOfSpeechList(of text: String ) -> [String] {
-                guard text.isValid else { return [] }
-                let list = text.split(separator: " ").map({ partOfSpeechMap[$0] ?? $0 })
-                return list.uniqued().map({ String($0) })
+    
+        static func pronunciationType(of notation: Notation) -> String? {
+                var pronunciationType = [String]()
+                if notation.isSandhi {
+                        pronunciationType.append("changed tone 變音")
+                }
+                if let reading = Decorator.literaryColloquialReading(of: notation.literaryColloquial) {
+                        pronunciationType.append(reading)
+                }
+                if !pronunciationType.isEmpty {
+                        return "(\(pronunciationType.joined()))"
+                }
+                return nil
         }
-        private static let partOfSpeechMap: [String.SubSequence: String.SubSequence] = [
+
+        static func partOfSpeechList(of text: String) -> [String] {
+                guard text.isValid else { return [] }
+                let list = text.split(separator: " ").compactMap({ partOfSpeechMap[$0] })
+                return list.uniqued()
+        }
+        private static let partOfSpeechMap: [String.SubSequence: String] = [
                 "n": "noun 名詞",
                 "v": "verb 動詞",
                 "adj": "adjective 形容詞",
@@ -122,13 +186,13 @@ private struct Decorator {
                 case "col":
                         return "colloquial reading 白讀"
                 default:
-                        return text
+                        return nil
                 }
         }
 
         static func register(of text: String) -> String? {
                 guard text.isValid else { return nil }
-                return registerMap[text] ?? text
+                return registerMap[text]
         }
         private static let registerMap: [String: String] = [
                 "wri": "written 書面語",
@@ -137,16 +201,13 @@ private struct Decorator {
                 "lzh": "classical chinese 文言",
         ]
 
-        static func labelsText(of text: String) -> String? {
-                guard text.isValid else { return nil }
-                let labels = text.split(separator: " ").map({ rawLabel -> String in
-                        guard let matched = rawLabel.split(separator: "_").compactMap({ labelMap[$0] }).first else {
-                                return "(" + rawLabel + ")"
-                        }
-                        return "(" + matched + ")"
+        static func labelList(of text: String) -> [String] {
+                guard text.isValid else { return [] }
+                let labels = text.split(separator: " ").compactMap({ rawLabel -> String? in
+                        guard let matched = rawLabel.split(separator: "_").compactMap({ labelMap[$0] }).first else { return nil }
+                        return "(\(matched))"
                 })
-                guard !(labels.isEmpty) else { return nil }
-                return labels.uniqued().joined(separator: " ")
+                return labels.uniqued()
         }
         private static let labelMap: [String.SubSequence: String] = [
                 "abbrev": "abbreviation 簡稱",
@@ -160,4 +221,30 @@ private struct Decorator {
                 "rare": "rare 罕見",
                 "composition": "compound 詞組",
         ]
+    
+        static func dataList(of notation: Notation) -> [KeyValue] {
+                var dataList: [KeyValue] = []
+                if notation.normalized.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Standard Form 標準字形", textValue: notation.normalized)
+                        dataList.append(pair)
+                }
+                if notation.written.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Written Form 書面語", textValue: notation.written)
+                        dataList.append(pair)
+                }
+                if notation.vernacular.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Vernacular Form 口語", textValue: notation.vernacular)
+                        dataList.append(pair)
+                }
+                if notation.collocation.isValid {
+                        let pair: KeyValue = KeyValue(titleKey: "Collocation 配搭", textValue: notation.collocation)
+                        dataList.append(pair)
+                }
+                return dataList
+        }
+}
+
+private struct KeyValue {
+        let titleKey: String
+        let textValue: String
 }
