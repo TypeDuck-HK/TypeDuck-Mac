@@ -9,34 +9,34 @@ struct CandidateContentView: View {
                 let annotationComments = candidate.comments.filter({ $0.language.isAnnotation })
                 let latinComments = candidate.comments.filter({ $0.language.isLatin })
                 let devanagariComments = candidate.comments.filter({ $0.language.isDevanagari })
-                HStack(spacing: 18) {
+                HStack(alignment: .lastTextBaseline, spacing: 18) {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
                         if !(annotationComments.isEmpty) {
-                                HStack {
+                                HStack(alignment: .lastTextBaseline, spacing: 18) {
                                         ForEach(0..<annotationComments.count, id: \.self) { index in
                                                 let comment = annotationComments[index]
-                                                Text(verbatim: comment.text)
+                                                Text(verbatim: comment.text).font(comment.language.font)
                                         }
                                 }
                         }
                         if !(latinComments.isEmpty) {
-                                VStack(alignment: .leading, spacing: 0) {
+                                VStack(alignment: .leading, spacing: 2) {
                                         ForEach(0..<latinComments.count, id: \.self) { index in
                                                 let comment = latinComments[index]
-                                                Text(verbatim: comment.text).font((comment.language == .Indonesian) ? .indonesianComment : .englishComment)
+                                                Text(verbatim: comment.text).font(comment.language.font)
                                         }
                                 }
                         }
                         if !(devanagariComments.isEmpty) {
-                                VStack(alignment: .leading, spacing: 0) {
+                                VStack(alignment: .leading, spacing: -6) {
                                         ForEach(0..<devanagariComments.count, id: \.self) { index in
                                                 let comment = devanagariComments[index]
-                                                Text(verbatim: comment.text).font(.devanagariComment)
+                                                Text(verbatim: comment.text).font(comment.language.font)
                                         }
                                 }
                         }
                         if let comment = candidate.comments.first(where: { $0.language.isRTL }) {
-                                Text(verbatim: comment.text).font(.urduComment)
+                                Text(verbatim: comment.text).font(comment.language.font)
                         }
                 }
         }
