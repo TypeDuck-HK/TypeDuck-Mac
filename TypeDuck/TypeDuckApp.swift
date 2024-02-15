@@ -1,7 +1,7 @@
 import AppKit
 import InputMethodKit
+import CoreIME
 
-@objc(PrincipalApplication)
 final class PrincipalApplication: NSApplication {
 
         private let appDelegate = AppDelegate()
@@ -17,16 +17,15 @@ final class PrincipalApplication: NSApplication {
 }
 
 @main
-@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
-
-        var server: IMKServer? = nil
 
         func applicationDidFinishLaunching(_ notification: Notification) {
                 handleCommandLineArguments()
                 let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
                 let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
-                server = IMKServer(name: name, bundleIdentifier: identifier)
+                _ = IMKServer(name: name, bundleIdentifier: identifier)
+                UserLexicon.prepare()
+                Engine.prepare()
         }
 
         private func handleCommandLineArguments() {

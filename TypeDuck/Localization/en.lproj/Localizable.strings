@@ -28,8 +28,8 @@
 "SettingsView.HelpView.Title" = "Help";
 "SettingsView.AboutView.Title" = "About";
 
-"SettingsView.Settings.EmojiSuggestions" = "Emoji Suggestions";
-"SettingsView.Settings.CandidateCountPerPage" = "Candidate Count Per Page";
+"SettingsView.CandidatesView.Settings.EmojiSuggestions" = "Emoji Suggestions";
+"SettingsView.CandidatesView.Settings.CandidateCountPerPage" = "Candidate Count Per Page";
 
 "SettingsView.Colon" = ": ";
 
