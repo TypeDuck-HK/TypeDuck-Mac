@@ -13,42 +13,35 @@ struct CandidateLabel: View {
                 HStack {
                         HStack(alignment: .lastTextBaseline, spacing: 14) {
                                 SerialNumberLabel(index: index).foregroundColor(shouldHighlight ? .white : .secondary)
-                                CandidateContentView(candidate: candidate)
+                                CandidateContentView(candidate: candidate, shouldDisplayNotation: shouldDisplayNotation)
                         }
                         Spacer()
-                        Image.infoCircle
-                                .font(.title3)
-                                .contentShape(Rectangle())
-                                .onHover { isHovering in
-                                        guard isPopoverPresented != isHovering else { return }
-                                        isPopoverPresented = isHovering
-                                }
-                                .opacity(shouldDisplayInfoCircle ? 1 : 0)
+                        if shouldDisplayNotation {
+                                Image.infoCircle
+                                        .font(.title3)
+                                        .contentShape(Rectangle())
+                                        .onHover { isHovering in
+                                                guard isPopoverPresented != isHovering else { return }
+                                                isPopoverPresented = isHovering
+                                        }
+                        }
                 }
                 .padding(EdgeInsets(top: 4, leading: 8, bottom: candidate.candidate.isCantonese && candidate.comments.contains { $0.language == .Urdu } ? 0.5 : 4, trailing: 8))
                 .foregroundColor(shouldHighlight ? .white : .primary)
                 .background(shouldHighlight ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                 .contentShape(Rectangle())
                 .popover(isPresented: $isPopoverPresented, attachmentAnchor: .point(.trailing), arrowEdge: .trailing) {
-                        if let notation = candidate.candidate.notation {
-                                NotationView(notation: notation, comments: candidate.comments).padding()
+                        if shouldDisplayNotation {
+                                NotationView(notation: candidate.candidate.notation!, comments: candidate.comments).padding()
                         }
                 }
         }
 
-        private var shouldDisplayInfoCircle: Bool {
+        private var shouldDisplayNotation: Bool {
                 guard let notation = candidate.candidate.notation else { return false }
                 if notation.partOfSpeech.isValid {
                         return true
-                } else if notation.partOfSpeech.isValid {
-                        return true
                 } else if notation.register.isValid {
-                        return true
-                } else if notation.isSandhi {
-                        return true
-                } else if notation.literaryColloquial.isValid {
-                        return true
-                } else if notation.label.isValid {
                         return true
                 } else if notation.normalized.isValid {
                         return true
@@ -57,6 +50,8 @@ struct CandidateLabel: View {
                 } else if notation.vernacular.isValid {
                         return true
                 } else if notation.collocation.isValid {
+                        return true
+                } else if candidate.comments.contains(where: \.language.isTranslation) {
                         return true
                 } else {
                         return false
