@@ -224,9 +224,14 @@ extension TypeDuckInputController {
                 case .separator:
                         switch currentInputForm {
                         case .cantonese:
-                                guard inputStage.isBuffering else { return false }
-                                bufferText += "'"
-                                return true
+                                if inputStage.isBuffering {
+                                        bufferText += "'"
+                                        return true
+                                } else {
+                                        let text: String = isShifting ? PunctuationKey.quote.shiftingKeyText : PunctuationKey.quote.keyText
+                                        bufferText = text
+                                        return true
+                                }
                         case .transparent:
                                 return false
                         case .options:
