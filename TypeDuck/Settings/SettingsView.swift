@@ -37,23 +37,23 @@ struct SettingsView: View {
                         } detail: {
                                 switch selection {
                                 case .candidates:
-                                        CandidatesView().visualEffect()
+                                        CandidatesView().applyVisualEffect()
                                 case .help:
-                                        HelpView().visualEffect()
+                                        HelpView().applyVisualEffect()
                                 case .about:
-                                        AboutView().visualEffect()
+                                        AboutView().applyVisualEffect()
                                 }
                         }
                 } else {
                         NavigationView {
                                 List {
-                                        NavigationLink(destination: CandidatesView().visualEffect(), isActive: $isCandidatesViewActive) {
+                                        NavigationLink(destination: CandidatesView().applyVisualEffect(), isActive: $isCandidatesViewActive) {
                                                 Label("SettingsView.NavigationTitle.Settings", systemImage: "list.number")
                                         }
-                                        NavigationLink(destination: HelpView().visualEffect(), isActive: $isHelpViewActive) {
+                                        NavigationLink(destination: HelpView().applyVisualEffect(), isActive: $isHelpViewActive) {
                                                 Label("SettingsView.NavigationTitle.Help", systemImage: "keyboard")
                                         }
-                                        NavigationLink(destination: AboutView().visualEffect(), isActive: $isAboutViewActive) {
+                                        NavigationLink(destination: AboutView().applyVisualEffect(), isActive: $isAboutViewActive) {
                                                 Label("SettingsView.NavigationTitle.About", systemImage: "info.circle")
                                         }
                                 }
