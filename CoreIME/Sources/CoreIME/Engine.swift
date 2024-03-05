@@ -73,7 +73,7 @@ public struct Engine {
                 }
         }
 
-        private static func dispatch(text: String, segmentation: Segmentation) -> [CoreCandidate] {
+        private static func dispatch(text: String, segmentation: Segmentation) -> [Candidate] {
                 switch (text.hasSeparators, text.hasTones) {
                 case (true, true):
                         let syllable = text.removedSeparatorsTones()
@@ -199,9 +199,9 @@ public struct Engine {
                 }
         }
 
-        private static func processVerbatim(text: String, limit: Int? = nil) -> [CoreCandidate] {
+        private static func processVerbatim(text: String, limit: Int? = nil) -> [Candidate] {
                 guard canProcess(text) else { return [] }
-                let rounds = (0..<text.count).map({ number -> [CoreCandidate] in
+                let rounds = (0..<text.count).map({ number -> [Candidate] in
                         let leading: String = String(text.dropLast(number))
                         return match(text: leading, input: leading, limit: limit) + shortcut(text: leading, limit: limit)
                 })
@@ -219,17 +219,17 @@ public struct Engine {
                 return true
         }
 
-        private static func process(text: String, segmentation: Segmentation, limit: Int? = nil) -> [CoreCandidate] {
+        private static func process(text: String, segmentation: Segmentation, limit: Int? = nil) -> [Candidate] {
                 guard canProcess(text) else { return [] }
                 let textCount = text.count
                 let fullMatch = match(text: text, input: text, limit: limit)
                 let fullShortcut = shortcut(text: text, limit: limit)
                 let candidates = match(segmentation: segmentation, limit: limit)
                 let perfectCandidates = candidates.filter({ $0.input.count == textCount })
-                let primary: [CoreCandidate] = (fullMatch + perfectCandidates + fullShortcut + candidates).uniqued()
+                let primary: [Candidate] = (fullMatch + perfectCandidates + fullShortcut + candidates).uniqued()
                 guard let firstInputCount = primary.first?.input.count else { return processVerbatim(text: text, limit: 4) }
                 guard firstInputCount != textCount else { return primary }
-                let prefixes: [CoreCandidate] = {
+                let prefixes: [Candidate] = {
                         guard segmentation.maxLength != textCount else { return [] }
                         let anchorsArray: [String] = segmentation.map({ scheme -> String in
                                 let last = text.dropFirst(scheme.length).first
@@ -237,9 +237,9 @@ public struct Engine {
                                 let anchors = (schemeAnchors + [last]).compactMap({ $0 })
                                 return String(anchors)
                         })
-                        let prefixCandidates: [CoreCandidate] = anchorsArray.map({ shortcut(text: $0, limit: limit) }).flatMap({ $0 })
+                        let prefixCandidates: [Candidate] = anchorsArray.map({ shortcut(text: $0, limit: limit) }).flatMap({ $0 })
                                 .filter({ $0.romanization.removedSpacesTones().hasPrefix(text) })
-                                .map({ CoreCandidate(text: $0.text, romanization: $0.romanization, input: text, notation: $0.notation) })
+                                .map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, notation: $0.notation) })
                         return prefixCandidates
                 }()
                 guard prefixes.isEmpty else { return prefixes + primary }
@@ -261,8 +261,8 @@ public struct Engine {
                 return preferredConcatenated + primary
         }
 
-        private static func match(segmentation: Segmentation, limit: Int? = nil) -> [CoreCandidate] {
-                let matches = segmentation.map({ scheme -> [CoreCandidate] in
+        private static func match(segmentation: Segmentation, limit: Int? = nil) -> [Candidate] {
+                let matches = segmentation.map({ scheme -> [Candidate] in
                         let input = scheme.map(\.text).joined()
                         let ping = scheme.map(\.origin).joined()
                         return match(text: ping, input: input, limit: limit)
@@ -273,8 +273,8 @@ public struct Engine {
 
         // MARK: - SQLite
 
-        private static func shortcut(text: String, limit: Int? = nil) -> [CoreCandidate] {
-                var candidates: [CoreCandidate] = []
+        private static func shortcut(text: String, limit: Int? = nil) -> [Candidate] {
+                var candidates: [Candidate] = []
                 let code: Int = text.replacingOccurrences(of: "y", with: "j").hash
                 let limit: Int = limit ?? 50
                 let query = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE shortcut = \(code) LIMIT \(limit);"
@@ -303,13 +303,13 @@ public struct Engine {
                         let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                         let isSandhi: Bool = sandhi == 1
                         let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
-                        let candidate = CoreCandidate(text: word, romanization: romanization, input: text, notation: notation)
+                        let candidate = Candidate(text: word, romanization: romanization, input: text, notation: notation)
                         candidates.append(candidate)
                 }
                 return candidates
         }
-        private static func match(text: String, input: String, limit: Int? = nil) -> [CoreCandidate] {
-                var candidates: [CoreCandidate] = []
+        private static func match(text: String, input: String, limit: Int? = nil) -> [Candidate] {
+                var candidates: [Candidate] = []
                 let limit: Int = limit ?? -1
                 let query = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(text.hash) LIMIT \(limit);"
                 var statement: OpaquePointer? = nil
@@ -337,7 +337,7 @@ public struct Engine {
                         let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                         let isSandhi: Bool = sandhi == 1
                         let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
-                        let candidate = CoreCandidate(text: word, romanization: romanization, input: input, notation: notation)
+                        let candidate = Candidate(text: word, romanization: romanization, input: input, notation: notation)
                         candidates.append(candidate)
                 }
                 return candidates

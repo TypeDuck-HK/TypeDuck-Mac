@@ -153,9 +153,6 @@ extension Array where Element == Candidate {
         }
 }
 
-// TODO: - Delete this type alias
-typealias CoreCandidate = Candidate
-
 extension Candidate {
         public static let example: Candidate = Candidate(text: "舉例", lexiconText: "舉例", romanization: "geoi2 lai6", input: "geoilai", notation: .example)
 }
