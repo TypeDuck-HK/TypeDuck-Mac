@@ -14,9 +14,9 @@ struct DisplayCandidate: Hashable {
                         switch candidate.type {
                         case .cantonese:
                                 return Self.generateComments(from: candidate.notation)
-                        case .specialMark:
+                        case .text:
                                 return []
-                        case .emoji, .symbol:
+                        case .emoji, .symbol, .emojiSequence, .symbolSequence:
                                 var comments: [Comment] = []
                                 let cantoneseText = candidate.lexiconText
                                 if !(cantoneseText.isEmpty) {

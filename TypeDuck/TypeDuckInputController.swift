@@ -327,11 +327,13 @@ final class TypeDuckInputController: IMKInputController {
         // MARK: - Candidate Suggestions
 
         private func suggest() {
-                let processingText = bufferText.toneConverted()
+                let processingText: String = bufferText.toneConverted()
                 let segmentation = Segmentor.segment(text: processingText)
+                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation)
                 let text2mark: String = {
-                        let isMarkFree: Bool = processingText.first(where: { $0.isSeparatorOrTone }) == nil
-                        guard isMarkFree else { return processingText.formattedForMark() }
+                        if let mark = userLexiconCandidates.first?.mark { return mark }
+                        let isLetterOnly: Bool = processingText.first(where: { $0.isSeparatorOrTone }) == nil
+                        guard isLetterOnly else { return processingText.formattedForMark() }
                         guard let bestScheme = segmentation.first else { return processingText.formattedForMark() }
                         let leadingLength: Int = bestScheme.length
                         let leadingText: String = bestScheme.map(\.text).joined(separator: " ")
@@ -341,25 +343,20 @@ final class TypeDuckInputController: IMKInputController {
                 }()
                 mark(text: text2mark)
                 let engineCandidates: [Candidate] = {
-                        var suggestion: [Candidate] = Engine.suggest(text: processingText, segmentation: segmentation)
-                        let shouldContinue: Bool = Options.isEmojiSuggestionsOn && !suggestion.isEmpty && selectedCandidates.isEmpty
+                        let suggestion: [Candidate] = userLexiconCandidates.isEmpty ? Engine.suggest(text: processingText, segmentation: segmentation) : Engine.fastSuggest(text: processingText, segmentation: segmentation)
+                        let shouldContinue: Bool = Options.isEmojiSuggestionsOn && !(suggestion.isEmpty) && selectedCandidates.isEmpty
                         guard shouldContinue else { return suggestion }
                         let symbols: [Candidate] = Engine.searchSymbols(text: bufferText, segmentation: segmentation)
                         guard !(symbols.isEmpty) else { return suggestion }
+                        var items = suggestion
                         for symbol in symbols.reversed() {
-                                if let index = suggestion.firstIndex(where: { $0.lexiconText == symbol.lexiconText }) {
-                                        suggestion.insert(symbol, at: index + 1)
+                                if let index = items.firstIndex(where: { $0.lexiconText == symbol.lexiconText }) {
+                                        items.insert(symbol, at: index + 1)
                                 }
                         }
-                        return suggestion
+                        return items
                 }()
-                let userSuggestions: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation)
-                let userCandidates: [Candidate] = userSuggestions.map({ origin -> Candidate in
-                        let notation: Notation? = Engine.fetchNotation(word: origin.lexiconText, romanization: origin.romanization)
-                        return Candidate(text: origin.text, romanization: origin.romanization, input: origin.input, lexiconText: origin.lexiconText, notation: notation)
-                })
-                let combined: [Candidate] = userCandidates + engineCandidates
-                candidates = combined.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
+                candidates = (userLexiconCandidates + engineCandidates).map({ $0.transformed(to: Options.characterStandard) }).uniqued()
         }
         private func pinyinReverseLookup() {
                 let text: String = String(bufferText.dropFirst(2))

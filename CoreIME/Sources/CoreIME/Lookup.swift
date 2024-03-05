@@ -45,7 +45,7 @@ extension Engine {
                 let romanizations: [String] = Engine.lookup(text)
                 let candidates = romanizations.map { romanization -> Candidate in
                         let notation: Notation? = fetchNotation(word: text, romanization: romanization)
-                        return Candidate(text: text, romanization: romanization, input: input, lexiconText: text, notation: notation)
+                        return Candidate(text: text, lexiconText: text, romanization: romanization, input: input, mark: input, notation: notation)
                 }
                 return candidates
         }
