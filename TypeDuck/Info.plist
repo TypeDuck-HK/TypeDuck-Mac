@@ -18,7 +18,7 @@
 				<key>TISIntendedLanguage</key>
 				<string>yue-Hant</string>
 				<key>tsInputModeAlternateMenuIconFileKey</key>
-				<string>typeduck_small.png</string>
+				<string>typeduck.png</string>
 				<key>tsInputModeDefaultStateKey</key>
 				<true/>
 				<key>tsInputModeIsVisibleKey</key>
@@ -26,9 +26,9 @@
 				<key>tsInputModeKeyEquivalentModifiersKey</key>
 				<integer>4608</integer>
 				<key>tsInputModeMenuIconFileKey</key>
-				<string>typeduck_small.png</string>
+				<string>typeduck.png</string>
 				<key>tsInputModePaletteIconFileKey</key>
-				<string>typeduck_small.png</string>
+				<string>typeduck.png</string>
 				<key>tsInputModePrimaryInScriptKey</key>
 				<true/>
 				<key>tsInputModeScriptKey</key>
@@ -60,6 +60,6 @@
 		<string>Hans</string>
 	</array>
 	<key>tsInputMethodIconFileKey</key>
-	<string>typeduck_small.png</string>
+	<string>typeduck.png</string>
 </dict>
 </plist>

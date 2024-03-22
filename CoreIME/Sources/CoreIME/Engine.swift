@@ -257,7 +257,7 @@ public struct Engine {
                         }
                         return combines.flatMap({ $0 }).prefix(8)
                 }
-                let preferredConcatenated = concatenated.flatMap({ $0 }).filter({ $0.input.count > firstInputCount }).uniqued().preferred(with: text).prefix(2)
+                let preferredConcatenated = concatenated.flatMap({ $0 }).filter({ $0.input.count > firstInputCount }).uniqued().preferred(with: text).prefix(1)
                 return preferredConcatenated + primary
         }
 

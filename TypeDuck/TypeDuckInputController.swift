@@ -329,7 +329,10 @@ final class TypeDuckInputController: IMKInputController {
         private func suggest() {
                 let processingText: String = bufferText.toneConverted()
                 let segmentation = Segmentor.segment(text: processingText)
-                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation)
+                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ origin -> Candidate in
+                        guard let notation = Engine.fetchNotation(word: origin.text, romanization: origin.romanization) else { return origin }
+                        return Candidate(text: origin.text, romanization: origin.romanization, input: origin.input, mark: origin.mark, notation: notation)
+                })
                 let text2mark: String = {
                         if let mark = userLexiconCandidates.first?.mark { return mark }
                         let isLetterOnly: Bool = processingText.first(where: { $0.isSeparatorOrTone }) == nil

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		141F56B02B7D5024005855B9 /* typeduck_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */; };
-		141F56B12B7D5024005855B9 /* typeduck_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 141F56AF2B7D5024005855B9 /* typeduck_small.png */; };
 		371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */; };
 		371B27892B3EB66A00EC1271 /* TypeDuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27882B3EB66A00EC1271 /* TypeDuckTests.swift */; };
 		371B27932B3EB66A00EC1271 /* TypeDuckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27922B3EB66A00EC1271 /* TypeDuckUITests.swift */; };
@@ -52,6 +50,8 @@
 		371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B27EE2B3EB95F00EC1271 /* Images.xcassets */; };
 		371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F62B3EB98800EC1271 /* InfoPlist.strings */; };
 		371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F82B3EB98800EC1271 /* Localizable.strings */; };
+		371DCBBF2BADBDB600EC0E29 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 371DCBBD2BADBDB600EC0E29 /* typeduck.png */; };
+		371DCBC02BADBDB600EC0E29 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */; };
 		37279F3B2B62873600CC50A4 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3A2B62873600CC50A4 /* AppSettings.swift */; };
 		37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3E2B62909600CC50A4 /* SettingsView.swift */; };
 		37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F402B62968C00CC50A4 /* CandidatesView.swift */; };
@@ -76,8 +76,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck_small@2x.png"; sourceTree = "<group>"; };
-		141F56AF2B7D5024005855B9 /* typeduck_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck_small.png; sourceTree = "<group>"; };
 		371B27732B3EB66800EC1271 /* TypeDuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeDuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TypeDuck.entitlements; sourceTree = "<group>"; };
@@ -144,6 +142,8 @@
 		371B280A2B3EB98800EC1271 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		371B280B2B3EB98800EC1271 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		371B280E2B3EBA0900EC1271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		371DCBBD2BADBDB600EC0E29 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
+		371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
 		37279F3A2B62873600CC50A4 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		37279F3E2B62909600CC50A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		37279F402B62968C00CC50A4 /* CandidatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesView.swift; sourceTree = "<group>"; };
@@ -222,8 +222,8 @@
 				371B27AB2B3EB93A00EC1271 /* KeyCode */,
 				371B27F52B3EB98800EC1271 /* Localization */,
 				371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */,
-				141F56AF2B7D5024005855B9 /* typeduck_small.png */,
-				141F56AE2B7D5024005855B9 /* typeduck_small@2x.png */,
+				371DCBBD2BADBDB600EC0E29 /* typeduck.png */,
+				371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */,
 				371B27ED2B3EB95F00EC1271 /* Assets.xcassets */,
 				371B27EE2B3EB95F00EC1271 /* Images.xcassets */,
 				371B277C2B3EB66A00EC1271 /* Preview Content */,
@@ -450,9 +450,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */,
-				141F56B12B7D5024005855B9 /* typeduck_small.png in Resources */,
+				371DCBC02BADBDB600EC0E29 /* typeduck@2x.png in Resources */,
 				371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */,
-				141F56B02B7D5024005855B9 /* typeduck_small@2x.png in Resources */,
+				371DCBBF2BADBDB600EC0E29 /* typeduck.png in Resources */,
 				371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */,
 				371B27EF2B3EB95F00EC1271 /* Assets.xcassets in Resources */,
 				371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */,
