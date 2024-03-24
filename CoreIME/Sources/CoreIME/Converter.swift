@@ -5,8 +5,13 @@ extension Candidate {
         /// - Returns: Transformed Candidate
         public func transformed(to variant: CharacterStandard) -> Candidate {
                 guard self.isCantonese else { return self }
-                let convertedText: String = Converter.convert(text, to: variant)
-                return Candidate(text: convertedText, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, notation: notation)
+                switch variant {
+                case .traditional:
+                        return self
+                case .simplified:
+                        let convertedText: String = Converter.convert(text, to: variant)
+                        return Candidate(text: convertedText, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, notation: notation)
+                }
         }
 }
 

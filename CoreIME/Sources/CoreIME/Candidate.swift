@@ -42,6 +42,9 @@ public struct Candidate: Hashable {
         /// Formatted user input for pre-edit display
         public let mark: String
 
+        /// Rank. Smaller is preferred.
+        let order: Int
+
         public let notation: Notation?
 
         /// Primary Initializer
@@ -60,6 +63,19 @@ public struct Candidate: Hashable {
                 self.romanization = romanization
                 self.input = input
                 self.mark = mark ?? input
+                self.order = 0
+                self.notation = notation
+        }
+
+        /// CoreIME Internal Initializer
+        init(text: String, romanization: String, input: String, mark: String, order: Int, notation: Notation?) {
+                self.type = .cantonese
+                self.text = text
+                self.lexiconText = text
+                self.romanization = romanization
+                self.input = input
+                self.mark = mark
+                self.order = order
                 self.notation = notation
         }
 
@@ -77,6 +93,7 @@ public struct Candidate: Hashable {
                 self.romanization = romanization
                 self.input = input
                 self.mark = input
+                self.order = 0
                 self.notation = nil
         }
 
@@ -93,6 +110,7 @@ public struct Candidate: Hashable {
                 self.romanization = secondaryComment ?? ""
                 self.input = input
                 self.mark = input
+                self.order = 0
                 self.notation = nil
         }
 
@@ -136,7 +154,8 @@ public struct Candidate: Hashable {
                 let newLexiconText: String = lhs.lexiconText + rhs.lexiconText
                 let newRomanization: String = lhs.romanization + " " + rhs.romanization
                 let newInput: String = lhs.input + rhs.input
-                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput)
+                let newMark: String = lhs.mark + " " + rhs.mark
+                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark)
         }
 }
 

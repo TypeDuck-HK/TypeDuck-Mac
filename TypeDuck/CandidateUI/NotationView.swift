@@ -86,9 +86,11 @@ struct NotationView: View {
                                                 ForEach(0..<dataList.count, id: \.self) { index in
                                                         HStack(alignment: .firstTextBaseline, spacing: 12) {
                                                                 Text(verbatim: dataList[index].titleKey)
+                                                                        .lineLimit(1)
+                                                                        .minimumScaleFactor(0.5)
                                                                         .font(.headline)
                                                                         .foregroundColor(.secondary)
-                                                                        .frame(width: 100, alignment: .trailing)
+                                                                        .frame(width: 130, alignment: .trailing)
                                                                 Text(verbatim: dataList[index].textValue)
                                                                         .font(.body)
                                                         }
@@ -121,9 +123,11 @@ struct NotationView: View {
                                                         ForEach(1..<commentList.count, id: \.self) { index in
                                                                 HStack(alignment: .firstTextBaseline, spacing: 12) {
                                                                         Text(verbatim: commentList[index].language.name)
+                                                                                .lineLimit(1)
+                                                                                .minimumScaleFactor(0.5)
                                                                                 .font(.headline)
                                                                                 .foregroundColor(.secondary)
-                                                                                .frame(width: 100, alignment: .trailing)
+                                                                                .frame(width: 80, alignment: .trailing)
                                                                         Text(verbatim: commentList[index].text)
                                                                                 .font(commentList[index].language.font)
                                                                 }

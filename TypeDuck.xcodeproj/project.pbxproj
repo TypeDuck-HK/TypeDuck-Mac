@@ -50,12 +50,12 @@
 		371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B27EE2B3EB95F00EC1271 /* Images.xcassets */; };
 		371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F62B3EB98800EC1271 /* InfoPlist.strings */; };
 		371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 371B27F82B3EB98800EC1271 /* Localizable.strings */; };
-		371DCBBF2BADBDB600EC0E29 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 371DCBBD2BADBDB600EC0E29 /* typeduck.png */; };
-		371DCBC02BADBDB600EC0E29 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */; };
 		37279F3B2B62873600CC50A4 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3A2B62873600CC50A4 /* AppSettings.swift */; };
 		37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3E2B62909600CC50A4 /* SettingsView.swift */; };
 		37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F402B62968C00CC50A4 /* CandidatesView.swift */; };
 		37279F432B6296A600CC50A4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F422B6296A600CC50A4 /* AboutView.swift */; };
+		37A619B12BAE2F5A00A0C7F9 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */; };
+		37A619B22BAE2F5A00A0C7F9 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619B02BAE2F5A00A0C7F9 /* typeduck.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,12 +142,12 @@
 		371B280A2B3EB98800EC1271 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		371B280B2B3EB98800EC1271 /* zh-Hant-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant-HK"; path = "zh-Hant-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		371B280E2B3EBA0900EC1271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		371DCBBD2BADBDB600EC0E29 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
-		371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
 		37279F3A2B62873600CC50A4 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		37279F3E2B62909600CC50A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		37279F402B62968C00CC50A4 /* CandidatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesView.swift; sourceTree = "<group>"; };
 		37279F422B6296A600CC50A4 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
+		37A619B02BAE2F5A00A0C7F9 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,8 +222,8 @@
 				371B27AB2B3EB93A00EC1271 /* KeyCode */,
 				371B27F52B3EB98800EC1271 /* Localization */,
 				371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */,
-				371DCBBD2BADBDB600EC0E29 /* typeduck.png */,
-				371DCBBE2BADBDB600EC0E29 /* typeduck@2x.png */,
+				37A619B02BAE2F5A00A0C7F9 /* typeduck.png */,
+				37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */,
 				371B27ED2B3EB95F00EC1271 /* Assets.xcassets */,
 				371B27EE2B3EB95F00EC1271 /* Images.xcassets */,
 				371B277C2B3EB66A00EC1271 /* Preview Content */,
@@ -450,9 +450,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */,
-				371DCBC02BADBDB600EC0E29 /* typeduck@2x.png in Resources */,
+				37A619B22BAE2F5A00A0C7F9 /* typeduck.png in Resources */,
+				37A619B12BAE2F5A00A0C7F9 /* typeduck@2x.png in Resources */,
 				371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */,
-				371DCBBF2BADBDB600EC0E29 /* typeduck.png in Resources */,
 				371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */,
 				371B27EF2B3EB95F00EC1271 /* Assets.xcassets in Resources */,
 				371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */,

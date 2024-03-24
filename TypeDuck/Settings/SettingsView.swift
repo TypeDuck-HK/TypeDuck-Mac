@@ -28,7 +28,7 @@ struct SettingsView: View {
                 if #available(macOS 13.0, *) {
                         NavigationSplitView {
                                 List(selection: $selection) {
-                                        Label("SettingsView.NavigationTitle.Settings", systemImage: "list.number").tag(SettingsSidebarRow.candidates)
+                                        Label("SettingsView.NavigationTitle.Settings", systemImage: "gear").tag(SettingsSidebarRow.candidates)
                                         Label("SettingsView.NavigationTitle.Help", systemImage: "keyboard").tag(SettingsSidebarRow.help)
                                         Label("SettingsView.NavigationTitle.About", systemImage: "info.circle").tag(SettingsSidebarRow.about)
                                 }
@@ -48,7 +48,7 @@ struct SettingsView: View {
                         NavigationView {
                                 List {
                                         NavigationLink(destination: CandidatesView().applyVisualEffect(), isActive: $isCandidatesViewActive) {
-                                                Label("SettingsView.NavigationTitle.Settings", systemImage: "list.number")
+                                                Label("SettingsView.NavigationTitle.Settings", systemImage: "gear")
                                         }
                                         NavigationLink(destination: HelpView().applyVisualEffect(), isActive: $isHelpViewActive) {
                                                 Label("SettingsView.NavigationTitle.Help", systemImage: "keyboard")

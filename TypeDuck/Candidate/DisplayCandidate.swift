@@ -13,7 +13,7 @@ struct DisplayCandidate: Hashable {
                 self.comments = {
                         switch candidate.type {
                         case .cantonese:
-                                return Self.generateComments(from: candidate.notation)
+                                return candidate.notation?.comments ?? []
                         case .text:
                                 return []
                         case .emoji, .symbol, .emojiSequence, .symbolSequence:
@@ -40,32 +40,32 @@ struct DisplayCandidate: Hashable {
                         }
                 }()
         }
+}
 
-        private static func generateComments(from notation: Notation?) -> [Comment] {
-                guard let notation else { return [] }
-                let comments = AppSettings.enabledCommentLanguages.map { language -> Comment? in
+extension Notation {
+        var comments: [Comment] {
+                return AppSettings.enabledCommentLanguages.compactMap({ language -> Comment? in
                         switch language {
                         case .Cantonese:
                                 return nil
                         case .English:
-                                guard notation.english.isValid else { return nil }
-                                return Comment(language: language, text: notation.english)
+                                guard english.isValid else { return nil }
+                                return Comment(language: language, text: english)
                         case .Hindi:
-                                guard notation.hindi.isValid else { return nil }
-                                return Comment(language: language, text: notation.hindi)
+                                guard hindi.isValid else { return nil }
+                                return Comment(language: language, text: hindi)
                         case .Indonesian:
-                                guard notation.indonesian.isValid else { return nil }
-                                return Comment(language: language, text: notation.indonesian)
+                                guard indonesian.isValid else { return nil }
+                                return Comment(language: language, text: indonesian)
                         case .Nepali:
-                                guard notation.nepali.isValid else { return nil }
-                                return Comment(language: language, text: notation.nepali)
+                                guard nepali.isValid else { return nil }
+                                return Comment(language: language, text: nepali)
                         case .Urdu:
-                                guard notation.urdu.isValid else { return nil }
-                                return Comment(language: language, text: notation.urdu)
+                                guard urdu.isValid else { return nil }
+                                return Comment(language: language, text: urdu)
                         case .Unicode:
                                 return nil
                         }
-                }
-                return comments.compactMap({ $0 })
+                })
         }
 }
