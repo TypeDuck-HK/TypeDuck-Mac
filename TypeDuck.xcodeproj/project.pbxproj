@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370F5B312BB59B2200F0A65C /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F5B302BB59B2200F0A65C /* ColorExtensions.swift */; };
+		370F5B332BB59B4200F0A65C /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F5B322BB59B4200F0A65C /* ViewExtensions.swift */; };
 		371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */; };
 		371B27892B3EB66A00EC1271 /* TypeDuckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27882B3EB66A00EC1271 /* TypeDuckTests.swift */; };
 		371B27932B3EB66A00EC1271 /* TypeDuckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27922B3EB66A00EC1271 /* TypeDuckUITests.swift */; };
@@ -76,6 +78,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		370F5B302BB59B2200F0A65C /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
+		370F5B322BB59B4200F0A65C /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		371B27732B3EB66800EC1271 /* TypeDuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeDuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TypeDuck.entitlements; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				371B27C42B3EB93A00EC1271 /* CharacterExtensions.swift */,
+				370F5B302BB59B2200F0A65C /* ColorExtensions.swift */,
+				370F5B322BB59B4200F0A65C /* ViewExtensions.swift */,
 				371B27C52B3EB93A00EC1271 /* FontExtensions.swift */,
 				371B27C62B3EB93A00EC1271 /* IMKTextInputExtensions.swift */,
 				371B27C72B3EB93A00EC1271 /* ImageExtensions.swift */,
@@ -494,9 +500,11 @@
 				371B27DD2B3EB93A00EC1271 /* PageTransformation.swift in Sources */,
 				371B27E92B3EB93A00EC1271 /* ImageExtensions.swift in Sources */,
 				371B27E82B3EB93A00EC1271 /* IMKTextInputExtensions.swift in Sources */,
+				370F5B312BB59B2200F0A65C /* ColorExtensions.swift in Sources */,
 				371B27DE2B3EB93A00EC1271 /* TypeDuckApp.swift in Sources */,
 				371B27D22B3EB93A00EC1271 /* KeyCode.swift in Sources */,
 				371B27DC2B3EB93A00EC1271 /* Menu.swift in Sources */,
+				370F5B332BB59B4200F0A65C /* ViewExtensions.swift in Sources */,
 				371B27DF2B3EB93A00EC1271 /* InputForm.swift in Sources */,
 				371B27E62B3EB93A00EC1271 /* CharacterExtensions.swift in Sources */,
 				371B27EB2B3EB93A00EC1271 /* ArrayExtensions.swift in Sources */,

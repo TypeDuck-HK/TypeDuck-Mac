@@ -95,7 +95,7 @@ final class TypeDuckInputController: IMKInputController {
                 return CGRect(x: x, y: y, width: width, height: height)
         }
 
-        private lazy var screenWidth: CGFloat = NSScreen.main?.frame.size.width ?? 1920
+        private lazy var screenWidth: CGFloat = NSScreen.main?.visibleFrame.size.width ?? 1920
         lazy var currentOrigin: CGPoint? = nil
 
         typealias InputClient = (IMKTextInput & NSObjectProtocol)
@@ -137,7 +137,7 @@ final class TypeDuckInputController: IMKInputController {
                 super.activateServer(sender)
                 UserLexicon.prepare()
                 Engine.prepare()
-                screenWidth = NSScreen.main?.frame.size.width ?? 1920
+                screenWidth = NSScreen.main?.visibleFrame.size.width ?? 1920
                 if inputStage.isBuffering {
                         clearBufferText()
                 }

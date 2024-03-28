@@ -173,13 +173,3 @@ private extension Text {
         static let plus: Text = Text(verbatim: "＋")
         static let or: Text = Text("SettingsView.HelpView.Disjunction")
 }
-
-
-extension View {
-        func block() -> some View {
-                return self.padding().background(Color.textBackgroundColor, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-        }
-}
-extension Color {
-        static let textBackgroundColor: Color = Color(nsColor: NSColor.textBackgroundColor)
-}

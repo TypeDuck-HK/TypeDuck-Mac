@@ -135,8 +135,8 @@ extension TypeDuckInputController {
                 NSApp.activate(ignoringOtherApps: true)
         }
         private func settingsWindowFrame() -> CGRect {
-                let screenWidth: CGFloat = NSScreen.main?.frame.size.width ?? 1920
-                let screenHeight: CGFloat = NSScreen.main?.frame.size.height ?? 1080
+                let screenWidth: CGFloat = NSScreen.main?.visibleFrame.size.width ?? 1920
+                let screenHeight: CGFloat = NSScreen.main?.visibleFrame.size.height ?? 1080
                 let x: CGFloat = screenWidth / 4.0
                 let y: CGFloat = screenHeight / 5.0
                 let width: CGFloat = screenWidth / 2.0
