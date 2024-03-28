@@ -33,8 +33,8 @@ extension TypeDuckInputController {
                                 switch currentInputForm {
                                 case .cantonese, .transparent:
                                         markOptionsViewHintText()
-                                        updateMasterWindow()
                                         appContext.updateInputForm(to: .options)
+                                        updateWindowFrame()
                                 case .options:
                                         handleOptions(-1)
                                 }
@@ -282,7 +282,7 @@ extension TypeDuckInputController {
                                         passBuffer()
                                         Options.updateInputMethodMode(to: .abc)
                                         appContext.updateInputForm(to: .transparent)
-                                        setWindowFrame(.zero)
+                                        updateWindowFrame(.zero)
                                         return true
                                 }
                                 */
@@ -387,9 +387,10 @@ extension TypeDuckInputController {
                 let selectedIndex: Int = index ?? appContext.optionsHighlightedIndex
                 defer {
                         clearOptionsViewHintText()
-                        let frame: CGRect = candidates.isEmpty ? .zero : windowFrame
-                        setWindowFrame(frame)
                         appContext.updateInputForm()
+                        let isClean: Bool = candidates.isEmpty
+                        let frame: CGRect? = isClean ? .zero : nil
+                        updateWindowFrame(frame, shouldUpdateOrigin: isClean)
                 }
                 switch selectedIndex {
                 case -1:

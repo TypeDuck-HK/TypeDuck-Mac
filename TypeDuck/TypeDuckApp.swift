@@ -2,6 +2,7 @@ import AppKit
 import InputMethodKit
 import CoreIME
 
+@objc(PrincipalApplication)
 final class PrincipalApplication: NSApplication {
 
         private let appDelegate = AppDelegate()
@@ -17,6 +18,7 @@ final class PrincipalApplication: NSApplication {
 }
 
 @main
+@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
         func applicationDidFinishLaunching(_ notification: Notification) {
