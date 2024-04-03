@@ -3,7 +3,7 @@
 login_user=$(/usr/bin/stat -f%Su /dev/console)
 
 # Stop the running instances
-osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to if it is running then quit'
-/usr/bin/sudo -u "${login_user}" osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to if it is running then quit'
+osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
+/usr/bin/sudo -u "${login_user}" osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
 
 exit 0
