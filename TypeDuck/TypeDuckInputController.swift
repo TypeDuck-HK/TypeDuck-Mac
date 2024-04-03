@@ -61,14 +61,10 @@ final class TypeDuckInputController: IMKInputController {
                 _ = window.contentViewController?.children.map({ $0.removeFromParent() })
                 window.setFrame(.zero, display: true)
         }
-        func updateWindowFrame(_ frame: CGRect? = nil, shouldUpdateOrigin: Bool = true) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+        func updateWindowFrame(_ frame: CGRect? = nil) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) { [weak self] in
                         let frame: CGRect = frame ?? self?.windowFrame ?? .zero
-                        if shouldUpdateOrigin {
-                                self?.window.setFrame(frame, display: true)
-                        } else {
-                                self?.window.setContentSize(frame.size)
-                        }
+                        self?.window.setFrame(frame, display: true)
                 }
         }
         private var windowFrame: CGRect {
@@ -307,9 +303,8 @@ final class TypeDuckInputController: IMKInputController {
                 let newDisplayCandidates = (firstIndex..<bound).map({ index -> DisplayCandidate in
                         return DisplayCandidate(candidate: candidates[index], candidateIndex: index)
                 })
-                let shouldUpdateOrigin: Bool = appContext.isClean
                 appContext.update(with: newDisplayCandidates, highlight: highlight)
-                updateWindowFrame(shouldUpdateOrigin: shouldUpdateOrigin)
+                updateWindowFrame()
         }
 
 

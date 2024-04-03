@@ -388,9 +388,8 @@ extension TypeDuckInputController {
                 defer {
                         clearOptionsViewHintText()
                         appContext.updateInputForm()
-                        let isClean: Bool = candidates.isEmpty
-                        let frame: CGRect? = isClean ? .zero : nil
-                        updateWindowFrame(frame, shouldUpdateOrigin: isClean)
+                        let frame: CGRect? = candidates.isEmpty ? .zero : nil
+                        updateWindowFrame(frame)
                 }
                 switch selectedIndex {
                 case -1:
