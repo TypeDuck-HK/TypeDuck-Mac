@@ -44,8 +44,9 @@ struct OptionsView: View {
                                 SettingLabel(index: 7, highlightedIndex: highlightedIndex, text: options[7], checked: !isEmojiSuggestionsOn)
                         }
                 }
-                .padding(8)
+                .padding(4)
                 .roundedHUDVisualEffect()
+                .padding(10)
                 .fixedSize()
         }
 }
@@ -61,7 +62,7 @@ private struct SettingLabel: View {
                 let isHighlighted: Bool = index == highlightedIndex
                 HStack(spacing: 0) {
                         HStack(spacing: 14) {
-                                SerialNumberLabel(index: index).foregroundColor(isHighlighted ? .white : .secondary)
+                                SerialNumberLabel(index: index).foregroundStyle(isHighlighted ? Color.white : Color.secondary)
                                 Text(verbatim: text).font(.candidate)
                         }
                         Spacer()
@@ -69,7 +70,7 @@ private struct SettingLabel: View {
                 }
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
-                .foregroundColor(isHighlighted ? .white : .primary)
+                .foregroundStyle(isHighlighted ? Color.white : Color.primary)
                 .background(isHighlighted ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
         }
 }

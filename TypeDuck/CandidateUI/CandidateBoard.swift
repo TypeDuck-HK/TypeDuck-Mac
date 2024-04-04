@@ -13,6 +13,7 @@ struct CandidateBoard: View {
                 }
                 .padding(4)
                 .roundedHUDVisualEffect()
+                .padding(10)
                 .fixedSize()
         }
 }
