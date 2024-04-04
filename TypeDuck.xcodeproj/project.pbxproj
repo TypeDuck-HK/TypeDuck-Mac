@@ -56,6 +56,7 @@
 		37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3E2B62909600CC50A4 /* SettingsView.swift */; };
 		37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F402B62968C00CC50A4 /* CandidatesView.swift */; };
 		37279F432B6296A600CC50A4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F422B6296A600CC50A4 /* AboutView.swift */; };
+		373133122BBF302C0012A939 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */; };
 		37A619B12BAE2F5A00A0C7F9 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */; };
 		37A619B22BAE2F5A00A0C7F9 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619B02BAE2F5A00A0C7F9 /* typeduck.png */; };
 /* End PBXBuildFile section */
@@ -150,6 +151,7 @@
 		37279F3E2B62909600CC50A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		37279F402B62968C00CC50A4 /* CandidatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesView.swift; sourceTree = "<group>"; };
 		37279F422B6296A600CC50A4 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
 		37A619B02BAE2F5A00A0C7F9 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -226,6 +228,7 @@
 				371B27AB2B3EB93A00EC1271 /* KeyCode */,
 				371B27F52B3EB98800EC1271 /* Localization */,
 				371B277F2B3EB66A00EC1271 /* TypeDuck.entitlements */,
+				373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */,
 				37A619B02BAE2F5A00A0C7F9 /* typeduck.png */,
 				37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */,
 				371B27ED2B3EB95F00EC1271 /* Assets.xcassets */,
@@ -461,6 +464,7 @@
 				371B280C2B3EB98800EC1271 /* InfoPlist.strings in Resources */,
 				371B280D2B3EB98800EC1271 /* Localizable.strings in Resources */,
 				371B27EF2B3EB95F00EC1271 /* Assets.xcassets in Resources */,
+				373133122BBF302C0012A939 /* PrivacyInfo.xcprivacy in Resources */,
 				371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
