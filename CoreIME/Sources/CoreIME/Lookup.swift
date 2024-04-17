@@ -36,16 +36,17 @@ extension Engine {
 
 extension Engine {
 
-        /// Reverse Lookup
+        /// Reverse Lookup.
         /// - Parameters:
         ///   - text: Cantonese word text.
-        ///   - input: User input for this word
-        /// - Returns: Candidates
-        static func reveresLookup(text: String, input: String) -> [Candidate] {
+        ///   - input: User input for this word.
+        ///   - mark: Formatted user input for pre-edit display.
+        /// - Returns: Candidates.
+        static func reveresLookup(text: String, input: String, mark: String? = nil) -> [Candidate] {
                 let romanizations: [String] = Engine.lookup(text)
                 let candidates = romanizations.map { romanization -> Candidate in
                         let notation: Notation? = fetchNotation(word: text, romanization: romanization)
-                        return Candidate(text: text, lexiconText: text, romanization: romanization, input: input, mark: input, notation: notation)
+                        return Candidate(text: text, lexiconText: text, romanization: romanization, input: input, mark: mark ?? input, notation: notation)
                 }
                 return candidates
         }
@@ -93,16 +94,13 @@ extension Engine {
 
         private static func match(for text: String) -> [String] {
                 var romanizations: [String] = []
-                let queryString = "SELECT romanization FROM lexicontable WHERE word = '\(text)';"
-                var queryStatement: OpaquePointer? = nil
-                defer {
-                        sqlite3_finalize(queryStatement)
-                }
-                if sqlite3_prepare_v2(Engine.database, queryString, -1, &queryStatement, nil) == SQLITE_OK {
-                        while sqlite3_step(queryStatement) == SQLITE_ROW {
-                                let romanization: String = String(cString: sqlite3_column_text(queryStatement, 0))
-                                romanizations.append(romanization)
-                        }
+                let command: String = "SELECT romanization FROM lexicontable WHERE word = '\(text)';"
+                var statement: OpaquePointer? = nil
+                defer { sqlite3_finalize(statement) }
+                guard sqlite3_prepare_v2(Engine.database, command, -1, &statement, nil) == SQLITE_OK else { return romanizations }
+                while sqlite3_step(statement) == SQLITE_ROW {
+                        let romanization: String = String(cString: sqlite3_column_text(statement, 0))
+                        romanizations.append(romanization)
                 }
                 return romanizations
         }

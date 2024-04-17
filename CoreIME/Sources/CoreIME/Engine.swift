@@ -335,8 +335,9 @@ public struct Engine {
         }
         private static func match(text: String, input: String, mark: String? = nil, limit: Int? = nil) -> [Candidate] {
                 var candidates: [Candidate] = []
+                let code: Int = text.hash
                 let limit: Int = limit ?? -1
-                let command: String = "SELECT rowid, word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(text.hash) LIMIT \(limit);"
+                let command: String = "SELECT rowid, word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(code) LIMIT \(limit);"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
                 guard sqlite3_prepare_v2(database, command, -1, &statement, nil) == SQLITE_OK else { return candidates }
