@@ -11,7 +11,7 @@ struct CandidateLabel: View {
 
         var body: some View {
                 HStack {
-                        HStack(alignment: .lastTextBaseline, spacing: 14) {
+                        HStack(alignment: .lastTextBaseline, spacing: 12) {
                                 SerialNumberLabel(index: index).foregroundColor(shouldHighlight ? .white : .secondary)
                                 CandidateContentView(candidate: candidate, shouldDisplayNotation: shouldDisplayNotation)
                         }
@@ -26,7 +26,8 @@ struct CandidateLabel: View {
                                         }
                         }
                 }
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: candidate.candidate.isCantonese && candidate.comments.contains { $0.language == .Urdu } ? 0.5 : 4, trailing: 8))
+                .padding(.horizontal, 4)
+                .padding(.vertical, candidate.candidate.isCantonese ? 0.5 : 8)
                 .foregroundColor(shouldHighlight ? .white : .primary)
                 .background(shouldHighlight ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
                 .contentShape(Rectangle())

@@ -10,7 +10,7 @@ struct CandidateContentView: View {
                 let annotationComments = candidate.comments.filter(\.language.isAnnotation)
                 let latinComments = candidate.comments.filter(\.language.isLatin)
                 let devanagariComments = candidate.comments.filter(\.language.isDevanagari)
-                HStack(alignment: .lastTextBaseline, spacing: 18) {
+                HStack(alignment: .lastTextBaseline, spacing: 16) {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
                         if !shouldDisplayNotation, let notation = candidate.candidate.notation {
                                 let labelList = Decorator.labelList(of: notation.label)
@@ -24,7 +24,7 @@ struct CandidateContentView: View {
                                 }
                         }
                         if !(annotationComments.isEmpty) {
-                                HStack(alignment: .lastTextBaseline, spacing: 18) {
+                                HStack(alignment: .lastTextBaseline, spacing: 16) {
                                         ForEach(0..<annotationComments.count, id: \.self) { index in
                                                 let comment = annotationComments[index]
                                                 Text(verbatim: comment.text).font(comment.language.font)

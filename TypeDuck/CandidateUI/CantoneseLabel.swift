@@ -13,7 +13,7 @@ struct CantoneseLabel: View {
 
         var body: some View {
                 if shouldDisplayRomanization {
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: 1) {
                                 Text(verbatim: romanization).font(.romanization)
                                 Text(verbatim: text).font(.candidate).tracking(16)
                         }
