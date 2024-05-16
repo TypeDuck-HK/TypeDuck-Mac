@@ -3,11 +3,15 @@
 login_user=$(/usr/bin/stat -f%Su /dev/console)
 executable="${DSTROOT}/TypeDuck.app/Contents/MacOS/TypeDuck"
 
-# Stop the running instances
+# Terminate running instances
 osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
 /usr/bin/sudo -u "${login_user}" osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
 
 # Install
 /usr/bin/sudo -u "${login_user}" "${executable}" install
+
+# Terminate running instances
+osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
+/usr/bin/sudo -u "${login_user}" osascript -e 'tell application id "hk.eduhk.inputmethod.TypeDuck" to quit'
 
 exit 0
