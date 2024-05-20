@@ -7,6 +7,7 @@ extension TypeDuckInputController {
                 let menuTitle: String = String(localized: "Menu.Title")
                 let menu = NSMenu(title: menuTitle)
 
+                let prefixText: String = "LanguageName."
                 for language in AppSettings.commentLanguages {
                         let selector: Selector? = {
                                 switch language {
@@ -26,8 +27,9 @@ extension TypeDuckInputController {
                                         return nil
                                 }
                         }()
-                        let nameValue: String.LocalizationValue = String.LocalizationValue(language.name)
-                        let localizedName: String = String(localized: nameValue)
+                        let localizationKey: String = prefixText + language.name
+                        let localizationValue: String.LocalizationValue = String.LocalizationValue(localizationKey)
+                        let localizedName: String = String(localized: localizationValue)
                         let item: NSMenuItem = NSMenuItem(title: localizedName, action: selector, keyEquivalent: "")
                         item.state = language.isEnabledCommentLanguage ? .on : .off
                         menu.addItem(item)
