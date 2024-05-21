@@ -69,6 +69,7 @@
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -266,6 +267,7 @@
     },
     "NSHumanReadableCopyright" : {
       "comment" : "Copyright (human-readable)",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
