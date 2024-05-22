@@ -208,6 +208,8 @@ final class TypeDuckInputController: IMKInputController {
                         case .none:
                                 clearMarkedText()
                                 candidates = []
+                        case .some(let character) where character.isInvalidAnchor:
+                                mark(text: bufferText)
                         case .some(let character) where character.isBasicLatinLetter:
                                 suggest()
                         case .some(_) where bufferText.count == 1:

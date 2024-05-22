@@ -51,11 +51,9 @@ extension Character {
 }
 
 extension Character {
-
-        private static let reverseLookupTriggers: Set<Character> = ["r", "v", "x", "q"]
-
-        /// r / v / x / q
-        var isReverseLookupTrigger: Bool {
-                return Character.reverseLookupTriggers.contains(self)
+        /// r, v, x, q, i
+        var isInvalidAnchor: Bool {
+                return Self.invalidAnchors.contains(self)
         }
+        private static let invalidAnchors: Set<Character> = ["r", "v", "x", "q", "i"]
 }
