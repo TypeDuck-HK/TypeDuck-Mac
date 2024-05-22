@@ -61,15 +61,15 @@ private struct SettingLabel: View {
         var body: some View {
                 let isHighlighted: Bool = index == highlightedIndex
                 HStack(spacing: 0) {
-                        HStack(spacing: 14) {
-                                SerialNumberLabel(index: index).foregroundStyle(isHighlighted ? Color.white : Color.secondary)
+                        HStack(spacing: 8) {
+                                SerialNumberLabel(index: index).opacity(isHighlighted ? 1 : 0.75)
                                 Text(verbatim: text).font(.candidate)
                         }
                         Spacer()
                         Image.checkmark.font(.title3).opacity(checked ? 1 : 0)
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 2)
                 .foregroundStyle(isHighlighted ? Color.white : Color.primary)
                 .background(isHighlighted ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
         }
