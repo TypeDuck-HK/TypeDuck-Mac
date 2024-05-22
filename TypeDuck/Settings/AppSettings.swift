@@ -33,10 +33,11 @@ struct AppSettings {
         }
 
 
+        /// Candidate count per page
         private(set) static var candidatePageSize: Int = {
                 let savedValue: Int = UserDefaults.standard.integer(forKey: SettingsKey.CandidatePageSize)
                 let isSavedValueValid: Bool = pageSizeValidity(of: savedValue)
-                guard isSavedValueValid else { return 10 }
+                guard isSavedValueValid else { return defaultCandidatePageSize }
                 return savedValue
         }()
         static func updateCandidatePageSize(to newPageSize: Int) {
@@ -47,6 +48,7 @@ struct AppSettings {
         private static func pageSizeValidity(of value: Int) -> Bool {
                 return candidatePageSizeRange.contains(value)
         }
+        private static let defaultCandidatePageSize: Int = 7
         static let candidatePageSizeRange: Range<Int> = 1..<11
 
 

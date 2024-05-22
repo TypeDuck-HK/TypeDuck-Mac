@@ -4,31 +4,29 @@ import CoreIME
 struct CandidateContentView: View {
 
         let candidate: DisplayCandidate
-        let shouldDisplayNotation: Bool
+        let hasNotationDisplayButton: Bool
 
         var body: some View {
                 let annotationComments = candidate.comments.filter(\.language.isAnnotation)
                 let latinComments = candidate.comments.filter(\.language.isLatin)
                 let devanagariComments = candidate.comments.filter(\.language.isDevanagari)
-                HStack(alignment: .lastTextBaseline, spacing: 16) {
+                HStack(alignment: .lastTextBaseline, spacing: 12) {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
-                        if !shouldDisplayNotation, let notation = candidate.candidate.notation {
-                                let labelList = Decorator.labelList(of: notation.label)
+                        if !hasNotationDisplayButton, let labelText = candidate.candidate.notation?.label {
+                                let labelList = Decorator.labelList(of: labelText)
                                 if !(labelList.isEmpty) {
                                         HStack(alignment: .lastTextBaseline, spacing: 4) {
                                                 ForEach(0..<labelList.count, id: \.self) { index in
                                                         let label = labelList[index]
-                                                        Text(verbatim: label).foregroundColor(.secondary)
+                                                        Text(verbatim: label).foregroundStyle(Color.secondary)
                                                 }
                                         }
                                 }
                         }
                         if !(annotationComments.isEmpty) {
-                                HStack(alignment: .lastTextBaseline, spacing: 16) {
-                                        ForEach(0..<annotationComments.count, id: \.self) { index in
-                                                let comment = annotationComments[index]
-                                                Text(verbatim: comment.text).font(comment.language.font)
-                                        }
+                                ForEach(0..<annotationComments.count, id: \.self) { index in
+                                        let comment = annotationComments[index]
+                                        Text(verbatim: comment.text).font(comment.language.font)
                                 }
                         }
                         if !(latinComments.isEmpty) {
@@ -55,5 +53,5 @@ struct CandidateContentView: View {
 }
 
 #Preview {
-        CandidateContentView(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3), shouldDisplayNotation: true)
+        CandidateContentView(candidate: DisplayCandidate(candidate: .example, candidateIndex: 3), hasNotationDisplayButton: true)
 }

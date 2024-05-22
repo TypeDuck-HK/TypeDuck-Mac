@@ -24,11 +24,11 @@ struct NotationView: View {
                                         .font(.system(size: 32))
                                 Text(verbatim: notation.jyutping)
                                         .font(.title2)
-                                        .foregroundColor(.secondary)
+                                        .foregroundStyle(Color.secondary)
                                 if let pronunciationType = Decorator.pronunciationType(of: notation) {
                                         Text(verbatim: pronunciationType)
                                                 .font(.title3)
-                                                .foregroundColor(.secondary)
+                                                .foregroundStyle(Color.secondary)
                                 }
                         }
                         .fixedSize()
@@ -38,7 +38,7 @@ struct NotationView: View {
                                                 ForEach(0..<partOfSpeechList.count, id: \.self) { index in
                                                         Text(verbatim: partOfSpeechList[index])
                                                                 .font(.body.weight(.light))
-                                                                .foregroundColor(.secondary)
+                                                                .foregroundStyle(Color.secondary)
                                                                 .padding(3)
                                                                 .overlay {
                                                                     RoundedRectangle(cornerRadius: 4, style: .continuous).stroke(Color.secondary, lineWidth: 0.75)
@@ -49,14 +49,14 @@ struct NotationView: View {
                                 if let register = Decorator.register(of: notation.register) {
                                         Text(verbatim: register)
                                                 .font(.body.italic())
-                                                .foregroundColor(.secondary)
+                                                .foregroundStyle(Color.secondary)
                                 }
                                 if !labelList.isEmpty {
                                         HStack(alignment: .firstTextBaseline, spacing: 4) {
                                                 ForEach(0..<labelList.count, id: \.self) { index in
                                                         Text(verbatim: labelList[index])
                                                                 .font(.body)
-                                                                .foregroundColor(.secondary)
+                                                                .foregroundStyle(Color.secondary)
                                                 }
                                         }
                                 }
@@ -73,7 +73,7 @@ struct NotationView: View {
                                                         GridRow {
                                                                 Text(verbatim: dataList[index].titleKey)
                                                                         .font(.headline)
-                                                                        .foregroundColor(.secondary)
+                                                                        .foregroundStyle(Color.secondary)
                                                                         .gridColumnAlignment(.trailing)
                                                                 Text(verbatim: dataList[index].textValue)
                                                                         .font(.body)
@@ -89,7 +89,7 @@ struct NotationView: View {
                                                                         .lineLimit(1)
                                                                         .minimumScaleFactor(0.5)
                                                                         .font(.headline)
-                                                                        .foregroundColor(.secondary)
+                                                                        .foregroundStyle(Color.secondary)
                                                                         .frame(width: 130, alignment: .trailing)
                                                                 Text(verbatim: dataList[index].textValue)
                                                                         .font(.body)
@@ -109,7 +109,7 @@ struct NotationView: View {
                                                                 GridRow {
                                                                         Text(verbatim: commentList[index].language.name)
                                                                                 .font(.headline)
-                                                                                .foregroundColor(.secondary)
+                                                                                .foregroundStyle(Color.secondary)
                                                                                 .gridColumnAlignment(.trailing)
                                                                         Text(verbatim: commentList[index].text)
                                                                                 .font(commentList[index].language.font)
@@ -126,7 +126,7 @@ struct NotationView: View {
                                                                                 .lineLimit(1)
                                                                                 .minimumScaleFactor(0.5)
                                                                                 .font(.headline)
-                                                                                .foregroundColor(.secondary)
+                                                                                .foregroundStyle(Color.secondary)
                                                                                 .frame(width: 80, alignment: .trailing)
                                                                         Text(verbatim: commentList[index].text)
                                                                                 .font(commentList[index].language.font)

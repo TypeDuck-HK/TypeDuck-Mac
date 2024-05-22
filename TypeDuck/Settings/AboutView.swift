@@ -54,7 +54,7 @@ This input method is developed by the Department of Linguistics and Modern Langu
                                 HStack(spacing: 0) {
                                         Spacer()
                                         Text("SettingsView.AboutView.Version").fontWeight(.semibold)
-                                        Text("SettingsView.Colon").foregroundColor(.secondary)
+                                        Text("SettingsView.Colon").foregroundStyle(Color.secondary)
                                         Text(verbatim: AppSettings.version)
                                         Spacer()
                                 }

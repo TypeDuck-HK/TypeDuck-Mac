@@ -29,7 +29,7 @@ struct HelpView: View {
                                                 }
                                                 HStack(spacing: 0) {
                                                         Text("SettingsView.HelpView.Shortcut.ToggleOption.NumberKeys").fontWeight(.medium)
-                                                        Text("SettingsView.Colon").foregroundColor(.secondary)
+                                                        Text("SettingsView.Colon").foregroundStyle(Color.secondary)
                                                         Text(verbatim: "1, 2, 3, …, 8, 9, 0")
                                                         Spacer()
                                                 }

@@ -10,35 +10,35 @@ struct CandidateLabel: View {
         @State private var isPopoverPresented: Bool = false
 
         var body: some View {
-                HStack {
-                        HStack(alignment: .lastTextBaseline, spacing: 12) {
-                                SerialNumberLabel(index: index).foregroundColor(shouldHighlight ? .white : .secondary)
-                                CandidateContentView(candidate: candidate, shouldDisplayNotation: shouldDisplayNotation)
+                let shouldDisplayNotationButton: Bool = shouldDisplayNotationButton
+                HStack(spacing: 4) {
+                        HStack(alignment: .lastTextBaseline, spacing: 4) {
+                                SerialNumberLabel(index: index).opacity(shouldHighlight ? 1 : 0.75)
+                                CandidateContentView(candidate: candidate, hasNotationDisplayButton: shouldDisplayNotationButton)
                         }
                         Spacer()
-                        if shouldDisplayNotation {
-                                Image.infoCircle
-                                        .font(.title3)
-                                        .contentShape(Rectangle())
-                                        .onHover { isHovering in
-                                                guard isPopoverPresented != isHovering else { return }
-                                                isPopoverPresented = isHovering
-                                        }
-                        }
+                        Image.infoCircle
+                                .font(.title3)
+                                .contentShape(Rectangle())
+                                .onHover { isHovering in
+                                        guard isPopoverPresented != isHovering else { return }
+                                        isPopoverPresented = isHovering
+                                }
+                                .opacity(shouldDisplayNotationButton ? 1 : 0)
                 }
                 .padding(.horizontal, 4)
-                .padding(.vertical, candidate.candidate.isCantonese ? 0.5 : 8)
-                .foregroundColor(shouldHighlight ? .white : .primary)
-                .background(shouldHighlight ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+                .padding(.vertical, candidate.candidate.isCantonese ? 0 : 8)
+                .foregroundStyle(shouldHighlight ? Color.white : Color.primary)
+                .background(shouldHighlight ? Color.accentColor : Color.clear, in: RoundedRectangle(cornerRadius: 5, style: .continuous))
                 .contentShape(Rectangle())
                 .popover(isPresented: $isPopoverPresented, attachmentAnchor: .point(.trailing), arrowEdge: .trailing) {
-                        if shouldDisplayNotation {
-                                NotationView(notation: candidate.candidate.notation!, comments: candidate.comments).padding()
+                        if let notation = candidate.candidate.notation {
+                                NotationView(notation: notation, comments: candidate.comments).padding()
                         }
                 }
         }
 
-        private var shouldDisplayNotation: Bool {
+        private var shouldDisplayNotationButton: Bool {
                 guard let notation = candidate.candidate.notation else { return false }
                 if notation.partOfSpeech.isValid {
                         return true
