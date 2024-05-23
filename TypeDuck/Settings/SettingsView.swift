@@ -20,7 +20,7 @@ struct SettingsView: View {
         @State private var selection: SettingsSidebarRow = AppSettings.selectedSettingsSidebarRow
 
         // macOS 12
-        @State private var isCandidatesViewActive: Bool = AppSettings.selectedSettingsSidebarRow == .candidates
+        @State private var isGeneralSettingsViewActive: Bool = AppSettings.selectedSettingsSidebarRow == .general
         @State private var isHelpViewActive: Bool = AppSettings.selectedSettingsSidebarRow == .help
         @State private var isAboutViewActive: Bool = AppSettings.selectedSettingsSidebarRow == .about
 
@@ -28,7 +28,7 @@ struct SettingsView: View {
                 if #available(macOS 13.0, *) {
                         NavigationSplitView {
                                 List(selection: $selection) {
-                                        Label("SettingsView.NavigationTitle.Settings", systemImage: "gear").tag(SettingsSidebarRow.candidates)
+                                        Label("SettingsView.NavigationTitle.Settings", systemImage: "gear").tag(SettingsSidebarRow.general)
                                         Label("SettingsView.NavigationTitle.Help", systemImage: "keyboard").tag(SettingsSidebarRow.help)
                                         Label("SettingsView.NavigationTitle.About", systemImage: "info.circle").tag(SettingsSidebarRow.about)
                                 }
@@ -36,8 +36,8 @@ struct SettingsView: View {
                                 .navigationTitle("SettingsView.NavigationTitle.Settings")
                         } detail: {
                                 switch selection {
-                                case .candidates:
-                                        CandidatesView().applyVisualEffect()
+                                case .general:
+                                        GeneralSettingsView().applyVisualEffect()
                                 case .help:
                                         HelpView().applyVisualEffect()
                                 case .about:
@@ -47,7 +47,7 @@ struct SettingsView: View {
                 } else {
                         NavigationView {
                                 List {
-                                        NavigationLink(destination: CandidatesView().applyVisualEffect(), isActive: $isCandidatesViewActive) {
+                                        NavigationLink(destination: GeneralSettingsView().applyVisualEffect(), isActive: $isGeneralSettingsViewActive) {
                                                 Label("SettingsView.NavigationTitle.Settings", systemImage: "gear")
                                         }
                                         NavigationLink(destination: HelpView().applyVisualEffect(), isActive: $isHelpViewActive) {
@@ -69,7 +69,7 @@ struct SettingsView: View {
 }
 
 enum SettingsSidebarRow: Int, Hashable, Identifiable, CaseIterable {
-        case candidates
+        case general
         case help
         case about
         var id: Int {

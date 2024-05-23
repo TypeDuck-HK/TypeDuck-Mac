@@ -11,20 +11,21 @@ struct CandidateLabel: View {
 
         var body: some View {
                 let shouldDisplayNotationButton: Bool = shouldDisplayNotationButton
-                HStack(spacing: 4) {
+                HStack {
                         HStack(alignment: .lastTextBaseline, spacing: 4) {
                                 SerialNumberLabel(index: index).opacity(shouldHighlight ? 1 : 0.75)
                                 CandidateContentView(candidate: candidate, hasNotationDisplayButton: shouldDisplayNotationButton)
                         }
                         Spacer()
-                        Image.infoCircle
-                                .font(.title3)
-                                .contentShape(Rectangle())
-                                .onHover { isHovering in
-                                        guard isPopoverPresented != isHovering else { return }
-                                        isPopoverPresented = isHovering
-                                }
-                                .opacity(shouldDisplayNotationButton ? 1 : 0)
+                        if shouldDisplayNotationButton {
+                                Image.infoCircle
+                                        .font(.title3)
+                                        .contentShape(Rectangle())
+                                        .onHover { isHovering in
+                                                guard isPopoverPresented != isHovering else { return }
+                                                isPopoverPresented = isHovering
+                                        }
+                        }
                 }
                 .padding(.horizontal, 4)
                 .padding(.vertical, candidate.candidate.isCantonese ? 0 : 8)

@@ -10,24 +10,37 @@ struct AppSettings {
                 guard let savedValue = UserDefaults.standard.string(forKey: SettingsKey.EnabledCommentLanguages) else { return defaultEnabledCommentLanguages }
                 let languageValues: [String] = savedValue.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
                 guard !(languageValues.isEmpty) else { return [] }
-                let languages: [Language] = languageValues.map({ Language.language(of: $0) }).compactMap({ $0 }).uniqued()
+                let languages: [Language] = languageValues.compactMap({ Language.language(of: $0) }).uniqued()
                 return commentLanguages.filter({ languages.contains($0) })
         }()
         static func updateCommentLanguage(_ language: Language, shouldEnable: Bool) {
                 let newLanguages: [Language] = enabledCommentLanguages + [language]
-                let handledNewLanguages: [Language?] = newLanguages.map({ item -> Language? in
+                let handledNewLanguages: [Language] = newLanguages.compactMap({ item -> Language? in
                         guard item == language else { return item }
                         guard shouldEnable else { return nil }
                         return item
                 })
-                enabledCommentLanguages = handledNewLanguages.compactMap({ $0 }).uniqued()
+                enabledCommentLanguages = handledNewLanguages.uniqued()
                 let newText: String = enabledCommentLanguages.map(\.name).joined(separator: ",")
                 UserDefaults.standard.set(newText, forKey: SettingsKey.EnabledCommentLanguages)
         }
 
+        private(set) static var primaryCommentLanguage: Language = {
+                guard let savedValue = UserDefaults.standard.string(forKey: SettingsKey.PrimaryCommentLanguage) else { return .English }
+                let name: String = savedValue.trimmingCharacters(in: .whitespaces).trimmingCharacters(in: .controlCharacters)
+                guard let language = Language.language(of: name) else { return .English }
+                return language
+        }()
+        static func updatePrimaryCommentLanguage(to languageName: String) {
+                guard let language = Language.language(of: languageName) else { return }
+                primaryCommentLanguage = language
+                let value: String = language.name
+                UserDefaults.standard.set(value, forKey: SettingsKey.PrimaryCommentLanguage)
+        }
+
 
         /// Settings Window
-        private(set) static var selectedSettingsSidebarRow: SettingsSidebarRow = .candidates
+        private(set) static var selectedSettingsSidebarRow: SettingsSidebarRow = .general
         static func updateSelectedSettingsSidebarRow(to row: SettingsSidebarRow) {
                 selectedSettingsSidebarRow = row
         }
@@ -63,8 +76,9 @@ struct AppSettings {
 }
 
 struct SettingsKey {
-        static let EnabledCommentLanguages: String = "EnabledCommentLanguages"
         static let CandidatePageSize: String = "CandidatePageSize"
+        static let EnabledCommentLanguages: String = "EnabledCommentLanguages"
+        static let PrimaryCommentLanguage: String = "PrimaryCommentLanguage"
 }
 
 extension Language {

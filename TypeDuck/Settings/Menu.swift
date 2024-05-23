@@ -7,47 +7,15 @@ extension TypeDuckInputController {
                 let menuTitle: String = String(localized: "Menu.Title")
                 let menu = NSMenu(title: menuTitle)
 
-                let prefixText: String = "LanguageName."
-                for language in AppSettings.commentLanguages {
-                        let selector: Selector? = {
-                                switch language {
-                                case .Cantonese:
-                                        return nil
-                                case .English:
-                                        return #selector(toggleEnglish)
-                                case .Hindi:
-                                        return #selector(toggleHindi)
-                                case .Indonesian:
-                                        return #selector(toggleIndonesian)
-                                case .Nepali:
-                                        return #selector(toggleNepali)
-                                case .Urdu:
-                                        return #selector(toggleUrdu)
-                                case .Unicode:
-                                        return nil
-                                }
-                        }()
-                        let localizationKey: String = prefixText + language.name
-                        let localizationValue: String.LocalizationValue = String.LocalizationValue(localizationKey)
-                        let localizedName: String = String(localized: localizationValue)
-                        let item: NSMenuItem = NSMenuItem(title: localizedName, action: selector, keyEquivalent: "")
-                        item.state = language.isEnabledCommentLanguage ? .on : .off
-                        menu.addItem(item)
-                }
-
-                menu.addItem(.separator())
-
                 let settingsTitle: String = String(localized: "Menu.Settings")
                 let settings = NSMenuItem(title: settingsTitle, action: #selector(openSettings), keyEquivalent: ",")
                 settings.keyEquivalentModifierMask = [.control, .shift]
                 menu.addItem(settings)
 
                 // TODO: - Check for Updates
-                /*
-                let check4updatesTitle: String = String(localized: "Menu.CheckForUpdates")
-                let check4updates = NSMenuItem(title: check4updatesTitle, action: #selector(openSettings), keyEquivalent: "")
-                menu.addItem(check4updates)
-                */
+                let checkForUpdatesTitle: String = String(localized: "Menu.CheckForUpdates")
+                _ = NSMenuItem(title: checkForUpdatesTitle, action: #selector(openSettings), keyEquivalent: "")
+                // menu.addItem(checkForUpdates)
 
                 let helpTitle: String = String(localized: "Menu.Help")
                 let help = NSMenuItem(title: helpTitle, action: #selector(openHelp), keyEquivalent: "")
@@ -60,40 +28,8 @@ extension TypeDuckInputController {
                 return menu
         }
 
-        @objc private func toggleEnglish() {
-                let language: Language = .English
-                let isEnabled: Bool = language.isEnabledCommentLanguage
-                let shouldEnable: Bool = !isEnabled
-                AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
-        }
-        @objc private func toggleHindi() {
-                let language: Language = .Hindi
-                let isEnabled: Bool = language.isEnabledCommentLanguage
-                let shouldEnable: Bool = !isEnabled
-                AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
-        }
-        @objc private func toggleIndonesian() {
-                let language: Language = .Indonesian
-                let isEnabled: Bool = language.isEnabledCommentLanguage
-                let shouldEnable: Bool = !isEnabled
-                AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
-        }
-        @objc private func toggleNepali() {
-                let language: Language = .Nepali
-                let isEnabled: Bool = language.isEnabledCommentLanguage
-                let shouldEnable: Bool = !isEnabled
-                AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
-        }
-        @objc private func toggleUrdu() {
-                let language: Language = .Urdu
-                let isEnabled: Bool = language.isEnabledCommentLanguage
-                let shouldEnable: Bool = !isEnabled
-                AppSettings.updateCommentLanguage(language, shouldEnable: shouldEnable)
-        }
-
-
         @objc private func openSettings() {
-                AppSettings.updateSelectedSettingsSidebarRow(to: .candidates)
+                AppSettings.updateSelectedSettingsSidebarRow(to: .general)
                 displaySettingsWindow()
         }
         @objc private func openHelp() {
@@ -105,6 +41,11 @@ extension TypeDuckInputController {
                 displaySettingsWindow()
         }
         private func displaySettingsWindow() {
+                DispatchQueue.main.async { [weak self] in
+                        self?.prepareSettingsWindow()
+                }
+        }
+        private func prepareSettingsWindow() {
                 let windowIdentifiers: [String] = NSApp.windows.map(\.identifier?.rawValue).compactMap({ $0 })
                 let shouldOpenNewWindow: Bool = !(windowIdentifiers.contains(AppSettings.TypeDuckSettingsWindowIdentifier))
                 guard shouldOpenNewWindow else { return }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370C646F2BFEC3A5006F2ABA /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C646E2BFEC3A5006F2ABA /* GeneralSettingsView.swift */; };
 		370F5B312BB59B2200F0A65C /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F5B302BB59B2200F0A65C /* ColorExtensions.swift */; };
 		370F5B332BB59B4200F0A65C /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370F5B322BB59B4200F0A65C /* ViewExtensions.swift */; };
 		371B277E2B3EB66A00EC1271 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B277D2B3EB66A00EC1271 /* Preview Assets.xcassets */; };
@@ -52,7 +53,6 @@
 		371B27F02B3EB95F00EC1271 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 371B27EE2B3EB95F00EC1271 /* Images.xcassets */; };
 		37279F3B2B62873600CC50A4 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3A2B62873600CC50A4 /* AppSettings.swift */; };
 		37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F3E2B62909600CC50A4 /* SettingsView.swift */; };
-		37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F402B62968C00CC50A4 /* CandidatesView.swift */; };
 		37279F432B6296A600CC50A4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37279F422B6296A600CC50A4 /* AboutView.swift */; };
 		373133122BBF302C0012A939 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */; };
 		3764F6122BFAC36400B3737B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3764F6112BFAC36400B3737B /* InfoPlist.xcstrings */; };
@@ -79,6 +79,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		370C646E2BFEC3A5006F2ABA /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		370F5B302BB59B2200F0A65C /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		370F5B322BB59B4200F0A65C /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		371B27732B3EB66800EC1271 /* TypeDuck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TypeDuck.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,7 +130,6 @@
 		371B280E2B3EBA0900EC1271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		37279F3A2B62873600CC50A4 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		37279F3E2B62909600CC50A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		37279F402B62968C00CC50A4 /* CandidatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidatesView.swift; sourceTree = "<group>"; };
 		37279F422B6296A600CC50A4 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3764F6112BFAC36400B3737B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 				371B27B92B3EB93A00EC1271 /* Menu.swift */,
 				37279F3A2B62873600CC50A4 /* AppSettings.swift */,
 				37279F3E2B62909600CC50A4 /* SettingsView.swift */,
-				37279F402B62968C00CC50A4 /* CandidatesView.swift */,
+				370C646E2BFEC3A5006F2ABA /* GeneralSettingsView.swift */,
 				371B27BD2B3EB93A00EC1271 /* HelpView.swift */,
 				37279F422B6296A600CC50A4 /* AboutView.swift */,
 			);
@@ -469,11 +469,11 @@
 				371B27E42B3EB93A00EC1271 /* Options.swift in Sources */,
 				371B27CF2B3EB93A00EC1271 /* AppContext.swift in Sources */,
 				37279F432B6296A600CC50A4 /* AboutView.swift in Sources */,
+				370C646F2BFEC3A5006F2ABA /* GeneralSettingsView.swift in Sources */,
 				371B27CE2B3EB93A00EC1271 /* Language.swift in Sources */,
 				371B27D52B3EB93A00EC1271 /* InputStage.swift in Sources */,
 				37279F3F2B62909600CC50A4 /* SettingsView.swift in Sources */,
 				371B27CD2B3EB93A00EC1271 /* Comment.swift in Sources */,
-				37279F412B62968C00CC50A4 /* CandidatesView.swift in Sources */,
 				371B27E02B3EB93A00EC1271 /* HelpView.swift in Sources */,
 				371B27DD2B3EB93A00EC1271 /* PageTransformation.swift in Sources */,
 				371B27E92B3EB93A00EC1271 /* ImageExtensions.swift in Sources */,
