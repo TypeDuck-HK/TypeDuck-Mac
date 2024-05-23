@@ -85,4 +85,7 @@ extension Language {
         var isEnabledCommentLanguage: Bool {
                 return AppSettings.enabledCommentLanguages.contains(self)
         }
+        var isPrimaryCommentLanguage: Bool {
+                return self == AppSettings.primaryCommentLanguage
+        }
 }

@@ -8,14 +8,16 @@ struct NotationView: View {
                 self.partOfSpeechList = Decorator.partOfSpeechList(of: notation.partOfSpeech)
                 self.labelList = Decorator.labelList(of: notation.label)
                 self.dataList = Decorator.dataList(of: notation)
-                self.commentList = comments.filter(\.language.isTranslation)
+                self.primaryLanguageComment = comments.first(where: \.language.isPrimaryCommentLanguage )
+                self.moreLanguagesComments = comments.filter({ $0.language.isTranslation && !$0.language.isPrimaryCommentLanguage })
         }
 
         private let notation: Notation
         private let partOfSpeechList: [String]
         private let labelList: [String]
         private let dataList: [KeyValue]
-        private let commentList: [Comment]
+        private let primaryLanguageComment: Comment?
+        private let moreLanguagesComments: [Comment]
 
         var body: some View {
                 VStack(alignment: .leading, spacing: 16) {
@@ -60,9 +62,9 @@ struct NotationView: View {
                                                 }
                                         }
                                 }
-                                if let definition = commentList.first {
-                                        Text(verbatim: definition.text)
-                                                .font(definition.language.font)
+                                if let primaryLanguageComment {
+                                        Text(verbatim: primaryLanguageComment.text)
+                                                .font(primaryLanguageComment.language.font)
                                 }
                         }
                         .fixedSize()
@@ -99,39 +101,41 @@ struct NotationView: View {
                                         .fixedSize()
                                 }
                         }
-                        if commentList.count > 1 {
+                        if !moreLanguagesComments.isEmpty {
                                 VStack(alignment: .leading, spacing: 8) {
                                         Text(verbatim: "More Languages")
                                             .font(.title3.bold())
                                         if #available(macOS 13.0, *) {
                                                 Grid(alignment: .leadingFirstTextBaseline, horizontalSpacing: 12, verticalSpacing: 8) {
-                                                        ForEach(1..<commentList.count, id: \.self) { index in
+                                                        ForEach(0..<moreLanguagesComments.count, id: \.self) { index in
+                                                                let comment = moreLanguagesComments[index]
                                                                 GridRow {
-                                                                        Text(verbatim: commentList[index].language.name)
+                                                                        Text(verbatim: comment.language.name)
                                                                                 .font(.headline)
                                                                                 .foregroundStyle(Color.secondary)
                                                                                 .gridColumnAlignment(.trailing)
-                                                                        Text(verbatim: commentList[index].text)
-                                                                                .font(commentList[index].language.font)
+                                                                        Text(verbatim: comment.text)
+                                                                                .font(comment.language.font)
                                                                 }
-                                                                .padding(commentList[index].language.padding)
+                                                                .padding(comment.language.padding)
                                                         }
                                                 }
                                                 .fixedSize()
                                         } else {
                                                 VStack(alignment: .leading, spacing: 8) {
-                                                        ForEach(1..<commentList.count, id: \.self) { index in
+                                                        ForEach(0..<moreLanguagesComments.count, id: \.self) { index in
+                                                                let comment = moreLanguagesComments[index]
                                                                 HStack(alignment: .firstTextBaseline, spacing: 12) {
-                                                                        Text(verbatim: commentList[index].language.name)
+                                                                        Text(verbatim: comment.language.name)
                                                                                 .lineLimit(1)
                                                                                 .minimumScaleFactor(0.5)
                                                                                 .font(.headline)
                                                                                 .foregroundStyle(Color.secondary)
                                                                                 .frame(width: 80, alignment: .trailing)
-                                                                        Text(verbatim: commentList[index].text)
-                                                                                .font(commentList[index].language.font)
+                                                                        Text(verbatim: comment.text)
+                                                                                .font(comment.language.font)
                                                                 }
-                                                                .padding(commentList[index].language.padding)
+                                                                .padding(comment.language.padding)
                                                         }
                                                 }
                                                 .fixedSize()

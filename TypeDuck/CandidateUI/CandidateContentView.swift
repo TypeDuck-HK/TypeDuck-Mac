@@ -8,8 +8,9 @@ struct CandidateContentView: View {
 
         var body: some View {
                 let annotationComments = candidate.comments.filter(\.language.isAnnotation)
-                let latinComments = candidate.comments.filter(\.language.isLatin)
-                let devanagariComments = candidate.comments.filter(\.language.isDevanagari)
+                let enabledTranslations = candidate.comments.filter(\.language.isEnabledCommentLanguage)
+                let latinComments = enabledTranslations.filter(\.language.isLatin)
+                let devanagariComments = enabledTranslations.filter(\.language.isDevanagari)
                 HStack(alignment: .lastTextBaseline, spacing: 12) {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
                         if !hasNotationDisplayButton, let labelText = candidate.candidate.notation?.label, labelText.isValid {
@@ -45,7 +46,7 @@ struct CandidateContentView: View {
                                         }
                                 }
                         }
-                        if let comment = candidate.comments.first(where: \.language.isRTL) {
+                        if let comment = enabledTranslations.first(where: \.language.isRTL) {
                                 Text(verbatim: comment.text).font(comment.language.font)
                         }
                 }

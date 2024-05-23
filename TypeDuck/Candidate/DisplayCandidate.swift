@@ -44,7 +44,7 @@ struct DisplayCandidate: Hashable {
 
 extension Notation {
         var comments: [Comment] {
-                return AppSettings.enabledCommentLanguages.compactMap({ language -> Comment? in
+                return Language.allCases.compactMap({ language -> Comment? in
                         switch language {
                         case .Cantonese:
                                 return nil
