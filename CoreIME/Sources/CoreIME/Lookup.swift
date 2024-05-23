@@ -2,7 +2,32 @@ import Foundation
 import SQLite3
 
 extension Engine {
-        public static func fetchNotation(word: String, romanization: String) -> Notation? {
+        public static func embedNotations(for origin: Candidate) -> Candidate {
+                let text = origin.text
+                let romanization = origin.romanization
+                if let notation = fetchNotation(word: text, romanization: romanization) {
+                        return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, notation: notation)
+                } else {
+                        let textCount = text.count
+                        switch textCount {
+                        case 2, 3, 4, 5, 6:
+                                let leadingCount = textCount / 2
+                                let trailingCount = textCount - leadingCount
+                                let leadingText = text.prefix(leadingCount)
+                                let trailingText = text.suffix(trailingCount)
+                                let syllables = romanization.split(separator: Character.space)
+                                let leadingRomanization = syllables.prefix(leadingCount).joined(separator: String.space)
+                                let trailingRomanization = syllables.suffix(trailingCount).joined(separator: String.space)
+                                let leadingNotation = fetchNotation(word: leadingText, romanization: leadingRomanization)
+                                let trailingNotation = fetchNotation(word: trailingText, romanization: trailingRomanization)
+                                let subNotations: [Notation] = [leadingNotation, trailingNotation].compactMap({ $0 })
+                                return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations)
+                        default:
+                                return origin
+                        }
+                }
+        }
+        public static func fetchNotation<T: StringProtocol>(word: T, romanization: String) -> Notation? {
                 let ping: Int = romanization.removedSpacesTones().hash
                 let command: String = "SELECT word, romanization, frequency, altfrequency, pronunciationorder, sandhi, literarycolloquial, partofspeech, register, label, normalized, written, vernacular, collocation, english, urdu, nepali, hindi, indonesian FROM lexicontable WHERE ping = \(ping) AND word = '\(word)' AND romanization = '\(romanization)' LIMIT 1;"
                 var statement: OpaquePointer? = nil

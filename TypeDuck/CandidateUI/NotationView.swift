@@ -20,8 +20,8 @@ struct NotationView: View {
         private let moreLanguagesComments: [Comment]
 
         var body: some View {
-                VStack(alignment: .leading, spacing: 16) {
-                        HStack(alignment: .firstTextBaseline, spacing: 16) {
+                VStack(alignment: .leading, spacing: 12) {
+                        HStack(alignment: .firstTextBaseline, spacing: 12) {
                                 Text(verbatim: notation.word)
                                         .font(.system(size: 32))
                                 Text(verbatim: notation.jyutping)

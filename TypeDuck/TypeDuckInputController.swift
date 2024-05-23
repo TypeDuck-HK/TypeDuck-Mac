@@ -317,10 +317,7 @@ final class TypeDuckInputController: IMKInputController {
         private func suggest() {
                 let processingText: String = bufferText.toneConverted()
                 let segmentation = Segmentor.segment(text: processingText)
-                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ origin -> Candidate in
-                        guard let notation = Engine.fetchNotation(word: origin.text, romanization: origin.romanization) else { return origin }
-                        return Candidate(text: origin.text, romanization: origin.romanization, input: origin.input, mark: origin.mark, notation: notation)
-                })
+                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ Engine.embedNotations(for: $0) })
                 let needsSymbols: Bool = Options.isEmojiSuggestionsOn && selectedCandidates.isEmpty
                 let asap: Bool = !(userLexiconCandidates.isEmpty)
                 let engineCandidates: [Candidate] = Engine.suggest(text: processingText, segmentation: segmentation, needsSymbols: needsSymbols, asap: asap)

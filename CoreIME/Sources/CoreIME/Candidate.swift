@@ -45,7 +45,11 @@ public struct Candidate: Hashable {
         /// Rank. Smaller is preferred.
         let order: Int
 
+        /// Lexicon detail information
         public let notation: Notation?
+
+        /// For Compound Translations
+        public let subNotations: [Notation]
 
         /// Primary Initializer
         /// - Parameters:
@@ -56,7 +60,7 @@ public struct Candidate: Hashable {
         ///   - input: User input for this Candidate.
         ///   - mark: Formatted user input for pre-edit display.
         ///   - notation: Notation
-        public init(type: CandidateType = .cantonese, text: String, lexiconText: String? = nil, romanization: String, input: String, mark: String? = nil, notation: Notation? = nil) {
+        public init(type: CandidateType = .cantonese, text: String, lexiconText: String? = nil, romanization: String, input: String, mark: String? = nil, notation: Notation? = nil, subNotations: [Notation] = []) {
                 self.type = type
                 self.text = text
                 self.lexiconText = lexiconText ?? text
@@ -65,10 +69,11 @@ public struct Candidate: Hashable {
                 self.mark = mark ?? input
                 self.order = 0
                 self.notation = notation
+                self.subNotations = subNotations
         }
 
         /// CoreIME Internal Initializer
-        init(text: String, romanization: String, input: String, mark: String, order: Int, notation: Notation?) {
+        init(text: String, romanization: String, input: String, mark: String, order: Int, notation: Notation?, subNotations: [Notation] = []) {
                 self.type = .cantonese
                 self.text = text
                 self.lexiconText = text
@@ -77,6 +82,7 @@ public struct Candidate: Hashable {
                 self.mark = mark
                 self.order = order
                 self.notation = notation
+                self.subNotations = subNotations
         }
 
         /// Create a Candidate with an emoji or a symbol
@@ -95,6 +101,7 @@ public struct Candidate: Hashable {
                 self.mark = input
                 self.order = 0
                 self.notation = nil
+                self.subNotations = []
         }
 
         /// Create a Candidate for keyboard compose
@@ -112,11 +119,17 @@ public struct Candidate: Hashable {
                 self.mark = input
                 self.order = 0
                 self.notation = nil
+                self.subNotations = []
         }
 
         /// type == .cantonese
         public var isCantonese: Bool {
                 return self.type == .cantonese
+        }
+
+        /// Concatenated by multiple lexicons
+        public var isCompound: Bool {
+                return !(subNotations.isEmpty)
         }
 
         // Equatable
@@ -149,13 +162,27 @@ public struct Candidate: Hashable {
                 }
         }
 
-        public static func +(lhs: Candidate, rhs: Candidate) -> Candidate {
+        static func +(lhs: Candidate, rhs: Candidate) -> Candidate {
                 let newText: String = lhs.text + rhs.text
                 let newLexiconText: String = lhs.lexiconText + rhs.lexiconText
                 let newRomanization: String = lhs.romanization + " " + rhs.romanization
                 let newInput: String = lhs.input + rhs.input
                 let newMark: String = lhs.mark + " " + rhs.mark
-                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark)
+                let newSubNotations: [Notation] = {
+                        var items: [Notation] = []
+                        if let lhsNotation = lhs.notation {
+                                items.append(lhsNotation)
+                        } else {
+                                items.append(contentsOf: lhs.subNotations)
+                        }
+                        if let rhsNotation = rhs.notation {
+                                items.append(rhsNotation)
+                        } else {
+                                items.append(contentsOf: rhs.subNotations)
+                        }
+                        return items
+                }()
+                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark, subNotations: newSubNotations)
         }
 }
 
