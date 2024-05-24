@@ -194,11 +194,6 @@ final class TypeDuckInputController: IMKInputController {
                                 Engine.prepare()
                         case (false, true):
                                 inputStage = .ending
-                                let shouldHandleSelectedCandidates: Bool = !(selectedCandidates.isEmpty)
-                                guard shouldHandleSelectedCandidates else { return }
-                                let concatenated: Candidate = selectedCandidates.joined()
-                                selectedCandidates = []
-                                UserLexicon.handle(concatenated)
                         case (false, false):
                                 inputStage = .ongoing
                         }
@@ -206,6 +201,11 @@ final class TypeDuckInputController: IMKInputController {
                 didSet {
                         switch bufferText.first {
                         case .none:
+                                if AppSettings.isInputMemoryOn && !(selectedCandidates.isEmpty) {
+                                        let concatenated: Candidate = selectedCandidates.joined()
+                                        UserLexicon.handle(concatenated)
+                                }
+                                selectedCandidates = []
                                 clearMarkedText()
                                 candidates = []
                         case .some(let character) where character.isInvalidAnchor:
@@ -317,7 +317,7 @@ final class TypeDuckInputController: IMKInputController {
         private func suggest() {
                 let processingText: String = bufferText.toneConverted()
                 let segmentation = Segmentor.segment(text: processingText)
-                let userLexiconCandidates: [Candidate] = UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ Engine.embedNotations(for: $0) })
+                let userLexiconCandidates: [Candidate] = AppSettings.isInputMemoryOn ? UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ Engine.embedNotations(for: $0) }) : []
                 let needsSymbols: Bool = Options.isEmojiSuggestionsOn && selectedCandidates.isEmpty
                 let asap: Bool = !(userLexiconCandidates.isEmpty)
                 let engineCandidates: [Candidate] = Engine.suggest(text: processingText, segmentation: segmentation, needsSymbols: needsSymbols, asap: asap)

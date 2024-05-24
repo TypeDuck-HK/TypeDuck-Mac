@@ -23,7 +23,7 @@ struct NotationView: View {
                 VStack(alignment: .leading, spacing: 12) {
                         HStack(alignment: .firstTextBaseline, spacing: 12) {
                                 Text(verbatim: notation.word)
-                                        .font(.system(size: 32))
+                                        .font(.largeTitle)
                                 Text(verbatim: notation.jyutping)
                                         .font(.title2)
                                         .foregroundStyle(Color.secondary)

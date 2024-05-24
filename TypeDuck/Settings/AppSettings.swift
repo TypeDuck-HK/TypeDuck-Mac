@@ -38,6 +38,22 @@ struct AppSettings {
                 UserDefaults.standard.set(value, forKey: SettingsKey.PrimaryCommentLanguage)
         }
 
+        private(set) static var isInputMemoryOn: Bool = {
+                let savedValue: Int = UserDefaults.standard.integer(forKey: SettingsKey.UserLexiconInputMemory)
+                switch savedValue {
+                case 0, 1:
+                        return true
+                case 2:
+                        return false
+                default:
+                        return true
+                }
+        }()
+        static func updateInputMemory(to isOn: Bool) {
+                isInputMemoryOn = isOn
+                let value: Int = isOn ? 1 : 2
+                UserDefaults.standard.set(value, forKey: SettingsKey.UserLexiconInputMemory)
+        }
 
         /// Settings Window
         private(set) static var selectedSettingsSidebarRow: SettingsSidebarRow = .general
@@ -79,6 +95,7 @@ struct SettingsKey {
         static let CandidatePageSize: String = "CandidatePageSize"
         static let EnabledCommentLanguages: String = "EnabledCommentLanguages"
         static let PrimaryCommentLanguage: String = "PrimaryCommentLanguage"
+        static let UserLexiconInputMemory: String = "UserLexiconInputMemory"
 }
 
 extension Language {
