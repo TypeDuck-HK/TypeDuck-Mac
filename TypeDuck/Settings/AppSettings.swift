@@ -2,10 +2,12 @@ import Foundation
 
 struct AppSettings {
 
+        /// Translations
         static let commentLanguages: [Language] = [.English, .Hindi, .Indonesian, .Nepali, .Urdu ]
 
         private static let defaultEnabledCommentLanguages: [Language] = commentLanguages
 
+        /// Translations
         private(set) static var enabledCommentLanguages: [Language] = {
                 guard let savedValue = UserDefaults.standard.string(forKey: SettingsKey.EnabledCommentLanguages) else { return defaultEnabledCommentLanguages }
                 let languageValues: [String] = savedValue.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
@@ -38,6 +40,25 @@ struct AppSettings {
                 UserDefaults.standard.set(value, forKey: SettingsKey.PrimaryCommentLanguage)
         }
 
+        /// Candidate count per page
+        private(set) static var candidatePageSize: Int = {
+                let savedValue: Int = UserDefaults.standard.integer(forKey: SettingsKey.CandidatePageSize)
+                let isSavedValueValid: Bool = pageSizeValidity(of: savedValue)
+                guard isSavedValueValid else { return defaultCandidatePageSize }
+                return savedValue
+        }()
+        static func updateCandidatePageSize(to newPageSize: Int) {
+                let isNewPageSizeValid: Bool = pageSizeValidity(of: newPageSize)
+                guard isNewPageSizeValid else { return }
+                candidatePageSize = newPageSize
+                UserDefaults.standard.set(newPageSize, forKey: SettingsKey.CandidatePageSize)
+        }
+        private static func pageSizeValidity(of value: Int) -> Bool {
+                return candidatePageSizeRange.contains(value)
+        }
+        private static let defaultCandidatePageSize: Int = 7
+        static let candidatePageSizeRange: Range<Int> = 1..<11
+
         private(set) static var isInputMemoryOn: Bool = {
                 let savedValue: Int = UserDefaults.standard.integer(forKey: SettingsKey.UserLexiconInputMemory)
                 switch savedValue {
@@ -55,38 +76,18 @@ struct AppSettings {
                 UserDefaults.standard.set(value, forKey: SettingsKey.UserLexiconInputMemory)
         }
 
-        /// Settings Window
-        private(set) static var selectedSettingsSidebarRow: SettingsSidebarRow = .general
-        static func updateSelectedSettingsSidebarRow(to row: SettingsSidebarRow) {
-                selectedSettingsSidebarRow = row
-        }
-
-
-        /// Candidate count per page
-        private(set) static var candidatePageSize: Int = {
-                let savedValue: Int = UserDefaults.standard.integer(forKey: SettingsKey.CandidatePageSize)
-                let isSavedValueValid: Bool = pageSizeValidity(of: savedValue)
-                guard isSavedValueValid else { return defaultCandidatePageSize }
-                return savedValue
-        }()
-        static func updateCandidatePageSize(to newPageSize: Int) {
-                let isNewPageSizeValid: Bool = pageSizeValidity(of: newPageSize)
-                guard isNewPageSizeValid else { return }
-                candidatePageSize = newPageSize
-        }
-        private static func pageSizeValidity(of value: Int) -> Bool {
-                return candidatePageSizeRange.contains(value)
-        }
-        private static let defaultCandidatePageSize: Int = 7
-        static let candidatePageSizeRange: Range<Int> = 1..<11
-
-
         /// Example: 1.0.1 (23)
         static let version: String = {
                 let marketingVersion: String = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "version_not_found"
                 let currentProjectVersion: String = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "build_not_found"
                 return marketingVersion + " (" + currentProjectVersion + ")"
         }()
+
+        /// Settings Window
+        private(set) static var selectedSettingsSidebarRow: SettingsSidebarRow = .general
+        static func updateSelectedSettingsSidebarRow(to row: SettingsSidebarRow) {
+                selectedSettingsSidebarRow = row
+        }
 
         static let TypeDuckSettingsWindowIdentifier: String = "TypeDuckSettingsWindowIdentifier"
 }

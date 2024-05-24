@@ -2,7 +2,7 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
 
-        @AppStorage(SettingsKey.CandidatePageSize) private var pageSize: Int = AppSettings.candidatePageSize
+        @State private var pageSize: Int = AppSettings.candidatePageSize
         private let pageSizeRange: Range<Int> = AppSettings.candidatePageSizeRange
 
         @State private var isEnglishEnabled: Bool = Language.English.isEnabledCommentLanguage
@@ -10,8 +10,7 @@ struct GeneralSettingsView: View {
         @State private var isIndonesianEnabled: Bool = Language.Indonesian.isEnabledCommentLanguage
         @State private var isNepaliEnabled: Bool = Language.Nepali.isEnabledCommentLanguage
         @State private var isUrduEnabled: Bool = Language.Urdu.isEnabledCommentLanguage
-
-        @AppStorage(SettingsKey.PrimaryCommentLanguage) var primaryCommentLanguageName: String = AppSettings.primaryCommentLanguage.name
+        @State private var primaryCommentLanguageName: String = AppSettings.primaryCommentLanguage.name
 
         @State private var isEmojiSuggestionsOn: Bool = Options.isEmojiSuggestionsOn
         @State private var isInputMemoryOn: Bool = AppSettings.isInputMemoryOn
