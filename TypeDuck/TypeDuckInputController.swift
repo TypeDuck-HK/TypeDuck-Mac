@@ -61,14 +61,14 @@ final class TypeDuckInputController: IMKInputController {
                 window.setFrame(.zero, display: true)
         }
         func updateWindowFrame(_ frame: CGRect? = nil) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) { [weak self] in
+                DispatchQueue.main.async { [weak self] in
                         self?.window.setFrame(frame ?? self?.windowFrame ?? .zero, display: true)
                 }
         }
         private var windowFrame: CGRect {
                 let origin: CGPoint = currentOrigin ?? currentClient?.position ?? .zero
                 let viewSize: CGSize = {
-                        guard let size = window.contentView?.subviews.first?.bounds.size, size.width > 50 else {
+                        guard let size = window.contentView?.subviews.first?.bounds.size, size.width > 44 else {
                                 return CGSize(width: 800, height: 500)
                         }
                         return size
