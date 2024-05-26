@@ -104,8 +104,8 @@ final class TypeDuckInputController: IMKInputController {
         private(set) lazy var currentClient: InputClient? = nil {
                 didSet {
                         guard let origin = currentClient?.position else { return }
-                        let isRegularHorizontal: Bool = (origin.x - screenOrigin.x) < (screenSize.width - 400)
-                        let isRegularVertical: Bool = (origin.y - screenOrigin.y) > 400
+                        let isRegularHorizontal: Bool = (origin.x - screenOrigin.x) < (screenSize.width - 300)
+                        let isRegularVertical: Bool = (origin.y - screenOrigin.y) > 300
                         let newPattern: WindowPattern = {
                                 switch (isRegularHorizontal, isRegularVertical) {
                                 case (true, true):
