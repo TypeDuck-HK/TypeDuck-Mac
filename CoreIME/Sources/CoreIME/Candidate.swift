@@ -180,7 +180,7 @@ public struct Candidate: Hashable {
                         } else {
                                 items.append(contentsOf: rhs.subNotations)
                         }
-                        return items
+                        return items.uniqued()
                 }()
                 return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark, subNotations: newSubNotations)
         }

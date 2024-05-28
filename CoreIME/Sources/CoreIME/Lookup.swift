@@ -20,7 +20,7 @@ extension Engine {
                                 let trailingRomanization = syllables.suffix(trailingCount).joined(separator: String.space)
                                 let leadingNotation = fetchNotation(word: leadingText, romanization: leadingRomanization)
                                 let trailingNotation = fetchNotation(word: trailingText, romanization: trailingRomanization)
-                                let subNotations: [Notation] = [leadingNotation, trailingNotation].compactMap({ $0 })
+                                let subNotations: [Notation] = [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
                                 return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations)
                         default:
                                 return origin
