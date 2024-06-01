@@ -10,7 +10,90 @@ extension Engine {
                 } else {
                         let textCount = text.count
                         switch textCount {
-                        case 2, 3, 4, 5, 6:
+                        case 0, 1:
+                                return origin
+                        case 3:
+                                let syllables = romanization.split(separator: Character.space).map({ String($0) })
+                                let subNotations: [Notation] = {
+                                        let leadingCharacters = text.prefix(2)
+                                        let trailingCharacters = text.suffix(1)
+                                        let leadingRomanization = syllables.prefix(2).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(1).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                guard subNotations.count < 2 else { return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations) }
+                                let subNotationsAlt: [Notation] = {
+                                        let leadingCharacters = text.prefix(1)
+                                        let trailingCharacters = text.suffix(2)
+                                        let leadingRomanization = syllables.prefix(1).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(2).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                guard subNotationsAlt.count < 2 else { return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotationsAlt) }
+                                let anotherSubNotations: [Notation] = {
+                                        let characters = text.map({ String($0) })
+                                        guard characters.count == syllables.count else { return [] }
+                                        var notations: [Notation] = []
+                                        for index in 0..<characters.count {
+                                                if let notation = fetchNotation(word: characters[index], romanization: syllables[index]) {
+                                                        notations.append(notation)
+                                                }
+                                        }
+                                        return notations.uniqued()
+                                }()
+                                return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: anotherSubNotations)
+                        case 5:
+                                let syllables = romanization.split(separator: Character.space).map({ String($0) })
+                                let subNotations: [Notation] = {
+                                        let leadingCharacters = text.prefix(2)
+                                        let trailingCharacters = text.suffix(3)
+                                        let leadingRomanization = syllables.prefix(2).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(3).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                guard subNotations.isEmpty else { return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations) }
+                                let subNotationsAlt: [Notation] = {
+                                        let leadingCharacters = text.prefix(3)
+                                        let trailingCharacters = text.suffix(2)
+                                        let leadingRomanization = syllables.prefix(3).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(2).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotationsAlt)
+                        case 6:
+                                let syllables = romanization.split(separator: Character.space).map({ String($0) })
+                                let subNotations: [Notation] = {
+                                        let leadingCharacters = text.prefix(3)
+                                        let trailingCharacters = text.suffix(3)
+                                        let leadingRomanization = syllables.prefix(3).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(3).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                guard subNotations.isEmpty else { return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations) }
+                                let subNotationsAlt: [Notation] = {
+                                        let leadingCharacters = text.prefix(2)
+                                        let mediumCharacters = text.dropFirst(2).prefix(2)
+                                        let trailingCharacters = text.suffix(2)
+                                        let leadingRomanization = syllables.prefix(2).joined(separator: String.space)
+                                        let mediumRomanization = syllables.dropFirst(2).prefix(2).joined(separator: String.space)
+                                        let trailingRomanization = syllables.suffix(2).joined(separator: String.space)
+                                        let leadingNotation = fetchNotation(word: leadingCharacters, romanization: leadingRomanization)
+                                        let mediumNotation = fetchNotation(word: mediumCharacters, romanization: mediumRomanization)
+                                        let trailingNotation = fetchNotation(word: trailingCharacters, romanization: trailingRomanization)
+                                        return [leadingNotation, mediumNotation, trailingNotation].compactMap({ $0 }).uniqued()
+                                }()
+                                return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotationsAlt)
+                        default:
                                 let leadingCount = textCount / 2
                                 let trailingCount = textCount - leadingCount
                                 let leadingText = text.prefix(leadingCount)
@@ -22,8 +105,6 @@ extension Engine {
                                 let trailingNotation = fetchNotation(word: trailingText, romanization: trailingRomanization)
                                 let subNotations: [Notation] = [leadingNotation, trailingNotation].compactMap({ $0 }).uniqued()
                                 return Candidate(text: text, romanization: romanization, input: origin.input, mark: origin.mark, subNotations: subNotations)
-                        default:
-                                return origin
                         }
                 }
         }
