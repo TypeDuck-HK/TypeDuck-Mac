@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreIME
 
 struct GeneralSettingsView: View {
 
@@ -10,9 +11,10 @@ struct GeneralSettingsView: View {
         @State private var isIndonesianEnabled: Bool = Language.Indonesian.isEnabledCommentLanguage
         @State private var isNepaliEnabled: Bool = Language.Nepali.isEnabledCommentLanguage
         @State private var isUrduEnabled: Bool = Language.Urdu.isEnabledCommentLanguage
-        @State private var primaryCommentLanguageName: String = AppSettings.primaryCommentLanguage.name
+        @State private var primaryCommentLanguage: Language = AppSettings.primaryCommentLanguage
 
         @State private var isEmojiSuggestionsOn: Bool = Options.isEmojiSuggestionsOn
+        @State private var cangjieVariant: CangjieVariant = AppSettings.cangjieVariant
         @State private var isInputMemoryOn: Bool = AppSettings.isInputMemoryOn
 
         @State private var isConfirmDialogPresented: Bool = false
@@ -29,6 +31,7 @@ struct GeneralSettingsView: View {
                                                         Text(verbatim: "\($0)").tag($0)
                                                 }
                                         }
+                                        .pickerStyle(.menu)
                                         .scaledToFit()
                                         .onChange(of: pageSize) { newPageSize in
                                                 AppSettings.updateCandidatePageSize(to: newPageSize)
@@ -116,16 +119,17 @@ struct GeneralSettingsView: View {
                                                 }
                                                 .fixedSize()
                                                 HStack {
-                                                        Picker("SettingsView.GeneralSettingsView.Settings.PrimaryCommentLanguage", selection: $primaryCommentLanguageName) {
-                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.English").tag(Language.English.name)
-                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Hindi").tag(Language.Hindi.name)
-                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Indonesian").tag(Language.Indonesian.name)
-                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Nepali").tag(Language.Nepali.name)
-                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Urdu").tag(Language.Urdu.name)
+                                                        Picker("SettingsView.GeneralSettingsView.Settings.PrimaryCommentLanguage", selection: $primaryCommentLanguage) {
+                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.English").tag(Language.English)
+                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Hindi").tag(Language.Hindi)
+                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Indonesian").tag(Language.Indonesian)
+                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Nepali").tag(Language.Nepali)
+                                                                Text("SettingsView.GeneralSettingsView.CommentLanguage.Urdu").tag(Language.Urdu)
                                                         }
+                                                        .pickerStyle(.menu)
                                                         .scaledToFit()
-                                                        .onChange(of: primaryCommentLanguageName) { newLanguageName in
-                                                                AppSettings.updatePrimaryCommentLanguage(to: newLanguageName)
+                                                        .onChange(of: primaryCommentLanguage) { newLanguage in
+                                                                AppSettings.updatePrimaryCommentLanguage(to: newLanguage)
                                                         }
                                                         Spacer()
                                                 }
@@ -142,6 +146,27 @@ struct GeneralSettingsView: View {
                                         Spacer()
                                 }
                                 .block()
+                                VStack(spacing: 2) {
+                                        HStack {
+                                                Text("GeneralSettingsView.SectionHeader.ReverseLookup").font(.subheadline).padding(.horizontal)
+                                                Spacer()
+                                        }
+                                        HStack {
+                                                Picker("GeneralSettingsView.CangjieVariant.Picker.TitleKey", selection: $cangjieVariant) {
+                                                        Text("GeneralSettingsView.CangjieVariant.Picker.Option1").tag(CangjieVariant.cangjie5)
+                                                        Text("GeneralSettingsView.CangjieVariant.Picker.Option2").tag(CangjieVariant.cangjie3)
+                                                        Text("GeneralSettingsView.CangjieVariant.Picker.Option3").tag(CangjieVariant.quick5)
+                                                        Text("GeneralSettingsView.CangjieVariant.Picker.Option4").tag(CangjieVariant.quick3)
+                                                }
+                                                .pickerStyle(.menu)
+                                                .scaledToFit()
+                                                .onChange(of: cangjieVariant) { newVariant in
+                                                        AppSettings.updateCangjieVariant(to: newVariant)
+                                                }
+                                                Spacer()
+                                        }
+                                        .block()
+                                }
                                 VStack(spacing: 2) {
                                         HStack {
                                                 Text("GeneralSettingsView.SectionHeader.UserLexicon").font(.subheadline).padding(.horizontal)

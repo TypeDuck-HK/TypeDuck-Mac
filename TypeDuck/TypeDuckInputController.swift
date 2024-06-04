@@ -376,7 +376,7 @@ final class TypeDuckInputController: IMKInputController {
                 let isValidSequence: Bool = !(converted.isEmpty) && (converted.count == text.count)
                 if isValidSequence {
                         mark(text: String(converted))
-                        let lookup: [Candidate] = Engine.cangjieReverseLookup(text: text)
+                        let lookup: [Candidate] = Engine.cangjieReverseLookup(text: text, variant: AppSettings.cangjieVariant)
                         candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
                 } else {
                         mark(text: bufferText)
