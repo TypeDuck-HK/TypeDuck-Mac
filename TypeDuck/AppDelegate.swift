@@ -2,33 +2,17 @@ import AppKit
 import InputMethodKit
 import CoreIME
 
-@objc(PrincipalApplication)
-final class PrincipalApplication: NSApplication {
-
-        private let appDelegate = AppDelegate()
-
-        override init() {
-                super.init()
-                self.delegate = appDelegate
-        }
-
-        required init?(coder: NSCoder) {
-                fatalError("init(coder:) has not been implemented")
-        }
-}
-
 @main
-@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-        var server: IMKServer?
+        private static var server: IMKServer?
 
         func applicationDidFinishLaunching(_ notification: Notification) {
                 handleCommandLineArguments()
-                if server == nil {
+                if Self.server == nil {
                         let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
                         let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
-                        server = IMKServer(name: name, bundleIdentifier: identifier)
+                        Self.server = IMKServer(name: name, bundleIdentifier: identifier)
                 }
                 UserLexicon.prepare()
                 Engine.prepare()

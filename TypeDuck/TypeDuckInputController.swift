@@ -2,7 +2,6 @@ import SwiftUI
 import InputMethodKit
 import CoreIME
 
-@objc(TypeDuckInputController)
 final class TypeDuckInputController: IMKInputController {
 
         // MARK: - Window, InputClient
