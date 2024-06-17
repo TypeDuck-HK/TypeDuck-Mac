@@ -5,3 +5,9 @@ extension Collection where Element: Collection {
                 return self.map(\.count).reduce(0, +)
         }
 }
+
+extension Collection {
+        var isNotEmpty: Bool {
+                return !(self.isEmpty)
+        }
+}

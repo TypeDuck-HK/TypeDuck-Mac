@@ -77,7 +77,7 @@ struct UserLexicon {
                 let searches: [Candidate] = {
                         let textCount = text.count
                         let schemes = segmentation.filter({ $0.length == textCount })
-                        guard !(schemes.isEmpty) else { return [] }
+                        guard schemes.isNotEmpty else { return [] }
                         let matches = schemes.map({ scheme -> [Candidate] in
                                 let pingText = scheme.map(\.origin).joined()
                                 let matched = match(text: pingText, input: text, isShortcut: false)

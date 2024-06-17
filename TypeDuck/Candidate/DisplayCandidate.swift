@@ -19,7 +19,7 @@ struct DisplayCandidate: Hashable {
                         case .emoji, .symbol, .emojiSequence, .symbolSequence:
                                 var comments: [Comment] = []
                                 let cantoneseText = candidate.lexiconText
-                                if !(cantoneseText.isEmpty) {
+                                if cantoneseText.isNotEmpty {
                                         let cantoneseComment = Comment(language: .Cantonese, text: "〔\(cantoneseText)〕")
                                         comments.append(cantoneseComment)
                                 }
@@ -27,12 +27,12 @@ struct DisplayCandidate: Hashable {
                         case .compose:
                                 var comments: [Comment] = []
                                 let cantoneseText = candidate.lexiconText
-                                if !(cantoneseText.isEmpty) {
+                                if cantoneseText.isNotEmpty {
                                         let cantoneseComment = Comment(language: .Cantonese, text: "〔\(cantoneseText)〕")
                                         comments.append(cantoneseComment)
                                 }
                                 let unicodeCodePoint = candidate.romanization
-                                if !(unicodeCodePoint.isEmpty) {
+                                if unicodeCodePoint.isNotEmpty {
                                         let unicodeComment =  Comment(language: .Unicode, text: unicodeCodePoint)
                                         comments.append(unicodeComment)
                                 }

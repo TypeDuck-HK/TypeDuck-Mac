@@ -95,7 +95,7 @@ public struct Segmentor {
 
         private static func split(text: String) -> Segmentation {
                 let leadingTokens = splitLeading(text)
-                guard !(leadingTokens.isEmpty) else { return [] }
+                guard leadingTokens.isNotEmpty else { return [] }
                 let textCount = text.count
                 var segmentation: Segmentation = leadingTokens.map({ [$0] })
                 var previousSubelementCount = segmentation.subelementCount
@@ -106,7 +106,7 @@ public struct Segmentor {
                                 guard schemeLength < textCount else { continue }
                                 let tailText = text.dropFirst(schemeLength)
                                 let tailTokens = splitLeading(tailText)
-                                guard !(tailTokens.isEmpty) else { continue }
+                                guard tailTokens.isNotEmpty else { continue }
                                 let newSegmentation: Segmentation = tailTokens.map({ scheme + [$0] })
                                 segmentation += newSegmentation
                         }
@@ -136,6 +136,8 @@ public struct Segmentor {
                         default:
                                 return []
                         }
+                case 4 where text == "mama":
+                        return mama
                 default:
                         let rawText: String = text.filter({ !$0.isSeparatorOrTone })
                         let key: Int = rawText.hash
@@ -160,4 +162,5 @@ public struct Segmentor {
         private static let letterA: Segmentation = [[SegmentToken(text: "a", origin: "aa")]]
         private static let letterO: Segmentation = [[SegmentToken(text: "o", origin: "o")]]
         private static let letterM: Segmentation = [[SegmentToken(text: "m", origin: "m")]]
+        private static let mama: Segmentation = [[SegmentToken(text: "ma", origin: "maa"), SegmentToken(text: "ma", origin: "maa")]]
 }

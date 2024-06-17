@@ -129,7 +129,7 @@ public struct Candidate: Hashable {
 
         /// Concatenated by multiple lexicons
         public var isCompound: Bool {
-                return !(subNotations.isEmpty)
+                return subNotations.isNotEmpty
         }
 
         // Equatable

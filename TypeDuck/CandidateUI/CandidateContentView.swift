@@ -15,7 +15,7 @@ struct CandidateContentView: View {
                         CantoneseLabel(text: candidate.candidate.text, romanization: candidate.candidate.romanization, shouldDisplayRomanization: candidate.candidate.isCantonese)
                         if !hasNotationDisplayButton, let labelText = candidate.candidate.notation?.label, labelText.isValid {
                                 let labelList = Decorator.labelList(of: labelText)
-                                if !(labelList.isEmpty) {
+                                if labelList.isNotEmpty {
                                         HStack(alignment: .lastTextBaseline, spacing: 4) {
                                                 ForEach(0..<labelList.count, id: \.self) { index in
                                                         let label = labelList[index]
@@ -24,13 +24,13 @@ struct CandidateContentView: View {
                                         }
                                 }
                         }
-                        if !(annotationComments.isEmpty) {
+                        if annotationComments.isNotEmpty {
                                 ForEach(0..<annotationComments.count, id: \.self) { index in
                                         let comment = annotationComments[index]
                                         Text(verbatim: comment.text).font(comment.language.font)
                                 }
                         }
-                        if !(latinComments.isEmpty) {
+                        if latinComments.isNotEmpty {
                                 VStack(alignment: .leading, spacing: 2) {
                                         ForEach(0..<latinComments.count, id: \.self) { index in
                                                 let comment = latinComments[index]
@@ -38,7 +38,7 @@ struct CandidateContentView: View {
                                         }
                                 }
                         }
-                        if !(devanagariComments.isEmpty) {
+                        if devanagariComments.isNotEmpty {
                                 VStack(alignment: .leading, spacing: -6) {
                                         ForEach(0..<devanagariComments.count, id: \.self) { index in
                                                 let comment = devanagariComments[index]
