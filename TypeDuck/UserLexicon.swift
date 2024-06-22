@@ -25,7 +25,8 @@ struct UserLexicon {
 
         // MARK: - Handle Candidate
 
-        static func handle(_ candidate: Candidate) {
+        static func handle(_ candidate: Candidate?) {
+                guard let candidate else { return }
                 let word: String = candidate.lexiconText
                 let romanization: String = candidate.romanization
                 let id: Int64 = Int64((word + romanization).hash)

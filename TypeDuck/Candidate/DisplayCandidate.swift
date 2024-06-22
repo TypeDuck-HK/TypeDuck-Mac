@@ -16,7 +16,7 @@ struct DisplayCandidate: Hashable {
                                 return candidate.notation?.comments ?? []
                         case .text:
                                 return []
-                        case .emoji, .symbol, .emojiSequence, .symbolSequence:
+                        case .emoji, .symbol:
                                 var comments: [Comment] = []
                                 let cantoneseText = candidate.lexiconText
                                 if cantoneseText.isNotEmpty {

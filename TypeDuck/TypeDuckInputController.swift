@@ -211,7 +211,7 @@ final class TypeDuckInputController: IMKInputController {
                         switch bufferText.first {
                         case .none:
                                 if AppSettings.isInputMemoryOn && selectedCandidates.isNotEmpty {
-                                        let concatenated: Candidate = selectedCandidates.joined()
+                                        let concatenated = selectedCandidates.joined()
                                         UserLexicon.handle(concatenated)
                                 }
                                 selectedCandidates = []

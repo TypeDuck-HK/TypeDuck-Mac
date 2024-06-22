@@ -251,7 +251,7 @@ public struct Engine {
                         guard tailCandidates.isNotEmpty else { return [] }
                         let headCandidates = primary.filter({ $0.input == headText }).prefix(8)
                         let combines = headCandidates.map({ head -> [Candidate] in
-                                return tailCandidates.map({ head + $0 })
+                                return tailCandidates.compactMap({ head + $0 })
                         })
                         return combines.flatMap({ $0 })
                 }
