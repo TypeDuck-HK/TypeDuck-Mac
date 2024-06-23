@@ -13,7 +13,7 @@ struct DatabasePreparer {
                 createQuickTable()
                 createStrokeTable()
                 createT2STable()
-                createComposeTable()
+                createStructureTable()
                 createPinyinTable()
                 createSymbolTable()
                 createOtherIndies()
@@ -94,7 +94,7 @@ struct DatabasePreparer {
                         "CREATE INDEX strokestrokeindex ON stroketable(stroke);",
                         "CREATE INDEX strokecodeindex ON stroketable(code);",
 
-                        "CREATE INDEX composepingindex ON composetable(ping);",
+                        "CREATE INDEX structurepingindex ON structuretable(ping);",
 
                         "CREATE INDEX pinyinshortcutindex ON pinyintable(shortcut);",
                         "CREATE INDEX pinyinpingindex ON pinyintable(ping);",
@@ -232,13 +232,13 @@ struct DatabasePreparer {
                 guard sqlite3_prepare_v2(database, insert, -1, &insertStatement, nil) == SQLITE_OK else { return }
                 guard sqlite3_step(insertStatement) == SQLITE_DONE else { return }
         }
-        private static func createComposeTable() {
-                let createTable: String = "CREATE TABLE composetable(word TEXT NOT NULL, romanization TEXT NOT NULL, ping INTEGER NOT NULL);"
+        private static func createStructureTable() {
+                let createTable: String = "CREATE TABLE structuretable(word TEXT NOT NULL, romanization TEXT NOT NULL, ping INTEGER NOT NULL);"
                 var createStatement: OpaquePointer? = nil
                 guard sqlite3_prepare_v2(database, createTable, -1, &createStatement, nil) == SQLITE_OK else { sqlite3_finalize(createStatement); return }
                 guard sqlite3_step(createStatement) == SQLITE_DONE else { sqlite3_finalize(createStatement); return }
                 sqlite3_finalize(createStatement)
-                guard let url = Bundle.module.url(forResource: "compose", withExtension: "txt") else { return }
+                guard let url = Bundle.module.url(forResource: "structure", withExtension: "txt") else { return }
                 guard let content = try? String(contentsOf: url) else { return }
                 let sourceLines: [String] = content.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: .newlines)
                 let entries = sourceLines.map { sourceLine -> String? in
@@ -250,7 +250,7 @@ struct DatabasePreparer {
                         return "('\(word)', '\(romanization)', \(ping))"
                 }
                 let values: String = entries.compactMap({ $0 }).joined(separator: ", ")
-                let insert: String = "INSERT INTO composetable (word, romanization, ping) VALUES \(values);"
+                let insert: String = "INSERT INTO structuretable (word, romanization, ping) VALUES \(values);"
                 var insertStatement: OpaquePointer? = nil
                 defer { sqlite3_finalize(insertStatement) }
                 guard sqlite3_prepare_v2(database, insert, -1, &insertStatement, nil) == SQLITE_OK else { return }
