@@ -233,7 +233,7 @@ final class TypeDuckInputController: IMKInputController {
                                 case .some("s"), .some("x"), .some("b"):
                                         strokeReverseLookup()
                                 case .some("l"), .some("q"):
-                                        composeReverseLookup()
+                                        structureReverseLookup()
                                 default:
                                         mark(text: bufferText)
                                 }
@@ -396,8 +396,9 @@ final class TypeDuckInputController: IMKInputController {
                         candidates = []
                 }
         }
-        /// Compose(LoengFan) Reverse Lookup
-        private func composeReverseLookup() {
+
+        /// LoengFan Reverse Lookup. 拆字、兩分反查. 例如 木 + 旦 = 查: mukdaan
+        private func structureReverseLookup() {
                 guard bufferText.count > 3 else {
                         mark(text: bufferText)
                         candidates = []
@@ -418,7 +419,7 @@ final class TypeDuckInputController: IMKInputController {
                 let head = bufferText.prefix(2) + " "
                 let text2mark: String = head + tailMarkedText
                 mark(text: text2mark)
-                let lookup: [Candidate] = Engine.composeReverseLookup(text: text, input: bufferText, segmentation: segmentation)
+                let lookup: [Candidate] = Engine.structureReverseLookup(text: text, input: bufferText, segmentation: segmentation)
                 candidates = lookup.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
         }
 
