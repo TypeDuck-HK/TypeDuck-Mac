@@ -6,20 +6,17 @@ struct OptionsView: View {
         @EnvironmentObject private var context: AppContext
 
         private let options: [String] = [
-                "繁體",
-                "简体",
-                "半形",
-                "全形",
-                "中文標點",
-                "英文標點",
-                "表情符號",
-                "無"
+                String(localized: "OptionsView.CharacterStandard.Traditional"),
+                String(localized: "OptionsView.CharacterStandard.Simplified"),
+                String(localized: "OptionsView.CharacterForm.HalfWidth"),
+                String(localized: "OptionsView.CharacterForm.FullWidth"),
+                String(localized: "OptionsView.PunctuationForm.Cantonese"),
+                String(localized: "OptionsView.PunctuationForm.English")
         ]
 
         private let characterStandard: CharacterStandard = Options.characterStandard
         private let characterForm: CharacterForm = Options.characterForm
         private let punctuationForm: PunctuationForm = Options.punctuationForm
-        private let isEmojiSuggestionsOn: Bool = Options.isEmojiSuggestionsOn
 
         var body: some View {
                 let highlightedIndex = context.optionsHighlightedIndex
@@ -37,11 +34,6 @@ struct OptionsView: View {
                         Group {
                                 SettingLabel(index: 4, highlightedIndex: highlightedIndex, text: options[4], checked: punctuationForm == .cantonese)
                                 SettingLabel(index: 5, highlightedIndex: highlightedIndex, text: options[5], checked: punctuationForm == .english)
-                        }
-                        Divider()
-                        Group {
-                                SettingLabel(index: 6, highlightedIndex: highlightedIndex, text: options[6], checked: isEmojiSuggestionsOn)
-                                SettingLabel(index: 7, highlightedIndex: highlightedIndex, text: options[7], checked: !isEmojiSuggestionsOn)
                         }
                 }
                 .padding(4)
