@@ -52,7 +52,7 @@ public struct Engine {
                         }
                 default:
                         guard asap else { return dispatch(text: text, segmentation: segmentation, needsSymbols: needsSymbols) }
-                        guard segmentation.maxLength > 0 else { return processVerbatim(text: text) }
+                        guard segmentation.maxSchemeLength > 0 else { return processVerbatim(text: text) }
                         let candidates = query(text: text, segmentation: segmentation, needsSymbols: needsSymbols)
                         return candidates.isEmpty ? processVerbatim(text: text) : candidates
                 }
@@ -195,7 +195,7 @@ public struct Engine {
                         })
                         return shortcuts.map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, notation: $0.notation) })
                 case (false, false):
-                        guard segmentation.maxLength > 0 else { return processVerbatim(text: text) }
+                        guard segmentation.maxSchemeLength > 0 else { return processVerbatim(text: text) }
                         return process(text: text, segmentation: segmentation, needsSymbols: needsSymbols)
                 }
         }
@@ -227,7 +227,7 @@ public struct Engine {
                 guard let firstInputCount = primary.first?.input.count else { return processVerbatim(text: text, limit: 4) }
                 guard firstInputCount != textCount else { return primary }
                 let prefixes: [Candidate] = {
-                        guard segmentation.maxLength < textCount else { return [] }
+                        guard segmentation.maxSchemeLength < textCount else { return [] }
                         let shortcuts = segmentation.map({ scheme -> [Candidate] in
                                 let tail = text.dropFirst(scheme.length)
                                 guard let lastAnchor = tail.first else { return [] }

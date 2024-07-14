@@ -35,7 +35,7 @@
 - macOS 14.0+
 - Xcode 15.4+
 
-先構建數據庫 (Prepare database)
+先構建數據庫 (Prepare databases)
 ~~~bash
 # cd path/to/TypeDuck-Mac
 cd ./Preparing/
