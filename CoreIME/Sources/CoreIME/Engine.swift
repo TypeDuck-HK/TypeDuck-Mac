@@ -14,16 +14,12 @@ public struct Engine {
                 sqlite3_close_v2(storageDatabase)
                 sqlite3_close_v2(database)
                 guard let path: String = Bundle.module.path(forResource: "imedb", ofType: "sqlite3") else { return }
-                #if os(iOS)
-                guard sqlite3_open_v2(path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else { return }
-                #else
                 guard sqlite3_open_v2(path, &storageDatabase, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else { return }
                 guard sqlite3_open_v2(":memory:", &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else { return }
                 let backup = sqlite3_backup_init(database, "main", storageDatabase, "main")
                 guard sqlite3_backup_step(backup, -1) == SQLITE_DONE else { return }
                 guard sqlite3_backup_finish(backup) == SQLITE_OK else { return }
                 sqlite3_close_v2(storageDatabase)
-                #endif
                 isDatabaseReady = true
         }
 
@@ -62,9 +58,7 @@ public struct Engine {
                 switch (text.hasSeparators, text.hasTones) {
                 case (true, true):
                         let syllable = text.removedSeparatorsTones()
-                        let candidates = match(text: syllable, input: text)
-                        let filtered = candidates.filter({ text.hasPrefix($0.romanization) })
-                        return filtered
+                        return match(text: syllable, input: text).filter({ text.hasPrefix($0.romanization) })
                 case (false, true):
                         let textTones = text.tones
                         let rawText: String = text.removedTones()
@@ -120,7 +114,7 @@ public struct Engine {
                                         }
                                 }
                         })
-                        return qualified.preferred(with: text)
+                        return qualified
                 case (true, false):
                         let textSeparators = text.filter(\.isSeparator)
                         let textParts = text.split(separator: "'")
@@ -179,21 +173,21 @@ public struct Engine {
                                         return Candidate(text: item.text, romanization: item.romanization, input: combinedInput, notation: item.notation)
                                 }
                         })
-                        let sorted = qualified.preferred(with: text)
-                        guard sorted.isEmpty else { return sorted }
+                        guard qualified.isEmpty else { return qualified }
                         let anchors = textParts.compactMap(\.first)
                         let anchorCount = anchors.count
-                        let shortcuts = shortcut(text: String(anchors)).filter({ item -> Bool in
-                                let syllables = item.romanization.split(separator: Character.space).map({ $0.dropLast() })
-                                guard syllables.count == anchorCount else { return false }
-                                let checks = (0..<anchorCount).map({ index -> Bool in
-                                        let part = textParts[index]
-                                        let isAnchorOnly = part.count == 1
-                                        return isAnchorOnly ? syllables[index].hasPrefix(part) : syllables[index] == part
+                        return shortcut(text: String(anchors))
+                                .filter({ item -> Bool in
+                                        let syllables = item.romanization.split(separator: Character.space).map({ $0.dropLast() })
+                                        guard syllables.count == anchorCount else { return false }
+                                        let checks = (0..<anchorCount).map({ index -> Bool in
+                                                let part = textParts[index]
+                                                let isAnchorOnly = part.count == 1
+                                                return isAnchorOnly ? syllables[index].hasPrefix(part) : syllables[index] == part
+                                        })
+                                        return checks.reduce(true, { $0 && $1 })
                                 })
-                                return checks.reduce(true, { $0 && $1 })
-                        })
-                        return shortcuts.map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, notation: $0.notation) })
+                                .map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, notation: $0.notation) })
                 case (false, false):
                         guard segmentation.maxSchemeLength > 0 else { return processVerbatim(text: text) }
                         return process(text: text, segmentation: segmentation, needsSymbols: needsSymbols)
