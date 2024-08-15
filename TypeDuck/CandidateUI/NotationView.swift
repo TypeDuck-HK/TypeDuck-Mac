@@ -168,7 +168,7 @@ struct Decorator {
 
         static func partOfSpeechList(of text: String) -> [String] {
                 guard text.isValid else { return [] }
-                let list = text.split(separator: " ").compactMap({ partOfSpeechMap[$0] })
+                let list = text.split(separator: Character.space).compactMap({ partOfSpeechMap[$0] })
                 return list.uniqued()
         }
         private static let partOfSpeechMap: [String.SubSequence: String] = [
@@ -211,7 +211,7 @@ struct Decorator {
 
         static func labelList(of text: String) -> [String] {
                 guard text.isValid else { return [] }
-                let labels = text.split(separator: " ").compactMap({ rawLabel -> String? in
+                let labels = text.split(separator: Character.space).compactMap({ rawLabel -> String? in
                         guard let matched = rawLabel.split(separator: "_").compactMap({ labelMap[$0] }).first else { return nil }
                         return "(\(matched))"
                 })

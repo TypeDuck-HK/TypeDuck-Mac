@@ -338,10 +338,10 @@ final class TypeDuckInputController: IMKInputController {
                         if let firstCandidate = engineCandidates.first, firstCandidate.input.count == userInputTextCount { return firstCandidate.mark }
                         guard let bestScheme = segmentation.first else { return processingText.formattedForMark() }
                         let leadingLength: Int = bestScheme.length
-                        let leadingText: String = bestScheme.map(\.text).joined(separator: " ")
+                        let leadingText: String = bestScheme.map(\.text).joined(separator: String.space)
                         guard leadingLength != userInputTextCount else { return leadingText }
                         let tailText = processingText.dropFirst(leadingLength)
-                        return leadingText + " " + tailText
+                        return leadingText + String.space + tailText
                 }()
                 mark(text: text2mark)
                 candidates = (userLexiconCandidates + engineCandidates).map({ $0.transformed(to: Options.characterStandard) }).uniqued()
@@ -359,12 +359,12 @@ final class TypeDuckInputController: IMKInputController {
                         if let firstCandidate = suggestions.first, firstCandidate.input.count == text.count { return firstCandidate.mark }
                         guard let bestScheme = schemes.first else { return text }
                         let leadingLength: Int = bestScheme.summedLength
-                        let leadingText: String = bestScheme.joined(separator: " ")
+                        let leadingText: String = bestScheme.joined(separator: String.space)
                         guard leadingLength != text.count else { return leadingText }
                         let tailText = text.dropFirst(leadingLength)
-                        return leadingText + " " + tailText
+                        return leadingText + String.space + tailText
                 }()
-                let head = bufferText.prefix(2) + " "
+                let head = bufferText.prefix(2) + String.space
                 let text2mark: String = head + tailText2Mark
                 mark(text: text2mark)
                 candidates = suggestions.map({ $0.transformed(to: Options.characterStandard) }).uniqued()
@@ -411,12 +411,12 @@ final class TypeDuckInputController: IMKInputController {
                         guard isMarkFree else { return text.formattedForMark() }
                         guard let bestScheme = segmentation.first else { return text.formattedForMark() }
                         let leadingLength: Int = bestScheme.length
-                        let leadingText: String = bestScheme.map(\.text).joined(separator: " ")
+                        let leadingText: String = bestScheme.map(\.text).joined(separator: String.space)
                         guard leadingLength != text.count else { return leadingText }
                         let tailText = text.dropFirst(leadingLength)
-                        return leadingText + " " + tailText
+                        return leadingText + String.space + tailText
                 }()
-                let head = bufferText.prefix(2) + " "
+                let head = bufferText.prefix(2) + String.space
                 let text2mark: String = head + tailMarkedText
                 mark(text: text2mark)
                 let lookup: [Candidate] = Engine.structureReverseLookup(text: text, input: bufferText, segmentation: segmentation)

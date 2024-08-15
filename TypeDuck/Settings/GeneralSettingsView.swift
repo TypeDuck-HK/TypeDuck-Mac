@@ -41,9 +41,11 @@ struct GeneralSettingsView: View {
                                 .block()
                                 VStack(spacing: 2) {
                                         HStack {
-                                                Text("SettingsView.GeneralSettingsView.SectionHeader.DisplayLanguages").font(.subheadline).padding(.horizontal)
+                                                Text("SettingsView.GeneralSettingsView.SectionHeader.DisplayLanguages")
                                                 Spacer()
                                         }
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 12)
                                         VStack(alignment: .leading, spacing: 24) {
                                                 VStack(alignment: .leading) {
                                                         HStack {
@@ -148,9 +150,11 @@ struct GeneralSettingsView: View {
                                 .block()
                                 VStack(spacing: 2) {
                                         HStack {
-                                                Text("GeneralSettingsView.SectionHeader.ReverseLookup").font(.subheadline).padding(.horizontal)
+                                                Text("GeneralSettingsView.SectionHeader.ReverseLookup")
                                                 Spacer()
                                         }
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 12)
                                         HStack {
                                                 Picker("GeneralSettingsView.CangjieVariant.Picker.TitleKey", selection: $cangjieVariant) {
                                                         Text("GeneralSettingsView.CangjieVariant.Picker.Option1").tag(CangjieVariant.cangjie5)
@@ -169,9 +173,11 @@ struct GeneralSettingsView: View {
                                 }
                                 VStack(spacing: 2) {
                                         HStack {
-                                                Text("GeneralSettingsView.SectionHeader.UserLexicon").font(.subheadline).padding(.horizontal)
+                                                Text("GeneralSettingsView.SectionHeader.UserLexicon")
                                                 Spacer()
                                         }
+                                        .font(.subheadline)
+                                        .padding(.horizontal, 12)
                                         VStack(spacing: 20) {
                                                 HStack {
                                                         Toggle("GeneralSettingsView.Toggle.InputMemory", isOn: $isInputMemoryOn)

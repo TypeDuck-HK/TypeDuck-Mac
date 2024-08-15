@@ -29,15 +29,15 @@ struct UserLexicon {
                 guard let candidate else { return }
                 let word: String = candidate.lexiconText
                 let romanization: String = candidate.romanization
-                let id: Int64 = Int64((word + romanization).hash)
-                if let frequency: Int64 = find(by: id) {
+                let id: Int = (word + romanization).hash
+                if let frequency = find(by: id) {
                         update(id: id, frequency: frequency + 1)
                 } else {
-                        let newEntry: LexiconEntry = LexiconEntry(id: id, frequency: 1, word: word, romanization: romanization, shortcut: romanization.shortcut, ping: romanization.ping)
-                        insert(entry: newEntry)
+                        let entry = LexiconEntry(id: id, frequency: 1, word: word, romanization: romanization, shortcut: romanization.shortcut, ping: romanization.ping)
+                        insert(entry: entry)
                 }
         }
-        private static func find(by id: Int64) -> Int64? {
+        private static func find(by id: Int) -> Int64? {
                 let command: String = "SELECT frequency FROM userlexicontable WHERE id = \(id) LIMIT 1;"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
@@ -46,7 +46,7 @@ struct UserLexicon {
                 let frequency: Int64 = sqlite3_column_int64(statement, 0)
                 return frequency
         }
-        private static func update(id: Int64, frequency: Int64) {
+        private static func update(id: Int, frequency: Int64) {
                 let command: String = "UPDATE userlexicontable SET frequency = \(frequency) WHERE id = \(id);"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
@@ -54,18 +54,14 @@ struct UserLexicon {
                 guard sqlite3_step(statement) == SQLITE_DONE else { return }
         }
         private static func insert(entry: LexiconEntry) {
-                let command: String = "INSERT INTO userlexicontable (id, frequency, word, romanization, shortcut, ping) VALUES (?, ?, ?, ?, ?, ?);"
+                // INSERT INTO userlexicontable (id, frequency, word, romanization, shortcut, ping) VALUES (?, ?, ?, ?, ?, ?);
+                let leading: String = "INSERT INTO userlexicontable (id, frequency, word, romanization, shortcut, ping) VALUES ("
+                let trailing: String = ");"
+                let values: String = "\(entry.id), \(entry.frequency), '\(entry.word)', '\(entry.romanization)', \(entry.shortcut), \(entry.ping)"
+                let command: String = leading + values + trailing
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
                 guard sqlite3_prepare_v2(database, command, -1, &statement, nil) == SQLITE_OK else { return }
-
-                sqlite3_bind_int64(statement, 1, entry.id)
-                sqlite3_bind_int64(statement, 2, entry.frequency)
-                sqlite3_bind_text(statement, 3, (entry.word as NSString).utf8String, -1, nil)
-                sqlite3_bind_text(statement, 4, (entry.romanization as NSString).utf8String, -1, nil)
-                sqlite3_bind_int64(statement, 5, entry.shortcut)
-                sqlite3_bind_int64(statement, 6, entry.ping)
-
                 guard sqlite3_step(statement) == SQLITE_DONE else { return }
         }
 
@@ -73,25 +69,24 @@ struct UserLexicon {
         // MARK: - Suggestion
 
         static func suggest(text: String, segmentation: Segmentation) -> [Candidate] {
-                let matches = match(text: text, input: text, isShortcut: false)
-                let shortcuts = match(text: text, input: text, mark: text, isShortcut: true)
+                let matches = query(text: text, input: text, isShortcut: false)
+                let shortcuts = query(text: text, input: text, mark: text, isShortcut: true)
                 let searches: [Candidate] = {
                         let textCount = text.count
                         let schemes = segmentation.filter({ $0.length == textCount })
                         guard schemes.isNotEmpty else { return [] }
-                        let matches = schemes.map({ scheme -> [Candidate] in
+                        return schemes.map({ scheme -> [Candidate] in
                                 let pingText = scheme.map(\.origin).joined()
-                                let matched = match(text: pingText, input: text, isShortcut: false)
-                                let text2mark = scheme.map(\.text).joined(separator: " ")
-                                let syllables = scheme.map(\.origin).joined(separator: " ")
+                                let matched = query(text: pingText, input: text, isShortcut: false)
+                                let text2mark = scheme.map(\.text).joined(separator: String.space)
+                                let syllables = scheme.map(\.origin).joined(separator: String.space)
                                 return matched.filter({ $0.mark == syllables }).map({ Candidate(text: $0.text, romanization: $0.romanization, input: $0.input, mark: text2mark) })
-                        })
-                        return matches.flatMap({ $0 })
+                        }).flatMap({ $0 })
                 }()
                 return matches + shortcuts + searches
         }
 
-        private static func match(text: String, input: String, mark: String? = nil, isShortcut: Bool) -> [Candidate] {
+        private static func query(text: String, input: String, mark: String? = nil, isShortcut: Bool) -> [Candidate] {
                 var candidates: [Candidate] = []
                 let code: Int = isShortcut ? text.replacingOccurrences(of: "y", with: "j").hash : text.hash
                 let column: String = isShortcut ? "shortcut" : "ping"
@@ -114,7 +109,7 @@ struct UserLexicon {
 
         /// Delete one lexicon entry
         static func removeItem(candidate: Candidate) {
-                let id: Int64 = Int64((candidate.lexiconText + candidate.romanization).hash)
+                let id: Int = (candidate.lexiconText + candidate.romanization).hash
                 let command: String = "DELETE FROM userlexicontable WHERE id = \(id) LIMIT 1;"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
@@ -135,7 +130,7 @@ struct UserLexicon {
 private struct LexiconEntry {
 
         /// (Candidate.lexiconText + Candidate.jyutping).hash
-        let id: Int64
+        let id: Int
 
         let frequency: Int64
 
@@ -146,8 +141,8 @@ private struct LexiconEntry {
         let romanization: String
 
         /// jyutping.initials.hash
-        let shortcut: Int64
+        let shortcut: Int
 
         /// jyutping.withoutTonesAndSpaces.hash
-        let ping: Int64
+        let ping: Int
 }

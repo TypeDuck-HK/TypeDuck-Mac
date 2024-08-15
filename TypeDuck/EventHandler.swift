@@ -290,7 +290,7 @@ extension TypeDuckInputController {
                                 if candidates.isEmpty {
                                         passBuffer()
                                         let shouldInsertFullWidthSpace: Bool = isShifting || (Options.characterForm == .fullWidth)
-                                        let text: String = shouldInsertFullWidthSpace ? "　" : " "
+                                        let text: String = shouldInsertFullWidthSpace ? String.fullWidthSpace : String.space
                                         client?.insert(text)
                                         return true
                                 } else {

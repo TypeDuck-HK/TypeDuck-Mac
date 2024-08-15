@@ -2,15 +2,13 @@ import Foundation
 
 extension String {
 
-        var shortcut: Int64 {
-                let syllables = self.split(separator: Character.space)
-                let anchors = syllables.map({ $0.first }).compactMap({ $0 })
-                let text: String = String(anchors)
-                return Int64(text.hash)
+        var shortcut: Int {
+                let anchors = self.split(separator: Character.space).compactMap(\.first)
+                return String(anchors).hash
         }
 
-        var ping: Int64 {
-                return Int64(self.removedSpacesTones().hash)
+        var ping: Int {
+                return self.removedSpacesTones().hash
         }
 
         /// A subsequence that only contains tones (1-6)
@@ -38,8 +36,14 @@ extension String {
 
         static let empty: String = ""
 
+        /// U+0020
+        static let space: String = "\u{20}"
+
         /// U+200B
         static let zeroWidthSpace: String = "\u{200B}"
+
+        /// U+3000. Ideographic Space. 全寬空格
+        static let fullWidthSpace: String = "\u{3000}"
 }
 
 
