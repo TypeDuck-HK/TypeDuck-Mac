@@ -46,8 +46,8 @@ extension TypeDuckInputController {
                 }
         }
         private func prepareSettingsWindow() {
-                let windowIdentifiers: [String] = NSApp.windows.map(\.identifier?.rawValue).compactMap({ $0 })
-                let shouldOpenNewWindow: Bool = !(windowIdentifiers.contains(AppSettings.TypeDuckSettingsWindowIdentifier))
+                let windowIdentifiers: [String] = NSApp.windows.compactMap(\.identifier?.rawValue)
+                let shouldOpenNewWindow: Bool = windowIdentifiers.notContains(AppSettings.TypeDuckSettingsWindowIdentifier)
                 guard shouldOpenNewWindow else { return }
                 let frame: CGRect = settingsWindowFrame()
                 let window = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)

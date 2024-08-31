@@ -91,7 +91,7 @@ final class TypeDuckInputController: IMKInputController {
                 return CGRect(x: x, y: y, width: width, height: height)
         }
 
-        private lazy var screenOrigin: CGPoint = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? .zero
+        private lazy var screenOrigin: CGPoint = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? screenOrigin
         private lazy var screenSize: CGSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1920, height: 1080)
         private lazy var currentOrigin: CGPoint? = nil
         func updateCurrentOrigin(to point: CGPoint? ) {
@@ -154,9 +154,6 @@ final class TypeDuckInputController: IMKInputController {
                 currentOrigin = currentClient?.position
                 DispatchQueue.main.async { [weak self] in
                         self?.prepareWindow()
-                }
-                DispatchQueue.main.async { [weak self] in
-                        self?.currentClient?.overrideKeyboard(withKeyboardNamed: "com.apple.keylayout.ABC")
                 }
         }
         override func deactivateServer(_ sender: Any!) {

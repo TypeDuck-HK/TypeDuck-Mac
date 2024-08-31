@@ -62,7 +62,7 @@ public struct Engine {
                 case (false, true):
                         let textTones = text.tones
                         let rawText: String = text.removedTones()
-                        let candidates: [Candidate] = search(text: rawText, segmentation: segmentation)
+                        let candidates: [Candidate] = query(text: rawText, segmentation: segmentation, needsSymbols: false)
                         let qualified = candidates.compactMap({ item -> Candidate? in
                                 let continuous = item.romanization.removedSpaces()
                                 let continuousTones = continuous.tones
@@ -81,7 +81,7 @@ public struct Engine {
                                                 guard isCorrectPosition else { return nil }
                                                 return Candidate(text: item.text, romanization: item.romanization, input: text, notation: item.notation)
                                         } else {
-                                                guard continuousTones.hasPrefix(textTones) else { return nil }
+                                                guard continuous.hasPrefix(text) else { return nil }
                                                 let combinedInput = item.input + textTones
                                                 return Candidate(text: item.text, romanization: item.romanization, input: combinedInput, notation: item.notation)
                                         }
@@ -114,14 +114,14 @@ public struct Engine {
                                         }
                                 }
                         })
-                        return qualified
+                        return qualified.sorted(by: { $0.input.count > $1.input.count })
                 case (true, false):
                         let textSeparators = text.filter(\.isSeparator)
                         let textParts = text.split(separator: "'")
                         let isHeadingSeparator: Bool = text.first?.isSeparator ?? false
                         let isTrailingSeparator: Bool = text.last?.isSeparator ?? false
                         let rawText: String = text.removedSeparators()
-                        let candidates: [Candidate] = search(text: rawText, segmentation: segmentation)
+                        let candidates: [Candidate] = query(text: rawText, segmentation: segmentation, needsSymbols: false)
                         let qualified = candidates.compactMap({ item -> Candidate? in
                                 let syllables = item.romanization.removedTones().split(separator: " ")
                                 guard syllables != textParts else { return Candidate(text: item.text, romanization: item.romanization, input: text, notation: item.notation) }
@@ -173,7 +173,7 @@ public struct Engine {
                                         return Candidate(text: item.text, romanization: item.romanization, input: combinedInput, notation: item.notation)
                                 }
                         })
-                        guard qualified.isEmpty else { return qualified }
+                        guard qualified.isEmpty else { return qualified.sorted(by: { $0.input.count > $1.input.count }) }
                         let anchors = textParts.compactMap(\.first)
                         let anchorCount = anchors.count
                         return shortcut(text: String(anchors))

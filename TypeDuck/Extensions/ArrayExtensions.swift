@@ -18,3 +18,9 @@ extension Array where Element: Hashable {
                 return self[index]
         }
 }
+
+extension Array where Element: Equatable {
+        func notContains(_ element: Element) -> Bool {
+                return !(self.contains(element))
+        }
+}
