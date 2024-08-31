@@ -37,22 +37,49 @@ struct HelpView: View {
                                         }
                                 }
                                 .block()
-                                HStack(spacing: 4) {
-                                        LabelText("SettingsView.HelpView.Shortcut.RemoveCandidate")
-                                        Text.separator
-                                        KeyBlockView.control
-                                        Text.plus
-                                        KeyBlockView.shift
-                                        Text.plus
-                                        KeyBlockView.backwardDelete
-                                        Spacer()
-                                }
-                                .block()
-                                HStack(spacing: 4) {
-                                        LabelText("SettingsView.HelpView.Shortcut.ClearInput")
-                                        Text.separator
-                                        KeyBlockView.escape
-                                        Spacer()
+                                VStack(spacing: 8) {
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.ClearCurrentPreEditText")
+                                                Text.separator
+                                                KeyBlockView.escape
+                                                Text.or
+                                                KeyBlockView.control
+                                                Text.plus
+                                                KeyBlockView.shift
+                                                Text.plus
+                                                KeyBlockView("U")
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.InputCurrentPreEditText")
+                                                Text.separator
+                                                KeyBlockView.returnKey
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.InputCurrentRomanization")
+                                                Text.separator
+                                                KeyBlockView.shift
+                                                Text.plus
+                                                KeyBlockView.returnKey
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.SelectCandidate")
+                                                Text.separator
+                                                KeyBlockView.space
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.RemoveCandidate")
+                                                Text.separator
+                                                KeyBlockView.control
+                                                Text.plus
+                                                KeyBlockView.shift
+                                                Text.plus
+                                                KeyBlockView.backwardDelete
+                                                Spacer()
+                                        }
                                 }
                                 .block()
                                 VStack(spacing: 8) {
@@ -152,8 +179,8 @@ private struct KeyBlockView: View {
                 return text
                         .lineLimit(1)
                         .minimumScaleFactor(0.4)
-                        .frame(width: 84, height: 24)
-                        .padding(.horizontal, 4)
+                        .padding(.horizontal, 2)
+                        .frame(width: 80, height: 24)
                         .background(Material.regular, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
         }
 
@@ -161,8 +188,9 @@ private struct KeyBlockView: View {
         static let shift: KeyBlockView = KeyBlockView("Shift ⇧")
         static let number: KeyBlockView = KeyBlockView(localized: "SettingsView.HelpView.Shortcut.ToggleOption.NumberKeys")
         static let space: KeyBlockView = KeyBlockView("Space ␣")
-        static let escape: KeyBlockView = KeyBlockView("Esc ⎋")
+        static let escape: KeyBlockView = KeyBlockView("esc ⎋")
         static let tab: KeyBlockView = KeyBlockView("Tab ⇥")
+        static let returnKey: KeyBlockView = KeyBlockView("Return ⏎")
 
         /// Backspace. NOT Forward-Delete.
         static let backwardDelete: KeyBlockView = KeyBlockView("Delete ⌫")

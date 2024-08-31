@@ -2497,66 +2497,194 @@
         }
       }
     },
-    "SettingsView.HelpView.Shortcut.ClearInput" : {
+    "SettingsView.HelpView.Shortcut.ClearCurrentPreEditText" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clear Current Input"
+            "value" : "Clear Current Pre-edit Text"
           }
         },
         "yue" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hans-CN" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hant-CN" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hant-MO" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-Hant-TW" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
           }
         },
         "zh-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除目前輸入"
+            "value" : "清除當前預輸入音節"
+          }
+        }
+      }
+    },
+    "SettingsView.HelpView.Shortcut.InputCurrentPreEditText" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input Current Pre-edit Text"
+          }
+        },
+        "yue" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hans-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hant-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hant-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hant-MO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前預輸入音節"
+          }
+        }
+      }
+    },
+    "SettingsView.HelpView.Shortcut.InputCurrentRomanization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input Current Candidate’s Jyutping"
+          }
+        },
+        "yue" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hans-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hant-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hant-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hant-MO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入當前候選詞粵拼"
           }
         }
       }
@@ -2892,55 +3020,119 @@
         "yue" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hans-CN" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hant-CN" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hant-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hant-MO" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-Hant-TW" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
           }
         },
         "zh-HK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "從用戶詞庫刪除目前候選詞"
+            "value" : "從個人詞庫刪除當前候選詞"
+          }
+        }
+      }
+    },
+    "SettingsView.HelpView.Shortcut.SelectCandidate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select to Input Current Candidate"
+          }
+        },
+        "yue" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hans-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hant-CN" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hant-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hant-MO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-Hant-TW" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
+          }
+        },
+        "zh-HK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選擇當前候選詞輸入"
           }
         }
       }
