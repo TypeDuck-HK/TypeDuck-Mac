@@ -2,12 +2,12 @@ import SwiftUI
 import InputMethodKit
 import CoreIME
 
+@objc(TypeDuckInputController)
 final class TypeDuckInputController: IMKInputController {
 
         // MARK: - Window, InputClient
 
-        @MainActor
-        private let window: NSPanel = {
+        private lazy var window: NSPanel = {
                 let panel: NSPanel = NSPanel(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
                 let levelValue: Int = Int(CGShieldingWindowLevel())
                 panel.level = NSWindow.Level(levelValue)
@@ -60,9 +60,7 @@ final class TypeDuckInputController: IMKInputController {
                 window.setFrame(.zero, display: true)
         }
         func updateWindowFrame(_ frame: CGRect? = nil) {
-                DispatchQueue.main.async { [weak self] in
-                        self?.window.setFrame(frame ?? self?.windowFrame ?? .zero, display: true)
-                }
+                window.setFrame(frame ?? windowFrame, display: true)
         }
         private var windowFrame: CGRect {
                 let origin: CGPoint = currentOrigin ?? currentClient?.position ?? .zero
@@ -152,14 +150,10 @@ final class TypeDuckInputController: IMKInputController {
                 screenSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1920, height: 1080)
                 currentClient = (sender as? InputClient) ?? client()
                 currentOrigin = currentClient?.position
-                DispatchQueue.main.async { [weak self] in
-                        self?.prepareWindow()
-                }
+                prepareWindow()
         }
         override func deactivateServer(_ sender: Any!) {
-                DispatchQueue.main.async { [weak self] in
-                        self?.clearWindow()
-                }
+                clearWindow()
                 let windowCount: Int = NSApp.windows.count
                 if windowCount > 20 {
                         NSRunningApplication.current.terminate()

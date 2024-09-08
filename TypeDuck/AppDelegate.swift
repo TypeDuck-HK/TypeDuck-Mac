@@ -3,19 +3,16 @@ import InputMethodKit
 import CoreIME
 
 @main
+@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-        private static var server: IMKServer?
+        static let shared: AppDelegate = AppDelegate()
 
         func applicationDidFinishLaunching(_ notification: Notification) {
                 handleCommandLineArguments()
-                if Self.server == nil {
-                        let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
-                        let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
-                        Self.server = IMKServer(name: name, bundleIdentifier: identifier)
-                }
-                UserLexicon.prepare()
-                Engine.prepare()
+                let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
+                let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
+                _ = IMKServer(name: name, bundleIdentifier: identifier)
         }
 
         private func handleCommandLineArguments() {

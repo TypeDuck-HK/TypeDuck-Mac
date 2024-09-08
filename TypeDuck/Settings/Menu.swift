@@ -41,11 +41,6 @@ extension TypeDuckInputController {
                 displaySettingsWindow()
         }
         private func displaySettingsWindow() {
-                DispatchQueue.main.async { [weak self] in
-                        self?.prepareSettingsWindow()
-                }
-        }
-        private func prepareSettingsWindow() {
                 let windowIdentifiers: [String] = NSApp.windows.compactMap(\.identifier?.rawValue)
                 let shouldOpenNewWindow: Bool = windowIdentifiers.notContains(AppSettings.TypeDuckSettingsWindowIdentifier)
                 guard shouldOpenNewWindow else { return }
