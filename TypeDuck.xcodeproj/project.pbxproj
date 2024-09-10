@@ -59,6 +59,7 @@
 		378CE02A2C200DA300BA7FBA /* CollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CE0292C200DA300BA7FBA /* CollectionExtensions.swift */; };
 		3797F6E72C18900500DE6D0E /* PrincipalApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3797F6E62C18900500DE6D0E /* PrincipalApplication.swift */; };
 		3797F6E92C18902900DE6D0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3797F6E82C18902900DE6D0E /* AppDelegate.swift */; };
+		379DBF9A2C8EA79900D041C8 /* CandidateWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379DBF992C8EA79900D041C8 /* CandidateWindow.swift */; };
 		37A619B12BAE2F5A00A0C7F9 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */; };
 		37A619B22BAE2F5A00A0C7F9 /* typeduck.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619B02BAE2F5A00A0C7F9 /* typeduck.png */; };
 /* End PBXBuildFile section */
@@ -138,6 +139,7 @@
 		378CE0292C200DA300BA7FBA /* CollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtensions.swift; sourceTree = "<group>"; };
 		3797F6E62C18900500DE6D0E /* PrincipalApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincipalApplication.swift; sourceTree = "<group>"; };
 		3797F6E82C18902900DE6D0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		379DBF992C8EA79900D041C8 /* CandidateWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateWindow.swift; sourceTree = "<group>"; };
 		37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
 		37A619B02BAE2F5A00A0C7F9 /* typeduck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = typeduck.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,6 +199,7 @@
 				3797F6E82C18902900DE6D0E /* AppDelegate.swift */,
 				371B27BE2B3EB93A00EC1271 /* TypeDuckInputController.swift */,
 				371B27C02B3EB93A00EC1271 /* EventHandler.swift */,
+				379DBF992C8EA79900D041C8 /* CandidateWindow.swift */,
 				371B27C12B3EB93A00EC1271 /* Options.swift */,
 				371B27CA2B3EB93A00EC1271 /* OptionsView.swift */,
 				371B27BC2B3EB93A00EC1271 /* InputForm.swift */,
@@ -483,6 +486,7 @@
 				371B27CD2B3EB93A00EC1271 /* Comment.swift in Sources */,
 				371B27E02B3EB93A00EC1271 /* HelpView.swift in Sources */,
 				371B27DD2B3EB93A00EC1271 /* PageTransformation.swift in Sources */,
+				379DBF9A2C8EA79900D041C8 /* CandidateWindow.swift in Sources */,
 				371B27E92B3EB93A00EC1271 /* ImageExtensions.swift in Sources */,
 				371B27E82B3EB93A00EC1271 /* IMKTextInputExtensions.swift in Sources */,
 				370F5B312BB59B2200F0A65C /* ColorExtensions.swift in Sources */,

@@ -2,6 +2,7 @@ import AppKit
 import InputMethodKit
 import CoreIME
 
+@MainActor
 @main
 @objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {

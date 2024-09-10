@@ -2,27 +2,13 @@ import SwiftUI
 import InputMethodKit
 import CoreIME
 
+@MainActor
 @objc(TypeDuckInputController)
 final class TypeDuckInputController: IMKInputController {
 
         // MARK: - Window, InputClient
 
-        private lazy var window: NSPanel = {
-                let panel: NSPanel = NSPanel(contentRect: .zero, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
-                let levelValue: Int = Int(CGShieldingWindowLevel())
-                panel.level = NSWindow.Level(levelValue)
-                panel.isFloatingPanel = true
-                panel.worksWhenModal = true
-                panel.hidesOnDeactivate = false
-                panel.isReleasedWhenClosed = true
-                panel.collectionBehavior = .moveToActiveSpace
-                panel.isMovable = true
-                panel.isMovableByWindowBackground = true
-                panel.isOpaque = false
-                panel.hasShadow = false
-                panel.backgroundColor = .clear
-                return panel
-        }()
+        private lazy var window: NSPanel = CandidateWindow(level: nil)
         private func prepareWindow() {
                 _ = window.contentView?.subviews.map({ $0.removeFromSuperview() })
                 _ = window.contentViewController?.children.map({ $0.removeFromParent() })
