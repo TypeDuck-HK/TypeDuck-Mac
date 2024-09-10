@@ -280,7 +280,8 @@ public struct Engine {
                                 var queries: [[Candidate]] = []
                                 for number in (0..<scheme.count) {
                                         let slice = scheme.dropLast(number)
-                                        guard let shortcutCode = slice.compactMap(\.text.first).shortcutCode else { continue }
+                                        let anchors = slice.compactMap(\.text.first).map({ $0 == "y" ? "j" : $0 })
+                                        let shortcutCode = String(anchors).hash
                                         let pingCode = slice.map(\.origin).joined().hash
                                         let input = slice.map(\.text).joined()
                                         let mark = slice.map(\.text).joined(separator: String.space)
@@ -292,7 +293,8 @@ public struct Engine {
                         return matches.flatMap({ $0 }).ordered(with: textCount)
                 } else {
                         let matches = segmentation.map({ scheme -> [Candidate] in
-                                guard let shortcutCode = scheme.compactMap(\.text.first).shortcutCode else { return [] }
+                                let anchors = scheme.compactMap(\.text.first).map({ $0 == "y" ? "j" : $0 })
+                                let shortcutCode = String(anchors).hash
                                 let pingCode = scheme.map(\.origin).joined().hash
                                 let input = scheme.map(\.text).joined()
                                 let mark = scheme.map(\.text).joined(separator: String.space)
