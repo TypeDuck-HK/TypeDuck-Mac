@@ -57,38 +57,17 @@ private extension Segmentation {
 
 public struct Segmentor {
 
-        // MARK: - SQLite
-
-        private static var storageDatabase: OpaquePointer? = nil
-        private(set) static var database: OpaquePointer? = nil
-        private static var isDatabaseReady: Bool = false
-
-        static func prepare() {
-                guard !isDatabaseReady else { return }
-                guard let path: String = Bundle.module.path(forResource: "syllabledb", ofType: "sqlite3") else { return }
-                guard sqlite3_open_v2(path, &storageDatabase, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else { return }
-                guard sqlite3_open_v2(":memory:", &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else { return }
-                let backup = sqlite3_backup_init(database, "main", storageDatabase, "main")
-                guard sqlite3_backup_step(backup, -1) == SQLITE_DONE else { return }
-                guard sqlite3_backup_finish(backup) == SQLITE_OK else { return }
-                sqlite3_close_v2(storageDatabase)
-                isDatabaseReady = true
-        }
-
         private static func match<T: StringProtocol>(_ text: T) -> SegmentToken? {
                 guard let code: Int = text.charcode else { return nil }
                 let command: String = "SELECT token, origin FROM syllabletable WHERE code = \(code) LIMIT 1;"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
-                guard sqlite3_prepare_v2(database, command, -1, &statement, nil) == SQLITE_OK else { return nil }
+                guard sqlite3_prepare_v2(Engine.database, command, -1, &statement, nil) == SQLITE_OK else { return nil }
                 guard sqlite3_step(statement) == SQLITE_ROW else { return nil }
                 let token: String = String(cString: sqlite3_column_text(statement, 0))
                 let origin: String = String(cString: sqlite3_column_text(statement, 1))
                 return SegmentToken(text: token, origin: origin)
         }
-
-
-        // MARK: - Split
 
         private static func splitLeading<T: StringProtocol>(_ text: T)-> [SegmentToken] {
                 let maxLength: Int = min(text.count, 6)

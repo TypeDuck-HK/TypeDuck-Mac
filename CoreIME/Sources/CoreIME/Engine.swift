@@ -8,7 +8,6 @@ public struct Engine {
         private static var isDatabaseReady: Bool = false
 
         public static func prepare() {
-                Segmentor.prepare()
                 let shouldPrepare: Bool = !isDatabaseReady || (database == nil)
                 guard shouldPrepare else { return }
                 sqlite3_close_v2(storageDatabase)
