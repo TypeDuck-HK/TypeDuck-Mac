@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BUNDLE_IDENTIFIER='hk.eduhk.inputmethod.TypeDuck'
-APP_VERSION='1.3.0'
+APP_VERSION='1.4.0'
 INSTALL_LOCATION='/Library/Input Methods'
 
 pkgbuild \

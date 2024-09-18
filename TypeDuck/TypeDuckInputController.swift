@@ -49,7 +49,7 @@ final class TypeDuckInputController: IMKInputController {
                 window.setFrame(frame ?? windowFrame, display: true)
         }
         private var windowFrame: CGRect {
-                let origin: CGPoint = currentOrigin ?? currentClient?.position ?? .zero
+                let origin: CGPoint = currentOrigin ?? currentClient?.position ?? screenOrigin
                 let viewSize: CGSize = {
                         guard let size = window.contentView?.subviews.first?.bounds.size, size.width > 44 else {
                                 return CGSize(width: 800, height: 500)
@@ -75,7 +75,7 @@ final class TypeDuckInputController: IMKInputController {
                 return CGRect(x: x, y: y, width: width, height: height)
         }
 
-        private lazy var screenOrigin: CGPoint = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? screenOrigin
+        private lazy var screenOrigin: CGPoint = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? .zero
         private lazy var screenSize: CGSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1920, height: 1080)
         private lazy var currentOrigin: CGPoint? = nil
         func updateCurrentOrigin(to point: CGPoint? ) {
