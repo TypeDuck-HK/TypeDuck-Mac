@@ -51,7 +51,7 @@ struct DataHandler {
 
         private static func fetchData() -> [String] {
                 guard let sourceUrl: URL = Bundle.module.url(forResource: "data", withExtension: "csv") else { fatalError("Can not access data.csv, file not found.") }
-                guard let sourceContent: String = try? String(contentsOf: sourceUrl) else { fatalError("Can not read data.csv content.") }
+                guard let sourceContent: String = try? String(contentsOf: sourceUrl, encoding: .utf8) else { fatalError("Can not read data.csv content.") }
                 let sourceLines: [String] = sourceContent
                         .trimmingCharacters(in: .whitespacesAndNewlines)
                         .components(separatedBy: .newlines)

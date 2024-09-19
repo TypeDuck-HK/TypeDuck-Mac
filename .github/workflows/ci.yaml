@@ -2,12 +2,12 @@ name: CI
 on: [push, pull_request, release]
 
 env:
-  DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_16_Release_Candidate.app/Contents/Developer
 
 jobs:
   build_preparing:
     name: Build Preparing
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Swift Build Preparing
@@ -15,7 +15,7 @@ jobs:
         working-directory: ./Preparing
   build_coreime:
     name: Build CoreIME
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Swift Build CoreIME
@@ -23,7 +23,7 @@ jobs:
         working-directory: ./CoreIME
   build_typeduck:
     name: Build TypeDuck
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Build TypeDuck Project
