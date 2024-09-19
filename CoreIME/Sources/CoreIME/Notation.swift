@@ -1,4 +1,4 @@
-public struct Notation: Hashable {
+public struct Notation: Hashable, Sendable {
 
         // Equatable
         public static func ==(lhs: Notation, rhs: Notation) -> Bool {

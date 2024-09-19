@@ -3,7 +3,7 @@ import SQLite3
 
 // MARK: - Segmentation
 
-public struct SegmentToken: Hashable {
+public struct SegmentToken: Hashable, Sendable {
         /// Token
         public let text: String
         /// Regular Jyutping Syllable
@@ -55,7 +55,7 @@ private extension Segmentation {
         }
 }
 
-public struct Segmentor {
+public struct Segmentor: Sendable {
 
         private static func match<T: StringProtocol>(_ text: T) -> SegmentToken? {
                 guard let code: Int = text.charcode else { return nil }
@@ -137,7 +137,7 @@ public struct Segmentor {
         }
 
         private static let maxCachedCount: Int = 1000
-        private static var cachedSegmentations: [Int: Segmentation] = [:]
+        nonisolated(unsafe) private static var cachedSegmentations: [Int: Segmentation] = [:]
         private static func cache(key: Int, segmentation: Segmentation) {
                 defer { cachedSegmentations[key] = segmentation }
                 guard cachedSegmentations.count > maxCachedCount else { return }

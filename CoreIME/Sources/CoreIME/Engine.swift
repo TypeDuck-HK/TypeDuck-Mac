@@ -1,24 +1,23 @@
 import Foundation
 import SQLite3
 
-public struct Engine {
+public struct Engine: Sendable {
 
-        private static var storageDatabase: OpaquePointer? = nil
-        private(set) static var database: OpaquePointer? = nil
-        private static var isDatabaseReady: Bool = false
+        nonisolated(unsafe) private(set) static var database: OpaquePointer? = nil
+        nonisolated(unsafe) private static var isDatabaseReady: Bool = false
 
         public static func prepare() {
                 let shouldPrepare: Bool = !isDatabaseReady || (database == nil)
                 guard shouldPrepare else { return }
-                sqlite3_close_v2(storageDatabase)
                 sqlite3_close_v2(database)
                 guard let path: String = Bundle.module.path(forResource: "imedb", ofType: "sqlite3") else { return }
+                var storageDatabase: OpaquePointer? = nil
+                defer { sqlite3_close_v2(storageDatabase) }
                 guard sqlite3_open_v2(path, &storageDatabase, SQLITE_OPEN_READONLY, nil) == SQLITE_OK else { return }
                 guard sqlite3_open_v2(":memory:", &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else { return }
                 let backup = sqlite3_backup_init(database, "main", storageDatabase, "main")
                 guard sqlite3_backup_step(backup, -1) == SQLITE_DONE else { return }
                 guard sqlite3_backup_finish(backup) == SQLITE_OK else { return }
-                sqlite3_close_v2(storageDatabase)
                 isDatabaseReady = true
         }
 
