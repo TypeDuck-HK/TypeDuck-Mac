@@ -51,7 +51,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         private var windowFrame: CGRect {
                 let origin: CGPoint = {
                         guard let position = (currentPosition ?? currentClient?.position) else { return screenOrigin }
-                        guard (position.x < maxPointX) && (position.y < maxPointY) else { return screenOrigin }
+                        guard (position.x > screenOrigin.x) && (position.x < maxPointX) && (position.y > screenOrigin.y) && (position.y < maxPointY) else { return screenOrigin }
                         return position
                 }()
                 let viewSize: CGSize = {
@@ -91,7 +91,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 didSet {
                         let origin: CGPoint = {
                                 guard let position = currentClient?.position else { return screenOrigin }
-                                guard (position.x < maxPointX) && (position.y < maxPointX) else { return screenOrigin }
+                                guard (position.x > screenOrigin.x) && (position.x < maxPointX) && (position.y > screenOrigin.y) && (position.y < maxPointY) else { return screenOrigin }
                                 return position
                         }()
                         let isRegularHorizontal: Bool = (maxPointX - origin.x) > 300
@@ -623,9 +623,9 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 if let position = client?.position {
                         currentPosition = position
                 }
-                let currentClientID = currentClient?.uniqueClientIdentifierString()
+                let oldClientID = currentClient?.uniqueClientIdentifierString()
                 let clientID = client?.uniqueClientIdentifierString()
-                if clientID != currentClientID {
+                if clientID != oldClientID {
                         currentClient = client
                 }
                 let currentInputForm: InputForm = appContext.inputForm
