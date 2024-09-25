@@ -33,8 +33,8 @@ Finally, log out of you computer then log back in, or reboot your computer.
 
 ## How to build
 Build requirements
-- macOS 14.0+
-- Xcode 15.4+
+- macOS 15.0+
+- Xcode 16.0+
 
 Prepare databases:
 ~~~bash

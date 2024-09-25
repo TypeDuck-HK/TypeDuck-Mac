@@ -1,6 +1,7 @@
 import SwiftUI
 
-enum Language: Int, Hashable, Identifiable, CaseIterable {
+@MainActor
+enum Language: Int, Hashable, @preconcurrency Identifiable, CaseIterable, Sendable {
 
         /// 粵語
         case Cantonese

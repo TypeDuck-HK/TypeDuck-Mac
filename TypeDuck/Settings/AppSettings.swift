@@ -1,7 +1,8 @@
 import Foundation
 import CoreIME
 
-struct AppSettings {
+@MainActor
+struct AppSettings: Sendable {
 
         /// Translations
         static let commentLanguages: [Language] = [.English, .Hindi, .Indonesian, .Nepali, .Urdu ]

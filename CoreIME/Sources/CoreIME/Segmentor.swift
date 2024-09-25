@@ -55,7 +55,7 @@ private extension Segmentation {
         }
 }
 
-public struct Segmentor: Sendable {
+public struct Segmentor {
 
         private static func match<T: StringProtocol>(_ text: T) -> SegmentToken? {
                 guard let code: Int = text.charcode else { return nil }

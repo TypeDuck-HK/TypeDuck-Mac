@@ -34,8 +34,8 @@ README in [粵語(Cantonese)](README.md) | [English](README-en.md)
 
 ## 如何構建（How to build）
 前置要求（Build requirements）
-- macOS 14.0+
-- Xcode 15.4+
+- macOS 15.0+
+- Xcode 16.0+
 
 先構建數據庫 (Prepare databases)
 ~~~bash

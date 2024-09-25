@@ -2,9 +2,9 @@ import Foundation
 import SQLite3
 import CoreIME
 
-struct UserLexicon {
+struct UserLexicon: Sendable {
 
-        private static var database: OpaquePointer? = nil
+        nonisolated(unsafe) private static var database: OpaquePointer? = nil
 
         static func prepare() {
                 guard database == nil else { return }
