@@ -85,6 +85,11 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         private var maxPointY: CGFloat { screenOrigin.y + screenSize.height }
         private var maxPoint: CGPoint { CGPoint(x: maxPointX, y: maxPointY) }
         private lazy var currentPosition: CGPoint? = nil
+        private func updateCurrentPosition(to point: CGPoint?) {
+                guard let point else { return }
+                guard (point.x > screenOrigin.x) && (point.x < maxPointX) && (point.y > screenOrigin.y) && (point.y < maxPointY) else { return }
+                currentPosition = point
+        }
 
         private typealias InputClient = (IMKTextInput & NSObjectProtocol)
         private lazy var currentClient: InputClient? = nil {
@@ -140,7 +145,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         screenOrigin = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? .zero
                         screenSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1280, height: 800)
                         currentClient = nonIsolatedClient
-                        currentPosition = nonIsolatedClient?.position
+                        updateCurrentPosition(to: nonIsolatedClient?.position)
                         prepareWindow()
                 }
         }
@@ -620,9 +625,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
 
         private func process(keyCode: UInt16, client: InputClient?, hasControlShiftModifiers: Bool, isShifting: Bool) {
-                if let position = client?.position {
-                        currentPosition = position
-                }
+                updateCurrentPosition(to: client?.position)
                 let oldClientID = currentClient?.uniqueClientIdentifierString()
                 let clientID = client?.uniqueClientIdentifierString()
                 if clientID != oldClientID {
