@@ -46,36 +46,34 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 window.setFrame(.zero, display: true)
         }
         private func updateWindowFrame(_ frame: CGRect? = nil) {
-                window.setFrame(frame ?? windowFrame, display: true)
+                Task { @MainActor in
+                        try await Task.sleep(nanoseconds: 30_000_000) // 0.03s
+                        window.setFrame(frame ?? windowFrame, display: true)
+                }
         }
         private var windowFrame: CGRect {
-                let origin: CGPoint = {
-                        guard let position = (currentPosition ?? currentClient?.position) else { return screenOrigin }
-                        guard (position.x > screenOrigin.x) && (position.x < maxPointX) && (position.y > screenOrigin.y) && (position.y < maxPointY) else { return screenOrigin }
-                        return position
+                let windowPattern = appContext.windowPattern
+                let position: CGPoint = {
+                        guard let cursorBlock = currentCursorBlock ?? currentClient?.cursorBlock else { return screenOrigin }
+                        let x: CGFloat = windowPattern.isReversingHorizontal ? cursorBlock.origin.x : cursorBlock.maxX
+                        let y: CGFloat = windowPattern.isReversingVertical ? cursorBlock.maxY : cursorBlock.origin.y
+                        guard (x > screenOrigin.x) && (x < maxPointX) && (y > screenOrigin.y) && (y < maxPointY) else { return screenOrigin }
+                        return CGPoint(x: x, y: y)
                 }()
                 let viewSize: CGSize = {
-                        guard let size = window.contentView?.subviews.first?.bounds.size, size.width > 44 else {
-                                return CGSize(width: 800, height: 500)
+                        if let size = window.contentView?.subviews.first?.bounds.size,
+                           size.width > 32,
+                           size.height > 16
+                        {
+                                return size
+                        } else {
+                                return CGSize(width: 720, height: 540)
                         }
-                        return size
                 }()
                 let width: CGFloat = viewSize.width
                 let height: CGFloat = viewSize.height
-                let x: CGFloat = {
-                        if appContext.windowPattern.isReversingHorizontal {
-                                return origin.x - width - 8
-                        } else {
-                                return origin.x
-                        }
-                }()
-                let y: CGFloat = {
-                        if appContext.windowPattern.isReversingVertical {
-                                return origin.y + 16
-                        } else {
-                                return origin.y - height
-                        }
-                }()
+                let x: CGFloat = windowPattern.isReversingHorizontal ? (position.x - width) : position.x
+                let y: CGFloat = windowPattern.isReversingVertical ? position.y : (position.y - height)
                 return CGRect(x: x, y: y, width: width, height: height)
         }
 
@@ -84,23 +82,23 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         private var maxPointX: CGFloat { screenOrigin.x + screenSize.width }
         private var maxPointY: CGFloat { screenOrigin.y + screenSize.height }
         private var maxPoint: CGPoint { CGPoint(x: maxPointX, y: maxPointY) }
-        private lazy var currentPosition: CGPoint? = nil
-        private func updateCurrentPosition(to point: CGPoint?) {
-                guard let point else { return }
+        private lazy var currentCursorBlock: CGRect? = nil
+        private func updateCurrentCursorBlock(to rect: CGRect?) {
+                guard let point = rect?.origin else { return }
                 guard (point.x > screenOrigin.x) && (point.x < maxPointX) && (point.y > screenOrigin.y) && (point.y < maxPointY) else { return }
-                currentPosition = point
+                currentCursorBlock = rect
         }
 
         private typealias InputClient = (IMKTextInput & NSObjectProtocol)
         private lazy var currentClient: InputClient? = nil {
                 didSet {
-                        let origin: CGPoint = {
-                                guard let position = currentClient?.position else { return screenOrigin }
-                                guard (position.x > screenOrigin.x) && (position.x < maxPointX) && (position.y > screenOrigin.y) && (position.y < maxPointY) else { return screenOrigin }
-                                return position
+                        let position: CGPoint = {
+                                guard let point = currentClient?.cursorBlock.origin else { return screenOrigin }
+                                guard (point.x > screenOrigin.x) && (point.x < maxPointX) && (point.y > screenOrigin.y) && (point.y < maxPointY) else { return screenOrigin }
+                                return point
                         }()
-                        let isRegularHorizontal: Bool = (maxPointX - origin.x) > 300
-                        let isRegularVertical: Bool = (origin.y - screenOrigin.y) > 300
+                        let isRegularHorizontal: Bool = (maxPointX - position.x) > 300
+                        let isRegularVertical: Bool = (position.y - screenOrigin.y) > 300
                         let newPattern: WindowPattern = {
                                 switch (isRegularHorizontal, isRegularVertical) {
                                 case (true, true):
@@ -145,7 +143,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         screenOrigin = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? .zero
                         screenSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1280, height: 800)
                         currentClient = nonIsolatedClient
-                        updateCurrentPosition(to: nonIsolatedClient?.position)
+                        updateCurrentCursorBlock(to: nonIsolatedClient?.cursorBlock)
                         prepareWindow()
                 }
         }
@@ -623,7 +621,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
 
         private func process(keyCode: UInt16, client: InputClient?, hasControlShiftModifiers: Bool, isShifting: Bool) {
-                updateCurrentPosition(to: client?.position)
+                updateCurrentCursorBlock(to: client?.cursorBlock)
                 let oldClientID = currentClient?.uniqueClientIdentifierString()
                 let clientID = client?.uniqueClientIdentifierString()
                 if clientID != oldClientID {
