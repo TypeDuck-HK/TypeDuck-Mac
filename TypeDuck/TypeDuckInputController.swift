@@ -479,8 +479,6 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                 return false
                         }
                 case .shift:
-                        let shouldHandle: Bool = (code != KeyCode.Special.VK_RETURN)
-                        guard shouldHandle else { return false }
                         isEventHandled = true
                 case .capsLock, .function, .help:
                         return false
@@ -795,7 +793,19 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         switch currentInputForm {
                         case .cantonese:
                                 guard isBuffering else { return }
-                                passBuffer()
+                                let text2pass: String? = {
+                                        guard isShifting && candidates.isNotEmpty else { return nil }
+                                        let index = appContext.highlightedIndex
+                                        guard let candidate = appContext.displayCandidates.fetch(index)?.candidate else { return nil }
+                                        guard candidate.isCantonese else { return nil }
+                                        return candidate.romanization
+                                }()
+                                if let text2pass {
+                                        currentClient?.insert(text2pass)
+                                        clearBufferText()
+                                } else {
+                                        passBuffer()
+                                }
                         case .transparent:
                                 return
                         case .options:
