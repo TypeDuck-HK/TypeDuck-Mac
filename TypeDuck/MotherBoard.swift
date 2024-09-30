@@ -5,7 +5,8 @@ struct MotherBoard: View {
         @EnvironmentObject private var context: AppContext
 
         var body: some View {
-                ZStack(alignment: context.windowPattern.windowAlignment) {
+                let windowPattern = context.windowPattern
+                ZStack(alignment: windowPattern.windowAlignment) {
                         Color.clear
                         if context.inputForm.isOptions {
                                 OptionsView()
@@ -15,5 +16,6 @@ struct MotherBoard: View {
                                 CandidateBoard()
                         }
                 }
+                .fixedSize(horizontal: !(windowPattern.isReversingHorizontal), vertical: !(windowPattern.isReversingVertical))
         }
 }

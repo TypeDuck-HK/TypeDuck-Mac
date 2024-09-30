@@ -3,15 +3,13 @@ import InputMethodKit
 import CoreIME
 
 @MainActor
-@objc(TypeDuckInputController)
 final class TypeDuckInputController: IMKInputController, Sendable {
 
         // MARK: - Window, InputClient
 
         private lazy var window: NSPanel = CandidateWindow(level: nil)
         private func prepareWindow() {
-                _ = window.contentView?.subviews.map({ $0.removeFromSuperview() })
-                _ = window.contentViewController?.children.map({ $0.removeFromParent() })
+                window.contentViewController = nil
                 let idealValue: Int = Int(CGShieldingWindowLevel())
                 let maxValue: Int = idealValue + 2
                 let minValue: Int = NSWindow.Level.floating.rawValue
@@ -23,33 +21,15 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         return preferredValue
                 }()
                 window.level = NSWindow.Level(levelValue)
-                let motherBoard = NSHostingController(rootView: MotherBoard().environmentObject(appContext))
-                window.contentView?.addSubview(motherBoard.view)
-                motherBoard.view.translatesAutoresizingMaskIntoConstraints = false
-                if let topAnchor = window.contentView?.topAnchor,
-                   let bottomAnchor = window.contentView?.bottomAnchor,
-                   let leadingAnchor = window.contentView?.leadingAnchor,
-                   let trailingAnchor = window.contentView?.trailingAnchor {
-                        NSLayoutConstraint.activate([
-                                motherBoard.view.topAnchor.constraint(equalTo: topAnchor),
-                                motherBoard.view.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                motherBoard.view.leadingAnchor.constraint(equalTo: leadingAnchor),
-                                motherBoard.view.trailingAnchor.constraint(equalTo: trailingAnchor)
-                        ])
-                }
-                window.contentViewController?.addChild(motherBoard)
+                window.contentViewController = NSHostingController(rootView: MotherBoard().environmentObject(appContext))
                 window.orderFrontRegardless()
         }
         private func clearWindow() {
-                _ = window.contentView?.subviews.map({ $0.removeFromSuperview() })
-                _ = window.contentViewController?.children.map({ $0.removeFromParent() })
+                window.contentViewController = nil
                 window.setFrame(.zero, display: true)
         }
         private func updateWindowFrame(_ frame: CGRect? = nil) {
-                Task { @MainActor in
-                        try await Task.sleep(nanoseconds: 30_000_000) // 0.03s
-                        window.setFrame(frame ?? windowFrame, display: true)
-                }
+                window.setFrame(frame ?? windowFrame, display: true)
         }
         private var windowFrame: CGRect {
                 let windowPattern = appContext.windowPattern
@@ -60,18 +40,8 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         guard (x > screenOrigin.x) && (x < maxPointX) && (y > screenOrigin.y) && (y < maxPointY) else { return screenOrigin }
                         return CGPoint(x: x, y: y)
                 }()
-                let viewSize: CGSize = {
-                        if let size = window.contentView?.subviews.first?.bounds.size,
-                           size.width > 32,
-                           size.height > 16
-                        {
-                                return size
-                        } else {
-                                return CGSize(width: 720, height: 540)
-                        }
-                }()
-                let width: CGFloat = viewSize.width
-                let height: CGFloat = viewSize.height
+                let width: CGFloat = windowPattern.isReversingHorizontal ? 800 : 44
+                let height: CGFloat = windowPattern.isReversingVertical ? 700 : 44
                 let x: CGFloat = windowPattern.isReversingHorizontal ? (position.x - width) : position.x
                 let y: CGFloat = windowPattern.isReversingVertical ? position.y : (position.y - height)
                 return CGRect(x: x, y: y, width: width, height: height)
@@ -130,28 +100,38 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
         override func activateServer(_ sender: Any!) {
                 super.activateServer(sender)
-                UserLexicon.prepare()
-                Engine.prepare()
-                nonisolated(unsafe) let nonIsolatedClient: InputClient? = (sender as? InputClient) ?? client()
+                nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
+                        UserLexicon.prepare()
+                        Engine.prepare()
                         if inputStage.isBuffering {
                                 clearBufferText()
                         }
-                        if appContext.inputForm.isOptions {
-                                appContext.updateInputForm()
+                        if inputForm.isOptions {
+                                updateInputForm()
                         }
                         screenOrigin = NSScreen.main?.visibleFrame.origin ?? window.screen?.visibleFrame.origin ?? .zero
                         screenSize = NSScreen.main?.visibleFrame.size ?? window.screen?.visibleFrame.size ?? CGSize(width: 1280, height: 800)
-                        currentClient = nonIsolatedClient
-                        updateCurrentCursorBlock(to: nonIsolatedClient?.cursorBlock)
+                        currentClient = client
+                        updateCurrentCursorBlock(to: client?.cursorBlock)
                         prepareWindow()
                 }
         }
         override func deactivateServer(_ sender: Any!) {
-                nonisolated(unsafe) let nonIsolatedClient: InputClient? = (sender as? InputClient) ?? client()
+                nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
                         clearWindow()
-                        let windowCount: Int = NSApp.windows.count
+                        selectedCandidates = []
+                        if inputForm.isOptions {
+                                updateInputForm()
+                        }
+                        if inputStage.isBuffering {
+                                let text: String = bufferText
+                                clearBufferText()
+                                client?.insert(text)
+                        }
+                        clearMarkedText()
+                        let windowCount = NSApp.windows.count
                         if windowCount > 20 {
                                 NSRunningApplication.current.terminate()
                                 NSApp.terminate(self)
@@ -159,29 +139,24 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         } else if windowCount > 10 {
                                 _ = NSApp.windows.map({ $0.close() })
                         } else {
-                                _ = NSApp.windows.filter({ $0.identifier != window.identifier && $0.identifier?.rawValue != AppSettings.TypeDuckSettingsWindowIdentifier}).map({ $0.close() })
-                        }
-                        selectedCandidates = []
-                        if appContext.inputForm.isOptions {
-                                clearOptionsViewHintText()
-                                appContext.updateInputForm()
-                        }
-                        if inputStage.isBuffering {
-                                let text: String = bufferText
-                                clearBufferText()
-                                nonIsolatedClient?.insert(text)
+                                _ = NSApp.windows.filter({ $0.identifier != window.identifier && $0.identifier?.rawValue != AppSettings.TypeDuckSettingsWindowIdentifier }).map({ $0.close() })
                         }
                 }
                 super.deactivateServer(sender)
         }
 
-        nonisolated(unsafe) private lazy var appContext: AppContext = AppContext()
+        private lazy var appContext: AppContext = AppContext()
+
+        nonisolated(unsafe) private lazy var inputForm: InputForm = InputForm.matchInputMethodMode()
+        func updateInputForm(to form: InputForm? = nil) {
+                let newForm = form ?? InputForm.matchInputMethodMode()
+                inputForm = newForm
+                appContext.updateInputForm(to: newForm)
+        }
 
         nonisolated(unsafe) private lazy var inputStage: InputStage = .standby
 
-        private func clearBufferText() {
-                bufferText = String.empty
-        }
+        private func clearBufferText() { bufferText = String.empty }
         private lazy var bufferText: String = .empty {
                 willSet {
                         switch (bufferText.isEmpty, newValue.isEmpty) {
@@ -234,21 +209,19 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
 
         private func mark(text: String) {
-                let markAttributes = mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0))
-                let fallbackAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.thick.rawValue]
-                let attributes = (markAttributes as? [NSAttributedString.Key: Any]) ?? fallbackAttributes
-                let attributedText = NSAttributedString(string: text, attributes: attributes)
+                let attributedText = NSAttributedString(string: text, attributes: markAttributes)
                 let selectionRange = NSRange(location: text.utf16.count, length: 0)
                 currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: NSRange(location: NSNotFound, length: 0))
         }
         private func clearMarkedText() {
-                let markAttributes = mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0))
-                let fallbackAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.thick.rawValue]
-                let attributes = (markAttributes as? [NSAttributedString.Key: Any]) ?? fallbackAttributes
-                let attributedText = NSAttributedString(string: String(), attributes: attributes)
+                let attributedText = NSAttributedString(string: String(), attributes: markAttributes)
                 let selectionRange = NSRange(location: 0, length: 0)
                 currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: NSRange(location: NSNotFound, length: 0))
         }
+        private lazy var markAttributes: [NSAttributedString.Key: Any] = {
+                let attributes = mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0))
+                return (attributes as? [NSAttributedString.Key: Any]) ?? [.underlineStyle: NSUnderlineStyle.thick.rawValue]
+        }()
         private func markOptionsViewHintText() {
                 guard !(inputStage.isBuffering) else { return }
                 mark(text: String.zeroWidthSpace)
@@ -300,11 +273,11 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 guard let firstIndex: Int = newFirstIndex else { return }
                 let bound: Int = min(firstIndex + pageSize, candidateCount)
                 indices = (firstIndex, bound - 1)
+                updateWindowFrame()
                 let newDisplayCandidates = (firstIndex..<bound).map({ index -> DisplayCandidate in
                         return DisplayCandidate(candidate: candidates[index], candidateIndex: index)
                 })
                 appContext.update(with: newDisplayCandidates, highlight: highlight)
-                updateWindowFrame()
         }
 
 
@@ -440,6 +413,9 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 candidates = symbols.map({ Candidate(text: $0.symbol, comment: $0.comment, secondaryComment: $0.secondaryComment, input: bufferText) })
         }
 
+
+        // MARK: - Handle Event
+
         override func recognizedEvents(_ sender: Any!) -> Int {
                 let masks: NSEvent.EventTypeMask = [.keyDown]
                 return Int(masks.rawValue)
@@ -449,7 +425,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 let modifiers = event.modifierFlags
                 let shouldIgnoreCurrentEvent: Bool = modifiers.contains(.command) || modifiers.contains(.option)
                 guard !shouldIgnoreCurrentEvent else { return false }
-                let currentInputForm: InputForm = appContext.inputForm
+                let currentInputForm: InputForm = inputForm
                 let isBuffering: Bool = inputStage.isBuffering
                 let code: UInt16 = event.keyCode
                 lazy var hasControlShiftModifiers: Bool = false
@@ -612,14 +588,20 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                 return false
                         }
                 }
-                nonisolated(unsafe) let nonIsolatedClient: InputClient? = (sender as? InputClient)
+                nonisolated(unsafe) let client: InputClient? = (sender as? InputClient)
+                if !isBuffering && isEventHandled {
+                        let attributes: [NSAttributedString.Key: Any] = (mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0)) as? [NSAttributedString.Key: Any]) ?? [.underlineStyle: NSUnderlineStyle.thick.rawValue]
+                        let attributedText = NSAttributedString(string: String.zeroWidthSpace, attributes: attributes)
+                        let selectionRange = NSRange(location: String.zeroWidthSpace.utf16.count, length: 0)
+                        let replacementRange = NSRange(location: NSNotFound, length: 0)
+                        client?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: replacementRange)
+                }
                 let isShifting: Bool = (modifiers == .shift)
                 Task { @MainActor in
-                        process(keyCode: code, client: nonIsolatedClient, hasControlShiftModifiers: hasControlShiftModifiers, isShifting: isShifting)
+                        process(keyCode: code, client: client, hasControlShiftModifiers: hasControlShiftModifiers, isShifting: isShifting)
                 }
                 return isEventHandled
         }
-
         private func process(keyCode: UInt16, client: InputClient?, hasControlShiftModifiers: Bool, isShifting: Bool) {
                 updateCurrentCursorBlock(to: client?.cursorBlock)
                 let oldClientID = currentClient?.uniqueClientIdentifierString()
@@ -627,7 +609,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 if clientID != oldClientID {
                         currentClient = client
                 }
-                let currentInputForm: InputForm = appContext.inputForm
+                let currentInputForm: InputForm = inputForm
                 let isBuffering = inputStage.isBuffering
                 switch keyCode.representative {
                 case .alphabet(_) where hasControlShiftModifiers && isBuffering && (keyCode == KeyCode.Alphabet.VK_U):
@@ -734,7 +716,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         switch currentInputForm {
                         case .cantonese, .transparent:
                                 markOptionsViewHintText()
-                                appContext.updateInputForm(to: .options)
+                                updateInputForm(to: .options)
                                 updateWindowFrame()
                         case .options:
                                 handleOptions(-1)
@@ -940,7 +922,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 let selectedIndex: Int = index ?? appContext.optionsHighlightedIndex
                 defer {
                         clearOptionsViewHintText()
-                        appContext.updateInputForm()
+                        updateInputForm()
                         let frame: CGRect? = candidates.isEmpty ? .zero : nil
                         updateWindowFrame(frame)
                 }
@@ -1009,7 +991,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
 
 
-        // MARK: - Menu
+        // MARK: - macOS Menu
 
         override func menu() -> NSMenu! {
                 let menuTitle: String = String(localized: "Menu.Title")
@@ -1048,35 +1030,16 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 displaySettingsWindow()
         }
         private func displaySettingsWindow() {
-                let windowIdentifiers: [String] = NSApp.windows.compactMap(\.identifier?.rawValue)
-                let shouldOpenNewWindow: Bool = windowIdentifiers.notContains(AppSettings.TypeDuckSettingsWindowIdentifier)
+                let shouldOpenNewWindow: Bool = NSApp.windows.compactMap(\.identifier?.rawValue).notContains(AppSettings.TypeDuckSettingsWindowIdentifier)
                 guard shouldOpenNewWindow else { return }
                 let frame: CGRect = settingsWindowFrame()
-                let window = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)
-                window.identifier = NSUserInterfaceItemIdentifier(rawValue: AppSettings.TypeDuckSettingsWindowIdentifier)
-                window.title = String(localized: "Settings.Window.Title")
-                let visualEffectView = NSVisualEffectView()
-                visualEffectView.material = .sidebar
-                visualEffectView.blendingMode = .behindWindow
-                visualEffectView.state = .active
-                window.contentView = visualEffectView
-                let hostingController = NSHostingController(rootView: SettingsView())
-                window.contentView?.addSubview(hostingController.view)
-                hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-                if let topAnchor = window.contentView?.topAnchor,
-                   let bottomAnchor = window.contentView?.bottomAnchor,
-                   let leadingAnchor = window.contentView?.leadingAnchor,
-                   let trailingAnchor = window.contentView?.trailingAnchor {
-                        NSLayoutConstraint.activate([
-                                hostingController.view.topAnchor.constraint(equalTo: topAnchor),
-                                hostingController.view.bottomAnchor.constraint(equalTo: bottomAnchor),
-                                hostingController.view.leadingAnchor.constraint(equalTo: leadingAnchor),
-                                hostingController.view.trailingAnchor.constraint(equalTo: trailingAnchor)
-                        ])
-                }
-                window.contentViewController?.addChild(hostingController)
-                window.orderFrontRegardless()
-                window.setFrame(frame, display: true)
+                let settingsWindow = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)
+                settingsWindow.identifier = NSUserInterfaceItemIdentifier(rawValue: AppSettings.TypeDuckSettingsWindowIdentifier)
+                settingsWindow.title = String(localized: "Settings.Window.Title")
+                settingsWindow.toolbarStyle = .unifiedCompact
+                settingsWindow.contentViewController = NSHostingController(rootView: SettingsView())
+                settingsWindow.orderFrontRegardless()
+                settingsWindow.setFrame(frame, display: true)
                 NSApp.activate(ignoringOtherApps: true)
         }
         private func settingsWindowFrame() -> CGRect {

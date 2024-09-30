@@ -2,19 +2,26 @@ import Foundation
 import SQLite3
 import CoreIME
 
+@MainActor
 struct UserLexicon: Sendable {
 
-        nonisolated(unsafe) private static var database: OpaquePointer? = nil
+        private static let database: OpaquePointer? = {
+                var db: OpaquePointer? = nil
+                let path: String? = {
+                        let fileName: String = "userlexicon.sqlite3"
+                        if #available(macOS 13.0, *) {
+                                return URL.libraryDirectory.appending(path: fileName, directoryHint: .notDirectory).path()
+                        } else {
+                                guard let libraryDirectoryUrl: URL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else { return nil }
+                                return libraryDirectoryUrl.appendingPathComponent(fileName, isDirectory: false).path
+                        }
+                }()
+                guard let path else { return nil }
+                guard sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK else { return nil }
+                return db
+        }()
 
         static func prepare() {
-                guard database == nil else { return }
-                guard let libraryDirectoryUrl: URL = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else { return }
-                let userLexiconUrl: URL = libraryDirectoryUrl.appendingPathComponent("userlexicon.sqlite3", isDirectory: false)
-                if sqlite3_open_v2(userLexiconUrl.path, &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil) == SQLITE_OK {
-                        ensureTable()
-                }
-        }
-        private static func ensureTable() {
                 let command: String = "CREATE TABLE IF NOT EXISTS userlexicontable(id INTEGER NOT NULL PRIMARY KEY, frequency INTEGER NOT NULL, word TEXT NOT NULL, romanization TEXT NOT NULL, shortcut INTEGER NOT NULL, ping INTEGER NOT NULL);"
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }

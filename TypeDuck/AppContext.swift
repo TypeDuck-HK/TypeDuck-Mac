@@ -45,12 +45,11 @@ final class AppContext: ObservableObject {
                 highlightedIndex = newHighlightedIndex
         }
 
-        func updateInputForm(to form: InputForm? = nil) {
-                let newForm: InputForm = form ?? InputForm.matchInputMethodMode()
-                if newForm.isOptions {
+        func updateInputForm(to form: InputForm) {
+                if form.isOptions {
                         optionsHighlightedIndex = minIndex
                 }
-                inputForm = newForm
+                inputForm = form
         }
         func updateWindowPattern(to pattern: WindowPattern) {
                 windowPattern = pattern

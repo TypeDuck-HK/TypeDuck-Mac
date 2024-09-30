@@ -4,7 +4,6 @@ import CoreIME
 
 @MainActor
 @main
-@objc(AppDelegate)
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
         static let shared: AppDelegate = AppDelegate()
