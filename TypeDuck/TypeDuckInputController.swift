@@ -128,7 +128,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         if inputStage.isBuffering {
                                 let text: String = bufferText
                                 clearBufferText()
-                                client?.insert(text)
+                                client?.insertText(text as NSString, replacementRange: replacementRange())
                         }
                         clearMarkedText()
                         let windowCount = NSApp.windows.count
@@ -208,18 +208,22 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 }
         }
 
+        private func insert(_ text: String) {
+                // let range = NSRange(location: NSNotFound, length: 0)
+                currentClient?.insertText(text as NSString, replacementRange: replacementRange())
+        }
         private func mark(text: String) {
                 let attributedText = NSAttributedString(string: text, attributes: markAttributes)
                 let selectionRange = NSRange(location: text.utf16.count, length: 0)
-                currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: NSRange(location: NSNotFound, length: 0))
+                currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: replacementRange())
         }
         private func clearMarkedText() {
                 let attributedText = NSAttributedString(string: String(), attributes: markAttributes)
                 let selectionRange = NSRange(location: 0, length: 0)
-                currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: NSRange(location: NSNotFound, length: 0))
+                currentClient?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: replacementRange())
         }
         private lazy var markAttributes: [NSAttributedString.Key: Any] = {
-                let attributes = mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0))
+                let attributes = mark(forStyle: kTSMHiliteSelectedConvertedText, at: replacementRange())
                 return (attributes as? [NSAttributedString.Key: Any]) ?? [.underlineStyle: NSUnderlineStyle.thick.rawValue]
         }()
         private func markOptionsViewHintText() {
@@ -590,7 +594,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 }
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient)
                 if !isBuffering && isEventHandled {
-                        let attributes: [NSAttributedString.Key: Any] = (mark(forStyle: kTSMHiliteSelectedConvertedText, at: NSRange(location: NSNotFound, length: 0)) as? [NSAttributedString.Key: Any]) ?? [.underlineStyle: NSUnderlineStyle.thick.rawValue]
+                        let attributes: [NSAttributedString.Key: Any] = (mark(forStyle: kTSMHiliteSelectedConvertedText, at: replacementRange()) as? [NSAttributedString.Key: Any]) ?? [.underlineStyle: NSUnderlineStyle.thick.rawValue]
                         let attributedText = NSAttributedString(string: String.zeroWidthSpace, attributes: attributes)
                         let selectionRange = NSRange(location: String.zeroWidthSpace.utf16.count, length: 0)
                         let replacementRange = NSRange(location: NSNotFound, length: 0)
@@ -631,7 +635,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                 if isBuffering {
                                         guard let selectedItem = appContext.displayCandidates.fetch(index) else { return }
                                         let text = selectedItem.candidate.text
-                                        currentClient?.insert(text)
+                                        insert(text)
                                         aftercareSelection(selectedItem)
                                 } else {
                                         if hasControlShiftModifiers {
@@ -642,11 +646,11 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                                         let shouldInsertCantoneseSymbol: Bool = isShifting && Options.punctuationForm.isCantoneseMode
                                                         guard shouldInsertCantoneseSymbol else { return }
                                                         let text: String = KeyCode.shiftingSymbol(of: number)
-                                                        currentClient?.insert(text)
+                                                        insert(text)
                                                 case .fullWidth:
                                                         let text: String = isShifting ? KeyCode.shiftingSymbol(of: number) : "\(number)"
                                                         let fullWidthText: String = text.fullWidth()
-                                                        currentClient?.insert(fullWidthText)
+                                                        insert(fullWidthText)
                                                 }
                                         }
                                 }
@@ -743,13 +747,13 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         guard Options.punctuationForm.isCantoneseMode else { return }
                         if isShifting {
                                 if let symbol = punctuationKey.instantShiftingSymbol {
-                                        currentClient?.insert(symbol)
+                                        insert(symbol)
                                 } else {
                                         bufferText = punctuationKey.shiftingKeyText
                                 }
                         } else {
                                 if let symbol = punctuationKey.instantSymbol {
-                                        currentClient?.insert(symbol)
+                                        insert(symbol)
                                 } else {
                                         bufferText = punctuationKey.keyText
                                 }
@@ -781,7 +785,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                         return candidate.romanization
                                 }()
                                 if let text2pass {
-                                        currentClient?.insert(text2pass)
+                                        insert(text2pass)
                                         clearBufferText()
                                 } else {
                                         passBuffer()
@@ -841,12 +845,12 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                         passBuffer()
                                         let shouldInsertFullWidthSpace: Bool = isShifting || (Options.characterForm == .fullWidth)
                                         let text: String = shouldInsertFullWidthSpace ? String.fullWidthSpace : String.space
-                                        currentClient?.insert(text)
+                                        insert(text)
                                 } else {
                                         let index = appContext.highlightedIndex
                                         guard let selectedItem = appContext.displayCandidates.fetch(index) else { return }
                                         let text = selectedItem.candidate.text
-                                        currentClient?.insert(text)
+                                        insert(text)
                                         aftercareSelection(selectedItem)
                                 }
                         case .transparent:
@@ -915,7 +919,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         private func passBuffer() {
                 guard inputStage.isBuffering else { return }
                 let text: String = Options.characterForm == .halfWidth ? bufferText : bufferText.fullWidth()
-                currentClient?.insert(text)
+                insert(text)
                 clearBufferText()
         }
         private func handleOptions(_ index: Int? = nil) {
