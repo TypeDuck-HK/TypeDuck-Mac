@@ -108,25 +108,22 @@ private struct OptionsKey {
 enum CharacterForm: Int {
         case halfWidth = 1
         case fullWidth = 2
+        var isHalfWidth: Bool { self == .halfWidth }
+        var isFullWidth: Bool { self == .fullWidth }
 }
 
 /// 標點符號形態
 enum PunctuationForm: Int {
         case cantonese = 1
         case english = 2
-        var isCantoneseMode: Bool {
-                return self == .cantonese
-        }
+        var isCantoneseMode: Bool { self == .cantonese }
+        var isEnglishMode: Bool { self == .english }
 }
 
-/// Cantonese / ABC
+/// Cantonese(Jyutping) / ABC
 enum InputMethodMode: Int {
         case cantonese = 1
         case abc = 2
-        var isCantonese: Bool {
-                return self == .cantonese
-        }
-        var isABC: Bool {
-                return self == .abc
-        }
+        var isCantonese: Bool { self == .cantonese }
+        var isABC: Bool { self == .abc }
 }
