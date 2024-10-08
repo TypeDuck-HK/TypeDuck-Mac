@@ -463,6 +463,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 default:
                         guard !(modifiers.contains(.deviceIndependentFlagsMask)) else { return false }
                 }
+                let isShifting: Bool = (modifiers == .shift)
                 switch code.representative {
                 case .alphabet(_):
                         switch currentInputForm {
@@ -553,7 +554,16 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                 isEventHandled = true
                         }
                 case .space:
-                        isEventHandled = true
+                        switch currentInputForm {
+                        case .cantonese:
+                                let shouldHandle: Bool = isBuffering || isShifting
+                                guard shouldHandle else { return false }
+                                isEventHandled = true
+                        case .transparent:
+                                return false
+                        case .options:
+                                isEventHandled = true
+                        }
                 case .tab:
                         switch currentInputForm {
                         case .cantonese:
@@ -600,7 +610,6 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         let replacementRange = NSRange(location: NSNotFound, length: 0)
                         client?.setMarkedText(attributedText, selectionRange: selectionRange, replacementRange: replacementRange)
                 }
-                let isShifting: Bool = (modifiers == .shift)
                 Task { @MainActor in
                         process(keyCode: code, client: client, hasControlShiftModifiers: hasControlShiftModifiers, isShifting: isShifting)
                 }
@@ -774,15 +783,15 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         switch currentInputForm {
                         case .cantonese:
                                 guard isBuffering else { return }
-                                let text2pass: String? = {
+                                let romanization: String? = {
                                         guard isShifting && candidates.isNotEmpty else { return nil }
                                         let index = appContext.highlightedIndex
                                         guard let candidate = appContext.displayCandidates.fetch(index)?.candidate else { return nil }
                                         guard candidate.isCantonese else { return nil }
                                         return candidate.romanization
                                 }()
-                                if let text2pass {
-                                        insert(text2pass)
+                                if let romanization {
+                                        insert(romanization)
                                         clearBufferText()
                                 } else {
                                         passBuffer()
@@ -838,20 +847,21 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 case .space:
                         switch currentInputForm {
                         case .cantonese:
-                                if candidates.isEmpty {
-                                        passBuffer()
-                                        let shouldInsertFullWidthSpace: Bool = isShifting || (Options.characterForm == .fullWidth)
-                                        let text: String = shouldInsertFullWidthSpace ? String.fullWidthSpace : String.space
-                                        insert(text)
-                                } else {
+                                if candidates.isNotEmpty {
                                         let index = appContext.highlightedIndex
                                         guard let selectedItem = appContext.displayCandidates.fetch(index) else { return }
                                         let text = selectedItem.candidate.text
                                         insert(text)
                                         aftercareSelection(selectedItem)
+                                } else if isBuffering {
+                                        passBuffer()
+                                } else if isShifting || Options.characterForm.isFullWidth {
+                                        insert(String.fullWidthSpace)
+                                } else {
+                                        insert(String.space)
                                 }
                         case .transparent:
-                                return
+                                insert(String.space)
                         case .options:
                                 handleOptions()
                         }
