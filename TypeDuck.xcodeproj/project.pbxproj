@@ -36,7 +36,7 @@
 		371B27DF2B3EB93A00EC1271 /* InputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27BC2B3EB93A00EC1271 /* InputForm.swift */; };
 		371B27E02B3EB93A00EC1271 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27BD2B3EB93A00EC1271 /* HelpView.swift */; };
 		371B27E12B3EB93A00EC1271 /* TypeDuckInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27BE2B3EB93A00EC1271 /* TypeDuckInputController.swift */; };
-		371B27E22B3EB93A00EC1271 /* WindowPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27BF2B3EB93A00EC1271 /* WindowPattern.swift */; };
+		371B27E22B3EB93A00EC1271 /* Quadrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27BF2B3EB93A00EC1271 /* Quadrant.swift */; };
 		371B27E42B3EB93A00EC1271 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27C12B3EB93A00EC1271 /* Options.swift */; };
 		371B27E52B3EB93A00EC1271 /* VisualEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27C22B3EB93A00EC1271 /* VisualEffect.swift */; };
 		371B27E62B3EB93A00EC1271 /* CharacterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B27C42B3EB93A00EC1271 /* CharacterExtensions.swift */; };
@@ -113,7 +113,7 @@
 		371B27BC2B3EB93A00EC1271 /* InputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputForm.swift; sourceTree = "<group>"; };
 		371B27BD2B3EB93A00EC1271 /* HelpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		371B27BE2B3EB93A00EC1271 /* TypeDuckInputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeDuckInputController.swift; sourceTree = "<group>"; };
-		371B27BF2B3EB93A00EC1271 /* WindowPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowPattern.swift; sourceTree = "<group>"; };
+		371B27BF2B3EB93A00EC1271 /* Quadrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quadrant.swift; sourceTree = "<group>"; };
 		371B27C12B3EB93A00EC1271 /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		371B27C22B3EB93A00EC1271 /* VisualEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffect.swift; sourceTree = "<group>"; };
 		371B27C42B3EB93A00EC1271 /* CharacterExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterExtensions.swift; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 				371B27AA2B3EB93A00EC1271 /* AppContext.swift */,
 				371B27BA2B3EB93A00EC1271 /* PageTransformation.swift */,
 				371B27B02B3EB93A00EC1271 /* MotherBoard.swift */,
-				371B27BF2B3EB93A00EC1271 /* WindowPattern.swift */,
+				371B27BF2B3EB93A00EC1271 /* Quadrant.swift */,
 				371B27A62B3EB93900EC1271 /* Candidate */,
 				371B27B22B3EB93A00EC1271 /* CandidateUI */,
 				37279F392B62871300CC50A4 /* Settings */,
@@ -502,7 +502,7 @@
 				371B27DA2B3EB93A00EC1271 /* CandidateLabel.swift in Sources */,
 				371B27EA2B3EB93A00EC1271 /* StringExtensions.swift in Sources */,
 				371B27DB2B3EB93A00EC1271 /* CandidateContentView.swift in Sources */,
-				371B27E22B3EB93A00EC1271 /* WindowPattern.swift in Sources */,
+				371B27E22B3EB93A00EC1271 /* Quadrant.swift in Sources */,
 				371B27D92B3EB93A00EC1271 /* CandidateBoard.swift in Sources */,
 				371B27E52B3EB93A00EC1271 /* VisualEffect.swift in Sources */,
 				371B27EC2B3EB93A00EC1271 /* OptionsView.swift in Sources */,

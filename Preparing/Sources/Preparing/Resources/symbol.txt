@@ -2230,15 +2230,19 @@
 4	1F6B4	踩單車	jaai2 daan1 ce1
 4	1F6B4	騎行	kei4 hang4
 4	1F6B4.200D.2642.FE0F	單車男	daan1 ce1 naam4
-4	1F3C6	獎杯	zoeng2 bui1
+4	1F3C6	獎盃	zoeng2 bui1
 4	1F3C6	冠軍	gun3 gwan1
 4	1F3C6	奪冠	dyut6 gun3
 4	1F947	金牌	gam1 paai4
+4	1F947	冠軍	gun3 gwan1
 4	1F948	銀牌	ngan4 paai4
+4	1F948	亞軍	aa3 gwan1
 4	1F949	銅牌	tung4 paai4
+4	1F949	季軍	gwai3 gwan1
 4	1F3C5	獎牌	zoeng2 paai4
 4	1F396	軍功勳章	gwan1 gung1 fan1 zoeng1
 4	1F396	勳章	fan1 zoeng1
+4	1F396	軍功	gwan1 gung1
 4	1F3F5	玫瑰花結	mui4 gwai3 faa1 git3
 4	1F397	黃絲帶	wong4 si1 daai3
 4	1F397	黃絲	wong4 si1
@@ -2277,6 +2281,7 @@
 4	1F941	擊鼓	gik1 gu2
 4	1F941	敲鼓	haau1 gu2
 4	1F941	打鼓	daa2 gu2
+4	1F941	擂鼓	leoi4 gu2
 4	1F941	鼓	gu2
 4	1FA98	長鼓	coeng4 gu2
 4	1F3B7	薩克斯	saat3 hak1 si1
@@ -2297,6 +2302,8 @@
 4	1F3B2	骰子	tau4 zi2
 4	1F3B2	色	sik1
 4	1F3B2	色子	sik1 zi2
+4	1F3B2	骰仔	tau4 zai2
+4	1F3B2	色仔	sik1 zai2
 4	265F	國際象棋	gwok3 zai3 zoeng6 kei2
 4	265F	國際象棋	gwok3 zai3 zoeng6 kei4
 4	1F3AF	中靶	zung3 baa2
@@ -3157,6 +3164,8 @@
 7	1F19A	對決	deoi3 kyut3
 7	1F19A	對陣	deoi3 zan6
 7	1F19A	對抗	deoi3 kong3
+7	1F19A	對戰	deoi3 zin3
+7	1F19A	對局	deoi3 guk6
 7	1F4AE	日本白花	jat6 bun2 baak6 faa1
 7	1F250	得	dak1
 7	3299.FE0F	祕	bei3
@@ -3190,6 +3199,8 @@
 7	274C	禁止	gam3 zi2
 7	274C	拒絕	keoi5 zyut6
 7	2B55.FE0F	圓圈	jyun4 hyun1
+7	2B55.FE0F	圓	jyun4
+7	2B55.FE0F	圈	hyun1
 7	1F6D1	八邊形	baat3 bin1 jing4
 7	26D4.FE0F	禁止	gam3 zi2
 7	26D4.FE0F	拒絕	keoi5 zyut6
@@ -3200,6 +3211,7 @@
 7	1F4AF	滿分	mun5 fan1
 7	1F4AF	完全正確	jyun4 cyun4 zing3 kok3
 7	1F4AF	完全同意	jyun4 cyun4 tung4 ji3
+7	1F4AF	正確	zing3 kok3
 7	1F4AF	冇錯	mou5 co3
 7	1F4AF	啱晒	ngaam1 saai3
 7	1F4AF	百分百	baak3 fan6 baak3
