@@ -756,16 +756,32 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         guard currentInputForm.isCantonese else { return }
                         guard !isBuffering else {
                                 switch punctuationKey {
-                                case .bracketLeft, .comma, .minus:
+                                case .comma, .minus:
                                         updateDisplayCandidates(.previousPage, highlight: .unchanged)
-                                case .bracketRight, .period, .equal:
+                                case .period, .equal:
                                         updateDisplayCandidates(.nextPage, highlight: .unchanged)
+                                case .bracketLeft:
+                                        let index = appContext.highlightedIndex
+                                        guard let displayCandidate = appContext.displayCandidates.fetch(index) else { return }
+                                        guard let firstCharacter = displayCandidate.candidate.text.first else { return }
+                                        insert(String(firstCharacter))
+                                        aftercareSelection(displayCandidate, shouldProcessUserLexicon: false)
+                                case .bracketRight:
+                                        let index = appContext.highlightedIndex
+                                        guard let displayCandidate = appContext.displayCandidates.fetch(index) else { return }
+                                        guard let lastCharacter = displayCandidate.candidate.text.last else { return }
+                                        insert(String(lastCharacter))
+                                        aftercareSelection(displayCandidate, shouldProcessUserLexicon: false)
                                 default:
                                         return
                                 }
                                 return
                         }
-                        guard Options.punctuationForm.isCantoneseMode else { return }
+                        guard Options.punctuationForm.isCantoneseMode else {
+                                let symbol: String = isShifting ? punctuationKey.shiftingKeyText : punctuationKey.keyText
+                                insert(symbol)
+                                return
+                        }
                         if isShifting {
                                 if let symbol = punctuationKey.instantShiftingSymbol {
                                         insert(symbol)
@@ -983,7 +999,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 guard let newVariant, newVariant != Options.characterStandard else { return }
                 Options.updateCharacterStandard(to: newVariant)
         }
-        private func aftercareSelection(_ selected: DisplayCandidate) {
+        private func aftercareSelection(_ selected: DisplayCandidate, shouldProcessUserLexicon: Bool = true) {
                 let candidate = candidates.fetch(selected.candidateIndex) ?? candidates.first(where: { $0 == selected.candidate })
                 guard let candidate, candidate.isCantonese else {
                         clearBufferText()
@@ -1006,7 +1022,11 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         selectedCandidates = []
                         clearBufferText()
                 default:
-                        selectedCandidates.append(candidate)
+                        if shouldProcessUserLexicon {
+                                selectedCandidates.append(candidate)
+                        } else {
+                                selectedCandidates = []
+                        }
                         let inputCount: Int = candidate.input.replacingOccurrences(of: "(4|5|6)", with: "RR", options: .regularExpression).count
                         var tail = bufferText.dropFirst(inputCount)
                         while tail.hasPrefix("'") {

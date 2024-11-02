@@ -71,6 +71,18 @@ struct HelpView: View {
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.SelectFirstCharacterOfCandidate")
+                                                Text.separator
+                                                KeyBlockView("[")
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
+                                                LabelText("SettingsView.HelpView.Shortcut.SelectLastCharacterOfCandidate")
+                                                Text.separator
+                                                KeyBlockView("]")
+                                                Spacer()
+                                        }
+                                        HStack(spacing: 4) {
                                                 LabelText("SettingsView.HelpView.Shortcut.RemoveCandidate")
                                                 Text.separator
                                                 KeyBlockView.control
