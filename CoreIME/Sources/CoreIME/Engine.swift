@@ -235,20 +235,17 @@ public struct Engine {
                 }()
                 guard prefixes.isEmpty else { return prefixes + primary }
                 let headTexts = primary.map(\.input).uniqued()
-                let concatenated = headTexts.map { headText -> [Candidate] in
+                let concatenated = headTexts.compactMap { headText -> Candidate? in
                         let headInputCount = headText.count
                         let tailText = String(text.dropFirst(headInputCount))
-                        guard canProcess(tailText) else { return [] }
+                        guard canProcess(tailText) else { return nil }
                         let tailSegmentation = Segmentor.segment(text: tailText)
-                        let tailCandidates = process(text: tailText, segmentation: tailSegmentation, needsSymbols: false, limit: 8).prefix(100)
-                        guard tailCandidates.isNotEmpty else { return [] }
-                        let headCandidates = primary.filter({ $0.input == headText }).prefix(8)
-                        let combines = headCandidates.map({ head -> [Candidate] in
-                                return tailCandidates.compactMap({ head + $0 })
-                        })
-                        return combines.flatMap({ $0 })
+                        guard let tailCandidate = process(text: tailText, segmentation: tailSegmentation, needsSymbols: false, limit: 50).sorted().first else { return nil }
+                        guard let headCandidate = primary.filter({ $0.input == headText }).sorted().first else { return nil }
+                        let conjoined = headCandidate + tailCandidate
+                        return conjoined
                 }
-                let preferredConcatenated = concatenated.flatMap({ $0 }).uniqued().preferred(with: text).prefix(1)
+                let preferredConcatenated = concatenated.uniqued().sorted().prefix(1)
                 return preferredConcatenated + primary
         }
 
@@ -419,22 +416,6 @@ public struct Engine {
 
 extension Array where Element == Candidate {
 
-        /// Sort Candidates with input text, input.count and text.count
-        /// - Parameter text: Input text
-        /// - Returns: Preferred Candidates
-        func preferred(with text: String) -> [Candidate] {
-                let sortedSelf = self.sorted { (lhs, rhs) -> Bool in
-                        let lhsInputCount: Int = lhs.input.count
-                        let rhsInputCount: Int = rhs.input.count
-                        guard lhsInputCount == rhsInputCount else {
-                                return lhsInputCount > rhsInputCount
-                        }
-                        return lhs.text.count < rhs.text.count
-                }
-                let matched = sortedSelf.filter({ $0.romanization.removedSpacesTones() == text })
-                return matched.isEmpty ? sortedSelf : matched
-        }
-
         /// Sort Candidates with UserInputTextCount and Candidate.order
         /// - Parameter textCount: User input text count
         /// - Returns: Sorted Candidates
@@ -444,7 +425,7 @@ extension Array where Element == Candidate {
                         let rhsInputCount: Int = rhs.input.count
                         if lhsInputCount == textCount && rhsInputCount != textCount {
                                 return true
-                        } else if lhs.order < rhs.order - 50000 {
+                        } else if lhs.order < (rhs.order - 50000) {
                                 return true
                         } else {
                                 return lhsInputCount > rhsInputCount

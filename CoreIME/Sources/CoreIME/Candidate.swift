@@ -15,7 +15,7 @@ public enum CandidateType: Int, Sendable {
         case compose
 }
 
-public struct Candidate: Hashable, Sendable {
+public struct Candidate: Hashable, Comparable, Sendable {
 
         /// Candidate Type
         public let type: CandidateType
@@ -56,27 +56,16 @@ public struct Candidate: Hashable, Sendable {
         ///   - romanization: Jyutping.
         ///   - input: User input for this Candidate.
         ///   - mark: Formatted user input for pre-edit display.
-        ///   - notation: Notation
-        public init(type: CandidateType = .cantonese, text: String, lexiconText: String? = nil, romanization: String, input: String, mark: String? = nil, notation: Notation? = nil, subNotations: [Notation] = []) {
+        ///   - order: Rank. Smaller is preferred.
+        ///   - notation: Lexicon detail information.
+        ///   - subNotations: For Compound Translations.
+        public init(type: CandidateType = .cantonese, text: String, lexiconText: String? = nil, romanization: String, input: String, mark: String? = nil, order: Int = 0, notation: Notation? = nil, subNotations: [Notation] = []) {
                 self.type = type
                 self.text = text
                 self.lexiconText = lexiconText ?? text
                 self.romanization = romanization
                 self.input = input
                 self.mark = mark ?? input
-                self.order = 0
-                self.notation = notation
-                self.subNotations = subNotations
-        }
-
-        /// CoreIME Internal Initializer
-        init(text: String, romanization: String, input: String, mark: String, order: Int, notation: Notation?, subNotations: [Notation] = []) {
-                self.type = .cantonese
-                self.text = text
-                self.lexiconText = text
-                self.romanization = romanization
-                self.input = input
-                self.mark = mark
                 self.order = order
                 self.notation = notation
                 self.subNotations = subNotations
@@ -161,13 +150,22 @@ public struct Candidate: Hashable, Sendable {
                 }
         }
 
-        static func +(lhs: Candidate, rhs: Candidate) -> Candidate? {
+        // Comparable
+        public static func < (lhs: Candidate, rhs: Candidate) -> Bool {
+                guard lhs.input.count == rhs.input.count else { return lhs.input.count > rhs.input.count }
+                guard lhs.text.count == rhs.text.count else { return lhs.text.count < rhs.text.count }
+                return lhs.order < rhs.order
+        }
+
+        public static func +(lhs: Candidate, rhs: Candidate) -> Candidate? {
                 guard lhs.isCantonese && rhs.isCantonese else { return nil }
                 let newText: String = lhs.text + rhs.text
                 let newLexiconText: String = lhs.lexiconText + rhs.lexiconText
                 let newRomanization: String = lhs.romanization + " " + rhs.romanization
                 let newInput: String = lhs.input + rhs.input
                 let newMark: String = lhs.mark + " " + rhs.mark
+                let step: Int = 1_000_000
+                let newOrder: Int = (lhs.order + step) + (rhs.order + step)
                 let newSubNotations: [Notation] = {
                         var items: [Notation] = []
                         if let lhsNotation = lhs.notation {
@@ -182,7 +180,7 @@ public struct Candidate: Hashable, Sendable {
                         }
                         return items.uniqued()
                 }()
-                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark, subNotations: newSubNotations)
+                return Candidate(text: newText, lexiconText: newLexiconText, romanization: newRomanization, input: newInput, mark: newMark, order: newOrder, subNotations: newSubNotations)
         }
 }
 
@@ -197,7 +195,11 @@ extension Array where Element == Candidate {
                 let lexiconText: String = map(\.lexiconText).joined()
                 let romanization: String = map(\.romanization).joined(separator: " ")
                 let input: String = map(\.input).joined()
-                return Candidate(text: text, lexiconText: lexiconText, romanization: romanization, input: input)
+                let mark: String = map(\.mark).joined(separator: " ")
+                let step: Int = 1_000_000
+                let order: Int = map(\.order).reduce(0, { $0 + $1 + step })
+                let subNotations: [Notation] = compactMap(\.notation)
+                return Candidate(text: text, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, order: order, subNotations: subNotations)
         }
 }
 
