@@ -414,21 +414,20 @@ public struct Engine {
         }
 }
 
-extension Array where Element == Candidate {
+private extension Array where Element == Candidate {
 
         /// Sort Candidates with UserInputTextCount and Candidate.order
         /// - Parameter textCount: User input text count
         /// - Returns: Sorted Candidates
         func ordered(with textCount: Int) -> [Candidate] {
                 return self.sorted { (lhs, rhs) -> Bool in
-                        let lhsInputCount: Int = lhs.input.count
-                        let rhsInputCount: Int = rhs.input.count
-                        if lhsInputCount == textCount && rhsInputCount != textCount {
-                                return true
-                        } else if lhs.order < (rhs.order - 50000) {
-                                return true
-                        } else {
-                                return lhsInputCount > rhsInputCount
+                        switch (lhs.input.count - rhs.input.count) {
+                        case ..<0:
+                                return lhs.order < (rhs.order - 50000) && lhs.text.count == rhs.text.count
+                        case 0:
+                                return lhs.order < rhs.order
+                        default:
+                                return lhs.text.count >= rhs.text.count
                         }
                 }
         }
