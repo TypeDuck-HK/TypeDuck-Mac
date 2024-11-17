@@ -226,9 +226,12 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
 
         private func insert(_ text: String) {
-                clearMarkedText()
-                // let range = NSRange(location: NSNotFound, length: 0)
+                let shouldClearMarkedText: Bool = !(inputStage.isBuffering)
+                // let replacementRange = NSRange(location: NSNotFound, length: 0)
                 currentClient?.insertText(text as NSString, replacementRange: replacementRange())
+                if shouldClearMarkedText {
+                        clearMarkedText()
+                }
         }
         private func mark(text: String) {
                 let attributedText = NSAttributedString(string: text, attributes: markAttributes)
