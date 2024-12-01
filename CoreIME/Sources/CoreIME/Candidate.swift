@@ -209,7 +209,21 @@ extension Array where Element == Candidate {
 
 extension Array where Element == Candidate {
         public func transformed(with characterStandard: CharacterStandard) -> [Candidate] {
-                return ((self.first?.isUserLexicon ?? false) ? self.filter({ !$0.isCompound }) : self).map({ $0.transformed(to: characterStandard) }).uniqued()
+                let hasUserLexicon: Bool = self.first?.isUserLexicon ?? false
+                if hasUserLexicon {
+                        return self.compactMap({ item -> Candidate? in
+                                if item.isUserLexicon {
+                                        return Engine.embedNotations(for: item).transformed(to: characterStandard)
+                                } else if item.isCompound {
+                                        return nil
+                                } else {
+                                        return item.transformed(to: characterStandard)
+                                }
+                        })
+                        .uniqued()
+                } else {
+                        return self.map({ $0.transformed(to: characterStandard) }).uniqued()
+                }
         }
 }
 
