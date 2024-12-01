@@ -10,7 +10,7 @@ extension Candidate {
                         return self
                 case .simplified:
                         let convertedText: String = Converter.convert(text, to: variant)
-                        return Candidate(text: convertedText, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, notation: notation, subNotations: subNotations)
+                        return Candidate(text: convertedText, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, order: order, notation: notation, subNotations: subNotations)
                 }
         }
 }

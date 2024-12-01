@@ -33,7 +33,7 @@ public struct Engine {
         ///   - needsSymbols: Needs Emoji/Symbol Candidates.
         ///   - asap: Should be fast, shouldn't go deep.
         /// - Returns: Candidates
-        public static func suggest(text: String, segmentation: Segmentation, needsSymbols: Bool, asap: Bool) -> [Candidate] {
+        public static func suggest(text: String, segmentation: Segmentation, needsSymbols: Bool, asap: Bool = false) -> [Candidate] {
                 switch text.count {
                 case 0:
                         return []

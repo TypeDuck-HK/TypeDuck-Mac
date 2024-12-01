@@ -87,7 +87,7 @@ struct UserLexicon: Sendable {
                                 let matched = query(text: pingText, input: text, isShortcut: false)
                                 let text2mark = scheme.map(\.text).joined(separator: String.space)
                                 let syllables = scheme.map(\.origin).joined(separator: String.space)
-                                return matched.filter({ $0.mark == syllables }).map({ Candidate(text: $0.text, romanization: $0.romanization, input: $0.input, mark: text2mark) })
+                                return matched.filter({ $0.mark == syllables }).map({ Candidate(text: $0.text, romanization: $0.romanization, input: $0.input, mark: text2mark, order: -1) })
                         }).flatMap({ $0 })
                 }()
                 return matches + shortcuts + searches
@@ -105,7 +105,7 @@ struct UserLexicon: Sendable {
                         let word: String = String(cString: sqlite3_column_text(statement, 0))
                         let romanization: String = String(cString: sqlite3_column_text(statement, 1))
                         let mark: String = mark ?? romanization.removedTones()
-                        let candidate: Candidate = Candidate(text: word, romanization: romanization, input: input, mark: mark)
+                        let candidate: Candidate = Candidate(text: word, romanization: romanization, input: input, mark: mark, order: -1)
                         candidates.append(candidate)
                 }
                 return candidates

@@ -123,6 +123,10 @@ public struct Candidate: Hashable, Comparable, Sendable {
                 return subNotations.isNotEmpty
         }
 
+        public var isUserLexicon: Bool {
+                return order < 0
+        }
+
         // Equatable
         public static func ==(lhs: Candidate, rhs: Candidate) -> Bool {
                 guard lhs.type == rhs.type else { return false }
@@ -200,6 +204,12 @@ extension Array where Element == Candidate {
                 let order: Int = map(\.order).reduce(0, { $0 + $1 + step })
                 let subNotations: [Notation] = compactMap(\.notation)
                 return Candidate(text: text, lexiconText: lexiconText, romanization: romanization, input: input, mark: mark, order: order, subNotations: subNotations)
+        }
+}
+
+extension Array where Element == Candidate {
+        public func transformed(with characterStandard: CharacterStandard) -> [Candidate] {
+                return ((self.first?.isUserLexicon ?? false) ? self.filter({ !$0.isCompound }) : self).map({ $0.transformed(to: characterStandard) }).uniqued()
         }
 }
 

@@ -137,6 +137,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         override func deactivateServer(_ sender: Any!) {
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
+                        suggestionTask?.cancel()
                         clearWindow()
                         selectedCandidates = []
                         if inputForm.isOptions {
@@ -192,6 +193,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 didSet {
                         switch bufferText.first {
                         case .none:
+                                suggestionTask?.cancel()
                                 if AppSettings.isInputMemoryOn && selectedCandidates.isNotEmpty {
                                         let concatenated = selectedCandidates.joined()
                                         UserLexicon.handle(concatenated)
@@ -201,6 +203,8 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                 candidates = []
                         case .some(let character) where character.isInvalidAnchor:
                                 mark(text: bufferText)
+                                selectedCandidates = []
+                                candidates = []
                         case .some(let character) where character.isBasicLatinLetter:
                                 suggest()
                         case .some(_) where bufferText.count == 1:
@@ -308,28 +312,36 @@ final class TypeDuckInputController: IMKInputController, Sendable {
 
         // MARK: - Candidate Suggestions
 
+        private lazy var suggestionTask: Task<Void, Never>? = nil
         private func suggest() {
+                suggestionTask?.cancel()
                 let processingText: String = bufferText.toneConverted()
-                let segmentation = Segmentor.segment(text: processingText)
-                let userLexiconCandidates: [Candidate] = AppSettings.isInputMemoryOn ? UserLexicon.suggest(text: processingText, segmentation: segmentation).map({ Engine.embedNotations(for: $0) }) : []
                 let needsSymbols: Bool = Options.isEmojiSuggestionsOn && selectedCandidates.isEmpty
-                let asap: Bool = userLexiconCandidates.isNotEmpty
-                let engineCandidates: [Candidate] = Engine.suggest(text: processingText, segmentation: segmentation, needsSymbols: needsSymbols, asap: asap)
-                let text2mark: String = {
-                        if let mark = userLexiconCandidates.first?.mark { return mark }
-                        let isLetterOnly: Bool = processingText.first(where: { $0.isSeparatorOrTone }) == nil
-                        guard isLetterOnly else { return processingText.formattedForMark() }
-                        let userInputTextCount: Int = processingText.count
-                        if let firstCandidate = engineCandidates.first, firstCandidate.input.count == userInputTextCount { return firstCandidate.mark }
-                        guard let bestScheme = segmentation.first else { return processingText.formattedForMark() }
-                        let leadingLength: Int = bestScheme.length
-                        let leadingText: String = bestScheme.map(\.text).joined(separator: String.space)
-                        guard leadingLength != userInputTextCount else { return leadingText }
-                        let tailText = processingText.dropFirst(leadingLength)
-                        return leadingText + String.space + tailText
-                }()
-                mark(text: text2mark)
-                candidates = (userLexiconCandidates + engineCandidates).map({ $0.transformed(to: Options.characterStandard) }).uniqued()
+                let isInputMemoryOn: Bool = AppSettings.isInputMemoryOn
+                suggestionTask = Task.detached(priority: .high) { [weak self] in
+                        let segmentation = Segmentor.segment(text: processingText)
+                        let bestScheme = segmentation.first
+                        async let userLexiconCandidates: [Candidate] = isInputMemoryOn ? UserLexicon.suggest(text: processingText, segmentation: segmentation) : []
+                        async let engineCandidates: [Candidate] = Engine.suggest(text: processingText, segmentation: segmentation, needsSymbols: needsSymbols)
+                        let suggestions = await (userLexiconCandidates + engineCandidates).transformed(with: Options.characterStandard)
+                        if !(Task.isCancelled) {
+                                await MainActor.run { [weak self] in
+                                        self?.mark(text: {
+                                                let hasSeparatorsOrTones: Bool = processingText.contains(where: \.isSeparatorOrTone)
+                                                guard !hasSeparatorsOrTones else { return processingText.formattedForMark() }
+                                                let userInputTextCount: Int = processingText.count
+                                                if let firstCandidate = suggestions.first, firstCandidate.input.count == userInputTextCount { return firstCandidate.mark }
+                                                guard let bestScheme else { return processingText.formattedForMark() }
+                                                let leadingLength: Int = bestScheme.length
+                                                let leadingText: String = bestScheme.map(\.text).joined(separator: String.space)
+                                                guard leadingLength != userInputTextCount else { return leadingText }
+                                                let tailText = processingText.dropFirst(leadingLength)
+                                                return leadingText + String.space + tailText
+                                        }())
+                                        self?.candidates = suggestions
+                                }
+                        }
+                }
         }
         private func pinyinReverseLookup() {
                 let text: String = String(bufferText.dropFirst(2))
