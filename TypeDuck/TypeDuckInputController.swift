@@ -124,6 +124,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         if inputStage.isBuffering {
                                 clearBufferText()
                         }
+                        inputStage = .standby
                         if inputForm.isOptions {
                                 updateInputForm()
                         }
@@ -137,18 +138,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         override func deactivateServer(_ sender: Any!) {
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
-                        suggestionTask?.cancel()
-                        clearWindow()
-                        selectedCandidates = []
-                        if inputForm.isOptions {
-                                updateInputForm()
-                        }
-                        if inputStage.isBuffering {
-                                let text: String = bufferText
-                                clearBufferText()
-                                client?.insertText(text as NSString, replacementRange: replacementRange())
-                        }
-                        clearMarkedText()
+                        finishInputSession(client: client)
                         let windowCount = NSApp.windows.count
                         if windowCount > 20 {
                                 NSRunningApplication.current.terminate()
@@ -161,6 +151,29 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         }
                 }
                 super.deactivateServer(sender)
+        }
+        override func commitComposition(_ sender: Any!) {
+                nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
+                Task { @MainActor in
+                        finishInputSession(client: client)
+                }
+                super.commitComposition(sender)
+        }
+        private func finishInputSession(client: InputClient? = nil) {
+                guard inputStage != .idle else { return }
+                suggestionTask?.cancel()
+                clearWindow()
+                selectedCandidates = []
+                if inputStage.isBuffering {
+                        let text: String = bufferText
+                        clearBufferText()
+                        client?.insertText(text as NSString, replacementRange: replacementRange())
+                }
+                inputStage = .idle
+                if inputForm.isOptions {
+                        updateInputForm()
+                }
+                clearMarkedText()
         }
 
         private lazy var appContext: AppContext = AppContext()
@@ -902,10 +915,10 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                                         aftercareSelection(selectedItem)
                                 } else if isBuffering {
                                         passBuffer()
-                                } else if isShifting || Options.characterForm.isFullWidth {
-                                        insert(String.fullWidthSpace)
                                 } else {
-                                        insert(String.space)
+                                        clearMarkedText()
+                                        let text: String = (isShifting || Options.characterForm.isFullWidth) ? String.fullWidthSpace : String.space
+                                        insert(text)
                                 }
                         case .transparent:
                                 insert(String.space)
