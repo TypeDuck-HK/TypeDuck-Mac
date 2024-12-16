@@ -77,7 +77,7 @@ struct UserLexicon: Sendable {
 
         static func suggest(text: String, segmentation: Segmentation) -> [Candidate] {
                 let matches = query(text: text, input: text, isShortcut: false)
-                let shortcuts = query(text: text, input: text, mark: text, isShortcut: true)
+                let shortcuts = query(text: text, input: text, mark: text.spaceSeparated(), isShortcut: true)
                 let searches: [Candidate] = {
                         let textCount = text.count
                         let schemes = segmentation.filter({ $0.length == textCount })
