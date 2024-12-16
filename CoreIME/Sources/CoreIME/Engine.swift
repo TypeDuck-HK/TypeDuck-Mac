@@ -192,14 +192,26 @@ public struct Engine {
                         return process(text: text, segmentation: segmentation, needsSymbols: needsSymbols)
                 }
         }
-
         private static func processVerbatim(text: String, limit: Int? = nil) -> [Candidate] {
                 guard canProcess(text) else { return [] }
-                let rounds = (0..<text.count).map({ number -> [Candidate] in
-                        let leading: String = String(text.dropLast(number))
-                        return pingMatch(text: leading, input: leading, limit: limit) + shortcutMatch(text: leading, limit: limit)
-                })
-                return rounds.flatMap({ $0 }).uniqued()
+                let textCount: Int = text.count
+                return (0..<textCount)
+                        .map({ number -> [Candidate] in
+                                let leading: String = String(text.dropLast(number))
+                                return pingMatch(text: leading, input: leading, limit: limit) + shortcutMatch(text: leading, limit: limit)
+                        })
+                        .flatMap({ $0 })
+                        .map({ item -> Candidate in
+                                let syllables = item.romanization.removedTones().split(separator: Character.space)
+                                guard let lastSyllable = syllables.last else { return item }
+                                guard text.hasSuffix(lastSyllable) else { return item }
+                                let isMatched: Bool = ((syllables.count - 1) + lastSyllable.count) == textCount
+                                guard isMatched else { return item }
+                                let mark: String = syllables.compactMap(\.first).dropLast().spaceSeparated() + String.space + lastSyllable
+                                return Candidate(text: item.text, romanization: item.romanization, input: text, mark: mark, order: item.order, notation: item.notation)
+                        })
+                        .uniqued()
+                        .sorted()
         }
 
         static func canProcess(_ text: String) -> Bool {
@@ -224,12 +236,24 @@ public struct Engine {
                         let shortcuts = segmentation.map({ scheme -> [Candidate] in
                                 let tail = text.dropFirst(scheme.length)
                                 guard let lastAnchor = tail.first else { return [] }
-                                let schemeAnchors = scheme.compactMap(\.text.first)
-                                let anchors: String = String(schemeAnchors + [lastAnchor])
-                                let text2mark: String = scheme.map(\.text).joined(separator: " ") + " " + tail
-                                return shortcutMatch(text: anchors, limit: limit)
-                                        .filter({ $0.romanization.removedTones().hasPrefix(text2mark) })
-                                        .map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, mark: text2mark, notation: $0.notation) })
+                                let schemeAnchors: String = String(scheme.compactMap(\.text.first))
+                                let conjoined: String = schemeAnchors + tail
+                                let anchors: String = schemeAnchors + String(lastAnchor)
+                                let schemeMark: String = scheme.map(\.text).joined(separator: String.space)
+                                let spacedMark: String = schemeMark + String.space + tail.spaceSeparated()
+                                let anchorMark: String = schemeMark + String.space + tail
+                                let conjoinedShortcuts = shortcutMatch(text: conjoined, limit: limit)
+                                        .filter({ item -> Bool in
+                                                let rawRomanization = item.romanization.removedTones()
+                                                guard rawRomanization.hasPrefix(schemeMark) else { return false }
+                                                let tailAnchors = rawRomanization.dropFirst(schemeMark.count).split(separator: Character.space).compactMap(\.first)
+                                                return tailAnchors == tail.map({ $0 })
+                                        })
+                                        .map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, mark: spacedMark, order: $0.order, notation: $0.notation) })
+                                let anchorShortcuts = shortcutMatch(text: anchors, limit: limit)
+                                        .filter({ $0.romanization.removedTones().hasPrefix(anchorMark) })
+                                        .map({ Candidate(text: $0.text, romanization: $0.romanization, input: text, mark: anchorMark, order: $0.order, notation: $0.notation) })
+                                return conjoinedShortcuts + anchorShortcuts
                         })
                         return shortcuts.flatMap({ $0 })
                 }()
@@ -312,6 +336,7 @@ public struct Engine {
                 var statement: OpaquePointer? = nil
                 defer { sqlite3_finalize(statement) }
                 guard sqlite3_prepare_v2(database, command, -1, &statement, nil) == SQLITE_OK else { return candidates }
+                let mark: String = text.spaceSeparated()
                 while sqlite3_step(statement) == SQLITE_ROW {
                         let word: String = String(cString: sqlite3_column_text(statement, 0))
                         let romanization: String = String(cString: sqlite3_column_text(statement, 1))
@@ -334,12 +359,12 @@ public struct Engine {
                         let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                         let isSandhi: Bool = sandhi == 1
                         let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
-                        let candidate = Candidate(text: word, romanization: romanization, input: text, notation: notation)
+                        let candidate = Candidate(text: word, romanization: romanization, input: mark, notation: notation)
                         candidates.append(candidate)
                 }
                 return candidates
         }
-        private static func pingMatch(text: String, input: String, mark: String? = nil, limit: Int? = nil) -> [Candidate] {
+        private static func pingMatch<T: StringProtocol>(text: T, input: String, mark: String? = nil, limit: Int? = nil) -> [Candidate] {
                 var candidates: [Candidate] = []
                 let code: Int = text.hash
                 let limit: Int = limit ?? -1
