@@ -12,7 +12,7 @@ struct AppSettings: Sendable {
         /// Translations
         private(set) static var enabledCommentLanguages: [Language] = {
                 guard let savedValue = UserDefaults.standard.string(forKey: SettingsKey.EnabledCommentLanguages) else { return defaultEnabledCommentLanguages }
-                let languageValues: [String] = savedValue.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }).filter({ !$0.isEmpty })
+                let languageValues: [String] = savedValue.split(separator: ",").map({ $0.trimmingCharacters(in: .whitespaces) }).filter(\.isNotEmpty)
                 guard languageValues.isNotEmpty else { return [] }
                 let languages: [Language] = languageValues.compactMap({ Language.language(of: $0) }).uniqued()
                 return commentLanguages.filter({ languages.contains($0) })

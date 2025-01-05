@@ -40,11 +40,11 @@ public struct Engine {
                 case 1:
                         switch text {
                         case "a":
-                                return pingMatch(text: text, input: text) + pingMatch(text: "aa", input: text, mark: text) + shortcutMatch(text: text)
+                                return pingMatch(text: text, input: text) + pingMatch(text: "aa", input: text, mark: text) + shortcutMatch(text: text, limit: 100)
                         case "o", "m", "e":
-                                return pingMatch(text: text, input: text) + shortcutMatch(text: text)
+                                return pingMatch(text: text, input: text) + shortcutMatch(text: text, limit: 100)
                         default:
-                                return shortcutMatch(text: text)
+                                return shortcutMatch(text: text, limit: 100)
                         }
                 default:
                         guard asap else { return dispatch(text: text, segmentation: segmentation, needsSymbols: needsSymbols) }
@@ -286,7 +286,7 @@ public struct Engine {
                 guard symbols.isNotEmpty else { return fallback }
                 var regular = fullPing + preferredSearches
                 for symbol in symbols.reversed() {
-                        if let index = regular.firstIndex(where: { $0.lexiconText == symbol.lexiconText }) {
+                        if let index = regular.firstIndex(where: { $0.lexiconText == symbol.lexiconText && $0.romanization == symbol.romanization }) {
                                 regular.insert(symbol, at: index + 1)
                         }
                 }

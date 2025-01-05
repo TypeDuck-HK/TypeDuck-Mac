@@ -6,7 +6,7 @@ import CoreIME
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-        static let shared: AppDelegate = AppDelegate()
+        @MainActor static let shared: AppDelegate = AppDelegate()
 
         func applicationDidFinishLaunching(_ notification: Notification) {
                 handleCommandLineArguments()
