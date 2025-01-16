@@ -140,7 +140,19 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         override func deactivateServer(_ sender: Any!) {
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
-                        finishInputSession(client: client)
+                        suggestionTask?.cancel()
+                        clearWindow()
+                        selectedCandidates = []
+                        if inputStage.isBuffering {
+                                let text: String = bufferText
+                                clearBufferText()
+                                client?.insertText(text as NSString, replacementRange: replacementRange())
+                        } else {
+                                clearMarkedText()
+                        }
+                        if inputForm.isOptions {
+                                updateInputForm()
+                        }
                         let windowCount = NSApp.windows.count
                         if windowCount > 20 {
                                 NSRunningApplication.current.terminate()
@@ -156,28 +168,37 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         }
         override func commitComposition(_ sender: Any!) {
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
+                let shouldCommit: Bool = {
+                        guard let clientBundleIdentifier = client?.bundleIdentifier() else { return false }
+                        let chromiumBasedBrowserBundleIdentifiers: Set<String> = [
+                                "org.chromium.Chromium",
+                                "com.google.Chrome",
+                                "com.microsoft.edgemac",
+                                "com.brave.Browser"
+                        ]
+                        let isChromiumBased: Bool = chromiumBasedBrowserBundleIdentifiers.contains(clientBundleIdentifier)
+                        guard isChromiumBased else { return true }
+                        return !(inputStage.isBuffering)
+                }()
+                guard shouldCommit else { return }
                 Task { @MainActor in
-                        finishInputSession(client: client)
+                        suggestionTask?.cancel()
+                        updateWindowFrame(.zero)
+                        selectedCandidates = []
+                        if inputStage.isBuffering {
+                                let text: String = bufferText
+                                clearBufferText()
+                                client?.insertText(text as NSString, replacementRange: replacementRange())
+                        } else {
+                                clearMarkedText()
+                        }
+                        if inputForm.isOptions {
+                                updateInputForm()
+                        }
                 }
 
                 // Do NOT use this line or it will freeze the entire IME
                 // super.commitComposition(sender)
-        }
-        private func finishInputSession(client: InputClient? = nil) {
-                guard inputStage != .idle else { return }
-                suggestionTask?.cancel()
-                clearWindow()
-                selectedCandidates = []
-                if inputStage.isBuffering {
-                        let text: String = bufferText
-                        clearBufferText()
-                        client?.insertText(text as NSString, replacementRange: replacementRange())
-                }
-                inputStage = .idle
-                if inputForm.isOptions {
-                        updateInputForm()
-                }
-                clearMarkedText()
         }
 
         private lazy var appContext: AppContext = AppContext()
