@@ -199,7 +199,7 @@
         }
       }
     },
-    "hk.eduhk.inputmethod.TypeDuck.IM" : {
+    "hk.eduhk.inputmethod.TypeDuck.TypeDuckIM" : {
       "comment" : "Input Mode ID",
       "extractionState" : "manual",
       "localizations" : {

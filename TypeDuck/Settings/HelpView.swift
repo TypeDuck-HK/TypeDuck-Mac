@@ -83,7 +83,7 @@ struct HelpView: View {
                                                 Spacer()
                                         }
                                         HStack(spacing: 4) {
-                                                LabelText("SettingsView.HelpView.Shortcut.RemoveCandidate")
+                                                LabelText("SettingsView.HelpView.Shortcut.ForgetCandidate")
                                                 Text.separator
                                                 KeyBlockView.control
                                                 Text.plus

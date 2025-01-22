@@ -1,40 +1,42 @@
 import AppKit
 import InputMethodKit
-import CoreIME
+import os.log
 
 @MainActor
-@main
 final class AppDelegate: NSObject, NSApplicationDelegate {
 
-        @MainActor static let shared: AppDelegate = AppDelegate()
+        static let shared: AppDelegate = AppDelegate()
 
-        func applicationDidFinishLaunching(_ notification: Notification) {
-                handleCommandLineArguments()
-                let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
-                let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
-                _ = IMKServer(name: name, bundleIdentifier: identifier)
+        private override init() {
+                super.init()
         }
 
-        private func handleCommandLineArguments() {
+        private lazy var imkServer: IMKServer? = nil
+
+        func applicationDidFinishLaunching(_ notification: Notification) {
+                let name: String = (Bundle.main.infoDictionary?["InputMethodConnectionName"] as? String) ?? "hk.eduhk.inputmethod.TypeDuck_Connection"
+                let identifier: String = Bundle.main.bundleIdentifier ?? "hk.eduhk.inputmethod.TypeDuck"
+                imkServer = IMKServer(name: name, bundleIdentifier: identifier)
+        }
+}
+
+extension CommandLine {
+        static func handleArguments() {
                 let shouldInstall: Bool = CommandLine.arguments.contains("install")
                 guard shouldInstall else { return }
                 register()
                 activate()
-                switchToSystemInputSource()
                 NSRunningApplication.current.terminate()
-                NSApp.terminate(self)
                 exit(0)
         }
-
-        private func register() {
-                let url = Bundle.main.bundleURL
-                let cfUrl = url as CFURL
-                TISRegisterInputSource(cfUrl)
+        private static func register() {
+                let path = "/Library/Input Methods/TypeDuck.app"
+                let url = FileManager.default.fileExists(atPath: path) ? URL(fileURLWithPath: path) : Bundle.main.bundleURL
+                TISRegisterInputSource(url as CFURL)
         }
-
-        private func activate() {
+        private static func activate() {
                 let kInputSourceID: String = "hk.eduhk.inputmethod.TypeDuck"
-                let kInputModeID: String = "hk.eduhk.inputmethod.TypeDuck.IM"
+                let kInputModeID: String = "hk.eduhk.inputmethod.TypeDuck.TypeDuckIM"
                 guard let inputSourceList = TISCreateInputSourceList(nil, true).takeRetainedValue() as? [TISInputSource] else { return }
                 for inputSource in inputSourceList {
                         guard let pointer = TISGetInputSourceProperty(inputSource, kTISPropertyInputSourceID) else { continue }
@@ -44,22 +46,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                         TISSelectInputSource(inputSource)
                 }
         }
+}
 
-        private func switchToSystemInputSource() {
-                guard let inputSourceList = TISCreateInputSourceList(nil, true).takeRetainedValue() as? [TISInputSource] else { return }
-                for inputSource in inputSourceList {
-                        if shouldSelect(inputSource) {
-                                TISSelectInputSource(inputSource)
-                                break
-                        }
-                }
-        }
-        private func shouldSelect(_ inputSource: TISInputSource) -> Bool {
-                guard let pointer2ID = TISGetInputSourceProperty(inputSource, kTISPropertyInputSourceID) else { return false }
-                let inputSourceID = Unmanaged<CFString>.fromOpaque(pointer2ID).takeUnretainedValue() as String
-                guard inputSourceID.hasPrefix("com.apple.keylayout") else { return false }
-                guard let pointer2IsSelectable = TISGetInputSourceProperty(inputSource, kTISPropertyInputSourceIsSelectCapable) else { return false }
-                let isSelectable = Unmanaged<CFBoolean>.fromOpaque(pointer2IsSelectable).takeRetainedValue()
-                return CFBooleanGetValue(isSelectable)
-        }
+extension Logger {
+        static let shared: Logger = Logger(subsystem: "hk.eduhk.inputmethod.TypeDuck", category: "inputmethod")
 }

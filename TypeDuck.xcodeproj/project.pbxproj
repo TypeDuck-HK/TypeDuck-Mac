@@ -54,8 +54,8 @@
 		373133122BBF302C0012A939 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */; };
 		3764F6122BFAC36400B3737B /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3764F6112BFAC36400B3737B /* InfoPlist.xcstrings */; };
 		3764F6142BFAC36400B3737B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 3764F6132BFAC36400B3737B /* Localizable.xcstrings */; };
+		3770727A2D38A72A007DC04D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377072792D38A72A007DC04D /* main.swift */; };
 		378CE02A2C200DA300BA7FBA /* CollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378CE0292C200DA300BA7FBA /* CollectionExtensions.swift */; };
-		3797F6E72C18900500DE6D0E /* PrincipalApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3797F6E62C18900500DE6D0E /* PrincipalApplication.swift */; };
 		3797F6E92C18902900DE6D0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3797F6E82C18902900DE6D0E /* AppDelegate.swift */; };
 		379DBF9A2C8EA79900D041C8 /* CandidateWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379DBF992C8EA79900D041C8 /* CandidateWindow.swift */; };
 		37A619B12BAE2F5A00A0C7F9 /* typeduck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */; };
@@ -132,8 +132,8 @@
 		373133112BBF302C0012A939 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3764F6112BFAC36400B3737B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		3764F6132BFAC36400B3737B /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		377072792D38A72A007DC04D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		378CE0292C200DA300BA7FBA /* CollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtensions.swift; sourceTree = "<group>"; };
-		3797F6E62C18900500DE6D0E /* PrincipalApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincipalApplication.swift; sourceTree = "<group>"; };
 		3797F6E82C18902900DE6D0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		379DBF992C8EA79900D041C8 /* CandidateWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateWindow.swift; sourceTree = "<group>"; };
 		37A619AF2BAE2F5900A0C7F9 /* typeduck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "typeduck@2x.png"; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 		371B27752B3EB66800EC1271 /* TypeDuck */ = {
 			isa = PBXGroup;
 			children = (
-				3797F6E62C18900500DE6D0E /* PrincipalApplication.swift */,
+				377072792D38A72A007DC04D /* main.swift */,
 				3797F6E82C18902900DE6D0E /* AppDelegate.swift */,
 				371B27BE2B3EB93A00EC1271 /* TypeDuckInputController.swift */,
 				379DBF992C8EA79900D041C8 /* CandidateWindow.swift */,
@@ -484,11 +484,11 @@
 				371B27E92B3EB93A00EC1271 /* ImageExtensions.swift in Sources */,
 				371B27E82B3EB93A00EC1271 /* IMKTextInputExtensions.swift in Sources */,
 				370F5B312BB59B2200F0A65C /* ColorExtensions.swift in Sources */,
+				3770727A2D38A72A007DC04D /* main.swift in Sources */,
 				371B27D22B3EB93A00EC1271 /* KeyCode.swift in Sources */,
 				3797F6E92C18902900DE6D0E /* AppDelegate.swift in Sources */,
 				370F5B332BB59B4200F0A65C /* ViewExtensions.swift in Sources */,
 				371B27DF2B3EB93A00EC1271 /* InputForm.swift in Sources */,
-				3797F6E72C18900500DE6D0E /* PrincipalApplication.swift in Sources */,
 				371B27E62B3EB93A00EC1271 /* CharacterExtensions.swift in Sources */,
 				371B27EB2B3EB93A00EC1271 /* ArrayExtensions.swift in Sources */,
 				371B27D42B3EB93A00EC1271 /* MotherBoard.swift in Sources */,
@@ -694,7 +694,6 @@
 				INFOPLIST_KEY_LSBackgroundOnly = NO;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© The Education University of Hong Kong";
-				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_MODULE_NAME).PrincipalApplication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -731,7 +730,6 @@
 				INFOPLIST_KEY_LSBackgroundOnly = NO;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© The Education University of Hong Kong";
-				INFOPLIST_KEY_NSPrincipalClass = "$(PRODUCT_MODULE_NAME).PrincipalApplication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

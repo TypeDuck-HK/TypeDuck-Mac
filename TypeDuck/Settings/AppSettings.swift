@@ -111,7 +111,7 @@ struct AppSettings: Sendable {
                 selectedSettingsSidebarRow = row
         }
 
-        static let TypeDuckSettingsWindowIdentifier: String = "TypeDuckSettingsWindowIdentifier"
+        static let TypeDuckSettingsWindowIdentifierPrefix: String = "TypeDuckSettingsWindowIdentifierPrefix"
 }
 
 struct SettingsKey {

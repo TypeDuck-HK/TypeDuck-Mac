@@ -1,5 +1,6 @@
 import SwiftUI
 import InputMethodKit
+import os.log
 import CoreIME
 
 @MainActor
@@ -7,9 +8,12 @@ final class TypeDuckInputController: IMKInputController, Sendable {
 
         // MARK: - Window, InputClient
 
-        private lazy var window: NSPanel = CandidateWindow(level: nil)
+        private lazy var logger = Logger.shared
+
+        /// NSPanel for CandidateBoard and OptionsView
+        private lazy var window = CandidateWindow.shared
+
         private func prepareWindow() {
-                window.contentViewController = nil
                 let idealValue: Int = Int(CGShieldingWindowLevel())
                 let maxValue: Int = idealValue + 2
                 let minValue: Int = NSWindow.Level.floating.rawValue
@@ -23,10 +27,6 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 window.level = NSWindow.Level(levelValue)
                 window.contentViewController = NSHostingController(rootView: MotherBoard().environmentObject(appContext))
                 window.orderFrontRegardless()
-        }
-        private func clearWindow() {
-                window.contentViewController = nil
-                window.setFrame(.zero, display: true)
         }
         private func updateWindowFrame(_ frame: CGRect? = nil) {
                 window.setFrame(frame ?? windowFrame, display: true)
@@ -140,8 +140,9 @@ final class TypeDuckInputController: IMKInputController, Sendable {
         override func deactivateServer(_ sender: Any!) {
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
                 Task { @MainActor in
+                        guard inputStage != .idle else { return }
                         suggestionTask?.cancel()
-                        clearWindow()
+                        window.setFrame(.zero, display: true)
                         selectedCandidates = []
                         if inputStage.isBuffering {
                                 let text: String = bufferText
@@ -153,37 +154,25 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         if inputForm.isOptions {
                                 updateInputForm()
                         }
-                        let windowCount = NSApp.windows.count
-                        if windowCount > 20 {
-                                NSRunningApplication.current.terminate()
-                                NSApp.terminate(self)
-                                exit(1)
-                        } else if windowCount > 10 {
-                                _ = NSApp.windows.map({ $0.close() })
-                        } else {
-                                _ = NSApp.windows.filter({ $0.identifier != window.identifier && $0.identifier?.rawValue != AppSettings.TypeDuckSettingsWindowIdentifier }).map({ $0.close() })
+                        let activatingWindowCount = NSApp.windows.count(where: { $0.windowNumber > 0 })
+                        if activatingWindowCount > 30 {
+                                logger.error("TypeDuck terminated due to it contained more than 30 windows")
+                                fatalError("TypeDuck terminated due to it contained more than 30 windows")
+                        } else if activatingWindowCount > 20 {
+                                logger.warning("TypeDuck containing more than 20 windows")
+                                NSApp.windows.filter({ $0 != window }).forEach({ $0.close() })
+                        } else if activatingWindowCount > 10 {
+                                logger.notice("TypeDuck containing more than 10 windows")
                         }
                 }
                 super.deactivateServer(sender)
         }
         override func commitComposition(_ sender: Any!) {
+                guard !(inputStage.isBuffering) else { return }
                 nonisolated(unsafe) let client: InputClient? = (sender as? InputClient) ?? client()
-                let shouldCommit: Bool = {
-                        guard let clientBundleIdentifier = client?.bundleIdentifier() else { return false }
-                        let chromiumBasedBrowserBundleIdentifiers: Set<String> = [
-                                "org.chromium.Chromium",
-                                "com.google.Chrome",
-                                "com.microsoft.edgemac",
-                                "com.brave.Browser"
-                        ]
-                        let isChromiumBased: Bool = chromiumBasedBrowserBundleIdentifiers.contains(clientBundleIdentifier)
-                        guard isChromiumBased else { return true }
-                        return !(inputStage.isBuffering)
-                }()
-                guard shouldCommit else { return }
                 Task { @MainActor in
                         suggestionTask?.cancel()
-                        updateWindowFrame(.zero)
+                        window.setFrame(.zero, display: true)
                         selectedCandidates = []
                         if inputStage.isBuffering {
                                 let text: String = bufferText
@@ -195,6 +184,7 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                         if inputForm.isOptions {
                                 updateInputForm()
                         }
+                        inputStage = .idle
                 }
 
                 // Do NOT use this line or it will freeze the entire IME
@@ -1131,14 +1121,18 @@ final class TypeDuckInputController: IMKInputController, Sendable {
                 displaySettingsWindow()
         }
         private func displaySettingsWindow() {
-                let shouldOpenNewWindow: Bool = NSApp.windows.compactMap(\.identifier?.rawValue).notContains(AppSettings.TypeDuckSettingsWindowIdentifier)
-                guard shouldOpenNewWindow else { return }
+                let isSettingsWindowOpen: Bool = NSApp.windows
+                        .filter({ $0.windowNumber > 0 })
+                        .compactMap(\.identifier?.rawValue)
+                        .contains(where: { $0.hasPrefix(AppSettings.TypeDuckSettingsWindowIdentifierPrefix) })
+                guard !(isSettingsWindowOpen) else { return }
                 let frame: CGRect = settingsWindowFrame()
                 let settingsWindow = NSWindow(contentRect: frame, styleMask: [.titled, .closable, .resizable, .fullSizeContentView], backing: .buffered, defer: true)
-                settingsWindow.identifier = NSUserInterfaceItemIdentifier(rawValue: AppSettings.TypeDuckSettingsWindowIdentifier)
                 settingsWindow.title = String(localized: "Settings.Window.Title")
                 settingsWindow.toolbarStyle = .unifiedCompact
                 settingsWindow.contentViewController = NSHostingController(rootView: SettingsView())
+                let identifierString: String = AppSettings.TypeDuckSettingsWindowIdentifierPrefix + Date.timeIntervalSinceReferenceDate.description
+                settingsWindow.identifier = NSUserInterfaceItemIdentifier(rawValue: identifierString)
                 settingsWindow.orderFrontRegardless()
                 settingsWindow.setFrame(frame, display: true)
                 NSApp.activate(ignoringOtherApps: true)

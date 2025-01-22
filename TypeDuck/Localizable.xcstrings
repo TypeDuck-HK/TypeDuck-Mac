@@ -2945,7 +2945,7 @@
         }
       }
     },
-    "SettingsView.HelpView.Shortcut.RemoveCandidate" : {
+    "SettingsView.HelpView.Shortcut.ForgetCandidate" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {

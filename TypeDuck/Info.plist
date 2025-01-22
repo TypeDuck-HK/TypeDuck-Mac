@@ -6,7 +6,7 @@
 	<dict>
 		<key>tsInputModeListKey</key>
 		<dict>
-			<key>hk.eduhk.inputmethod.TypeDuck.IM</key>
+			<key>hk.eduhk.inputmethod.TypeDuck.TypeDuckIM</key>
 			<dict>
 				<key>TISIconLabels</key>
 				<dict>
@@ -14,7 +14,7 @@
 					<string>TypeDuck</string>
 				</dict>
 				<key>TISInputSourceID</key>
-				<string>hk.eduhk.inputmethod.TypeDuck.IM</string>
+				<string>hk.eduhk.inputmethod.TypeDuck.TypeDuckIM</string>
 				<key>TISIntendedLanguage</key>
 				<string>yue-Hant</string>
 				<key>tsInputModeAlternateMenuIconFileKey</key>
@@ -37,7 +37,7 @@
 		</dict>
 		<key>tsVisibleInputModeOrderedArrayKey</key>
 		<array>
-			<string>hk.eduhk.inputmethod.TypeDuck.IM</string>
+			<string>hk.eduhk.inputmethod.TypeDuck.TypeDuckIM</string>
 		</array>
 	</dict>
 	<key>ITSAppUsesNonExemptEncryption</key>
