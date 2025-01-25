@@ -359,7 +359,7 @@ public struct Engine {
                         let indonesian: String = String(cString: sqlite3_column_text(statement, 18))
                         let isSandhi: Bool = sandhi == 1
                         let notation: Notation = Notation(word: word, jyutping: romanization, frequency: frequency, altFrequency: altFrequency, pronunciationOrder: pronunciationOrder, isSandhi: isSandhi, literaryColloquial: literaryColloquial, partOfSpeech: partOfSpeech, register: register, label: label, normalized: normalized, written: written, vernacular: vernacular, collocation: collocation, english: english, urdu: urdu, nepali: nepali, hindi: hindi, indonesian: indonesian)
-                        let candidate = Candidate(text: word, romanization: romanization, input: mark, notation: notation)
+                        let candidate = Candidate(text: word, romanization: romanization, input: text, mark: mark, notation: notation)
                         candidates.append(candidate)
                 }
                 return candidates
